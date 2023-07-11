@@ -1,0 +1,283 @@
+<div class="col-md-12">
+  <nb-card>
+    <nb-card-header>Create AdminUser</nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="AddUserForm" class="form-horizontal" (ngSubmit)="AddUser();">
+        <nb-tabset>
+          <nb-tab tabTitle="User Type">
+            <div class="modal-body">
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <label>Profile Type</label>
+                  <select
+                    [ngClass]="{'form-control' : true,'form-control-danger':AddUserForm.controls.profile_type.invalid&&submit}"
+                    name="profile_type" formControlName="profile_type">
+                    <option value="" ng-selected>Select Profile Type</option>
+                    <option value="1">Super Admin</option>
+                    <option value="2">Admin</option>
+                    <option value="3">Employee</option>
+                    <option value="4">Accounts</option>
+                    <option value="5">Operation</option>
+                  </select>
+                  <small *ngIf="AddUserForm.hasError('required','profile_type')&&submit" class="form-text error"> Select
+                    required Admin Type! </small>
+                </div>
+              </div>
+            </div>
+          </nb-tab>
+          <nb-tab tabTitle="Basic Details">
+            <div class="modal-body">
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <label>User ID *</label>
+                  <input type="text" name="ID" formControlName="ID" placeholder="User ID"
+                    [ngClass]="{'form-control' : true,'form-control-danger':AddUserForm.controls.ID.invalid&&submit}" />
+                  <small *ngIf="AddUserForm.hasError('required','ID')&&submit" class="form-text error">User ID is
+                    required! </small>
+                </div>
+                <div class="col-sm-6">
+                  <label>Headend Name<span style="color:red">*</span></label>
+                  <auto-completen [addclass]="{ 'error': submit && this.AddUserForm.controls.hdid.errors }"
+                    addclass="form-control" optValues="hdname" formControlName="hdid" (keyUp)="getHeadend($event)"
+                    placeholder='Select Headend' optId="hdid" [item]="listhead">
+                  </auto-completen>
+                  <div
+                    *ngIf="this.AddUserForm.controls.hdid.errors && (this.AddUserForm.controls.hdid.errors.required) && submit"
+                    class="error-text">
+                    Headend Name is required!
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <label>First Name *</label>
+                  <input type="text" name="First" formControlName="First" placeholder="First Name "
+                    [ngClass]="{'form-control' : true,'form-control-danger':AddUserForm.controls.First.invalid&&submit}" />
+                  <small *ngIf="AddUserForm.hasError('required','First')&&submit" class="form-text error"> First Name is
+                    required! </small>
+                </div>
+                <div class="col-sm-6">
+                  <label>Last Name *</label>
+                  <input type="text" name="Last" formControlName="Last" placeholder="Last Name"
+                    [ngClass]="{'form-control' : true,'form-control-danger':AddUserForm.controls.Last.invalid&&submit}" />
+                  <small *ngIf="AddUserForm.hasError('required','Last')&&submit" class="form-text error"> Last Name is
+                    required! </small>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <label>Date Of Birth</label>
+                  <input type="date" name="dob" formControlName="dob" placeholder="Select Date "
+                    [ngClass]="{'form-control' : true,'form-control-danger':AddUserForm.controls.dob.invalid&&submit}" />
+                  <small *ngIf="AddUserForm.hasError('required','dob')&&submit" class="form-text error"> DOB is
+                    required! </small>
+                </div>
+                <div class="col-sm-6">
+                  <label>Gender</label>
+                  <select name="gender" formControlName="gender"
+                    [ngClass]="{'form-control' : true,'form-control-danger':AddUserForm.controls.gender.invalid&&submit}">
+                    <option value="" selected> Select Gender</option>
+                    <option value="0">Male</option>
+                    <option value="1">Female</option>
+                  </select>
+                  <small *ngIf="AddUserForm.hasError('required','gender')&&submit" class="form-text error"> Select
+                    gender! </small>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <label>Password *</label>
+                  <input type="password" name="Password" formControlName="Password" placeholder="Password"
+                    [ngClass]="{'form-control' : true,'form-control-danger':AddUserForm.controls.Password.invalid&&submit}" />
+                  <small *ngIf="AddUserForm.hasError('required','Password')&&submit" class="form-text error"> Password
+                    is required! </small>
+                </div>
+                <div class="col-sm-6">
+                  <label>Confirm Password *</label>
+                  <input type="password" name="CPassword" formControlName="CPassword" placeholder="Confirm Password"
+                    [ngClass]="{'form-control' : true,'form-control-danger':AddUserForm.value['Password']!=AddUserForm.value['CPassword']}" />
+                  <small *ngIf="AddUserForm.value['Password']!=AddUserForm.value['CPassword']"
+                    class="form-text error">Password not matched! </small>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <label>Mobile No *</label>
+                  <input
+                    [ngClass]="{'form-control' : true,'form-control-danger':AddUserForm.controls.Mobile.invalid&&submit}"
+                    formControlName="Mobile" name="Mobile" type="text" placeholder="Mobile No * " size="30"
+                    maxlength="60">
+                  <small *ngIf="AddUserForm.hasError('required','Mobile')&&submit" class="form-text error"> Mobile No is
+                    required! </small>
+                </div>
+                <div class="col-sm-6">
+                  <label>Phone No</label>
+                  <input class="form-control" formControlName="Phone" name="Phone" type="text" placeholder="Phone No * "
+                    size="30" maxlength="60">
+                </div>
+              </div>
+
+
+              <div class="form-group row">
+
+
+                <div class="col-sm-6">
+                  <label>Country<span style="color:red">*</span></label>
+                  <auto-completen [addclass]="{ 'error': submit && this.AddUserForm.controls.countryid.errors }"
+                    addclass="form-control" optValues="name" formControlName="countryid" (keyUp)="getCountry($event)"
+                    (changed)="getstate();typeclearcountry('1')" placeholder='Select Country' id="id" [item]="count">
+                  </auto-completen>
+                  <div
+                    *ngIf="this.AddUserForm.controls.countryid.errors && (this.AddUserForm.controls.countryid.errors.required) && submit"
+                    class="error-text">
+                    Country Name is required!
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label>state<span style="color:red">*</span></label>
+                  <auto-completen [addclass]="{ 'error': submit && this.AddUserForm.controls.stateid.errors }"
+                    addclass="form-control" optValues="name" formControlName="stateid" (keyUp)="getstate($event)"
+                    (changed)="getdistrict(); typeclearstate('1')" placeholder='Select State' id="id"
+                    [item]="getstates">
+                  </auto-completen>
+                  <div
+                    *ngIf="this.AddUserForm.controls.stateid.errors && (this.AddUserForm.controls.stateid.errors.required) && submit"
+                    class="error-text">
+                    State Name is required!
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <label>District <span style="color:red">*</span></label>
+                  <auto-completen [addclass]="{ 'error': submit && this.AddUserForm.controls.districtid.errors }"
+                    addclass="form-control" optValues="name" formControlName="districtid" (keyUp)="getdistrict($event) "
+                    (changed)="getcity();typecleardist()" placeholder='Select District' id="id" [item]="dist">
+                  </auto-completen>
+                  <div
+                    *ngIf="this.AddUserForm.controls.districtid.errors && (this.AddUserForm.controls.districtid.errors.required) && submit"
+                    class="error-text">
+                    District Name is required!
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label>City<span style="color:red">*</span></label>
+                  <auto-completen [addclass]="{ 'error': submit && this.AddUserForm.controls.cityid.errors }"
+                    addclass="form-control" optValues="name" (changed)="getarea();typeclearcity('1')"
+                    formControlName="cityid" (keyUp)="getcity($event) " placeholder='Select City' id="id"
+                    [item]="citylist">
+                  </auto-completen>
+                  <div
+                    *ngIf="this.AddUserForm.controls.cityid.errors && (this.AddUserForm.controls.cityid.errors.required) && submit"
+                    class="error-text">
+                    City Name is required!
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <label>Area<span style="color:red">*</span></label>
+                  <auto-completen [addclass]="{ 'error': submit && this.AddUserForm.controls.area.errors }"
+                    addclass="form-control" optValues="name" formControlName="area" (keyUp)="getarea($event) "
+                    placeholder='Select Area' id="id" [item]="listarea">
+                  </auto-completen>
+                  <div
+                    *ngIf="this.AddUserForm.controls.area.errors && (this.AddUserForm.controls.area.errors.required) && submit"
+                    class="error-text">
+                    Area Name is required!
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label>Pin Code <span style="color:red">*</span></label>
+                  <input name="pincode" placeholder="Enter Pincode" formControlName="pincode" type="text"
+                    class="form-control"
+                    [ngClass]="{ 'is-invalid': submit && this.AddUserForm.controls.pincode.errors }" />
+                  <small
+                    *ngIf="this.AddUserForm.controls.pincode.errors &&(this.AddUserForm.controls.pincode.errors.required)&& submit"
+                    class="invalid-feedback">pincode is required! </small>
+                </div>
+
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <label>Address *</label>
+                  <textarea name="address" formControlName="address" placeholder="address"
+                    [ngClass]="{'form-control' : true,'form-control-danger':AddUserForm.controls.address.invalid&&submit}"> </textarea>
+                  <small *ngIf="AddUserForm.hasError('required','address')&&submit" class="form-text error"> Address is
+                    required! </small>
+                </div>
+                <div class="col-sm-6">
+                  <label>Email *</label>
+                  <input type="email" name="Email ID" formControlName="Email" placeholder="Email "
+                    [ngClass]="{'form-control' : true,'form-control-danger':AddUserForm.controls.Email.invalid&&submit}" />
+                  <small *ngIf="AddUserForm.hasError('required','Email')&&submit" class="form-text error"> Email ID is
+                    required! </small>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <label>Email 2</label>
+                  <input type="email" name="Email ID" formControlName="Email2" placeholder="Email2 "
+                    class="form-control" />
+                </div>
+                <div class="col-sm-6">
+                  <label>Proof Type *</label>
+                  <select
+                    [ngClass]="{'form-control' : true,'form-control-danger':AddUserForm.controls.Proof.invalid&&submit}"
+                    name="Proof" formControlName="Proof">
+                    <option value="" selected>Select Proof Type</option>
+                    <option value="0">Ration Card</option>
+                    <option value="1">Aadar Card</option>
+                    <option value="2">PAN</option>
+                    <option value="3">Voter ID</option>
+                    <option value="4">Driving License</option>
+                    <option value="5">others</option>
+                  </select>
+                  <small *ngIf="AddUserForm.hasError('required','Proof')&&submit" class="form-text error"> Proof is
+                    required! </small>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-6" *ngIf='AddUserForm.value["Proof"]!=""'>
+                  <label>Proof ID *</label>
+                  <input type="text" name="ProofID" formControlName="ProofID" placeholder="ProofID "
+                    [ngClass]="{'form-control' : true,'form-control-danger':AddUserForm.controls.ProofID.invalid&&submit}" />
+                  <small *ngIf="AddUserForm.hasError('required','ProofID')&&submit" class="form-text error">Proof ID is
+                    required! </small>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-12">
+                  <label>Description</label>
+                  <input name="descr" formControlName="descr" type="text" class="form-control" placeholder="Description"
+                    maxlength="200">
+                </div>
+              </div>
+            </div>
+          </nb-tab>
+          <nb-tab tabTitle="Loc & Branch" *ngIf="AddUserForm.value['headend']">
+            <div class="modal-body">
+              <div style="padding-left: 5%;">
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label>Filter</label>
+                    <input id="filter" class="form-control" #filter (keyup)="tree.treeModel.filterNodes(filter.value)"
+                      placeholder="Filter Branch And Loc" />
+                  </div>
+                </div>
+                <tree-root #tree [nodes]="nodes" [options]="options"></tree-root>
+              </div>
+            </div>
+          </nb-tab>
+        </nb-tabset>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-md btn-success">Create</button>
+          <button type="button" class="btn btn-md btn-danger ">Reset </button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</div>

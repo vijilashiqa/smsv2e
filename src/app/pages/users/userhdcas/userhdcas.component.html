@@ -1,0 +1,88 @@
+<nb-card>
+    <nb-card-body>
+      <div class="modal-header">
+        <h4 class="modal-title">{{title}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+    <form [formGroup]="userhdcas" class="form-horizontal" (ngSubmit)="addhdcas();">
+      <div class="modal-body">
+
+<!-- 
+        <div class="col-sm-12">
+          <table class="table table-header table-bordered table-striped">
+            <thead>
+              <th colspan="5">
+                <input placeholder="Search HD CAS Here" class="form-control"
+                  [ngModelOptions]="{standalone:true}" [(ngModel)]="searchresell"
+                  style="width:30%;border: none;border-bottom: 2px solid ;font-size: 15px;">
+              </th>
+            </thead>
+          </table>
+          <div class="table-wrapper">
+            <table class="table table-bordered table-striped">
+              <tr>
+                <th class="text-center">
+                  <label class="containerbox">All
+                    <input type="checkbox" name="all"
+                      (change)="resellcheck($event.target.checked);checkedresel();" />
+                    <span class="checkmarkbox"></span>
+                  </label>
+                </th>
+                <th>HD CAS  Name <span style="color:red;">*</span></th>
+              </tr>
+              <tr *ngFor="let item of result | grdFilter: {cas_name: searchresell }; let i=index;"
+                style="text-transform: uppercase;">
+                <td class="text-center">
+                  <label class="containerbox">
+                    <input type="checkbox" name="sizecb[]" [ngModelOptions]="{standalone:true}"
+                      [(ngModel)]="item.cas_name" (change)="checkedresel()" />
+                    <span class="checkmarkbox"></span>
+                  </label>
+                </td>
+                <td><a>{{item.cas_name}}</a> </td>
+              </tr>
+            </table>
+          </div>
+        </div> -->
+
+        <div class="  table-wrapper table-scroll ">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <th colspan="5">
+                <input placeholder="Search hdcas Here" class="form-control" [(ngModel)]="searchresell"
+                  [ngModelOptions]="{standalone: true}"
+                  style="width:30%;border: none;border-bottom: 2px solid ;font-size: 15px;">
+              </th>
+            </thead>
+            <tr>
+              <th class="text-center">
+                <input type="checkbox" name="all" (change)="checkhdcas($event.target.checked)" />All
+              </th>
+              <th>CAS ID </th>
+              <th>HD CAS Name</th>
+            </tr>
+            <tr *ngFor="let item of result  | grdFilter: {cas_name: searchresell };  let i=index;">
+              <td class="text-center">
+                <input type="checkbox" name="sizecb" [(ngModel)]="item.casstatus" [ngModelOptions]="{standalone: true}"
+                  [value]="item.hdcasid"  (change)="isAllSelected()">
+              </td>
+              <td><a>{{item.hdcasid}}</a></td>
+
+              <td>{{item.cas_name}}</td>
+            </tr>
+            <tr>
+              <td [hidden]='item.length !=0' colspan="5" style="text-align: center;">No HD CAS Found</td>
+            </tr>
+          </table>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="submit" status="success" nbButton  style="cursor:pointer" >ADD</button>
+        <button type="button" status="danger" nbButton  style="cursor:pointer" (click)="close()" >Cancel</button>
+      </div>
+    </form>
+    </nb-card-body>
+  </nb-card>

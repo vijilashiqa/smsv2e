@@ -1,0 +1,115 @@
+<nb-card>
+  <nb-card-header>List Package</nb-card-header>
+  <nb-card-body>
+    <div class="form-group row">
+      <div class="col-sm-3" *ngIf="role.getroleid() > 777">
+        <label>Headend</label>
+        <auto-completen addclass="form-control" optValues="hdname"  [(ngModel)]="headend" name="headend"
+          (changed)="Getbroadcasteredit()" placeholder="Select Headend" optId="hdid" [item]="listhead">
+        </auto-completen>
+      </div>
+      <div class="col-sm-3" (change)="getpackage(); clearpackage();">
+        <label>Pack Type</label>
+        <select class="form-control" id="pack_type" [(ngModel)]="pack_type">
+          <option value="" selected>Select Pack Type</option>
+          <option value="0">Base Package</option>
+          <option value="1">A-La-Carte</option>
+          <option value="2">Add-On Package</option>
+          <option value="3">Bundle Package</option>
+        </select>
+      </div>
+
+
+      <div class="col-sm-3"  >
+        <label>Package</label>
+        <auto-completen  addclass="form-control"  optValues="packname" [(ngModel)]="package" name="package"
+          placeholder="Select Package" optId="packid" [item]="getpackagelist" (changed)="getbcshare();amount();">
+        </auto-completen>
+      </div>
+
+      <div class="col-sm-1">
+        <label>BC Share</label>
+        <input class="form-control" [disabled]="true" addclass="form-control" [(ngModel)]="bcshare" id="bcshare" name="bcshare">
+
+      </div>
+
+      <div class="col-sm-2">
+        <label>Select Mode</label>
+        <select class="form-control" id="mode" [(ngModel)]="mode">
+          <option value="" selected>Select Mode</option>
+          <option value="0">Individual</option>
+          <option value="1">Bulk</option>
+          <option value="3">Upload</option>
+        </select>
+      </div>
+    </div>
+    <button type="button" class="btn btn-md btn-success" (click)="initiallist()" style="margin: auto; display: block">
+      Search
+    </button>
+    <form [formGroup]="searchpackage" (ngSubmit)="Updatepack()">
+      <div class="modal-body">
+        <div >
+          <table class="table">
+            <tbody>
+              <ng-container>
+
+                
+                <div style="display: table-row" formArrayName="share_details">
+                  <div class="col-sm-12">
+                    <div *ngFor=" let user of data; index as idx;  let last = last">
+                      <div class="row" [formGroupName]="idx">
+                        <div style="display: table-row">
+                          <td>
+                            <br>
+                           <input type="checkbox" [value]="user.id" (change)="checkBoxChecked();" [(ngModel)]="user.checked" class="form-control" id="checked" formControlName="checked" class="checkbox-control" >
+                          </td>
+                          <td>
+                            <label>Reseller Name<span style="color:red">*</span></label> <br>
+                            <label><b> {{ user.profileid }} </b></label>
+                          </td>
+                          <td>
+                            <label>MSO Share<span style="color:red">*</span></label>
+                            <input type="number" name="mso_share" formControlName="mso_share" class="form-control" (keyup)="onkeyupQty(idx)" />
+                            
+                          </td>
+                          <td>
+                            <label>Distributor Share<span style="color:red">*</span></label>
+                            <input type="number"   name="dist_share" formControlName="dist_share"
+                              placeholder="Enter Distributor Share" class="form-control" (keyup)="onkeyupQty(idx)" />
+                          </td>
+                          <td>
+                            <label>Sub Distributor Share<span style="color:red">*</span></label>
+                            <input type="number" name="sub_dist_share" formControlName="sub_dist_share"
+                              placeholder="Sub Distributor Share " class="form-control" (keyup)="onkeyupQty(idx)" />
+                          </td>
+                          <td>
+                            <label>Reseller Share<span style="color:red">*</span></label>
+                            <input type="number" name="reseller_share" formControlName="reseller_share"
+                              placeholder="reseller_share" class="form-control" (keyup)="onkeyupQty(idx)" />
+                          </td>
+
+                          <td>
+                            <label>Reseller Amount<span style="color:red">*</span></label>
+                            <input type="number"  name="mso_price" formControlName="mso_price"
+                              placeholder="Reseller amount" class="form-control" />
+
+                          </td>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </tbody>
+          </table>
+
+
+          <div class="modal-footer">
+            <button type="submit" status="success" nbButton>Update</button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </nb-card-body>
+</nb-card>

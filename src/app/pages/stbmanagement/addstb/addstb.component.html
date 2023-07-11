@@ -1,0 +1,181 @@
+<!-- <p>addstb works!</p> -->
+<div class="col-sm-12">
+  <nb-card>
+    <nb-card-header>Upload STB</nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="AddStbForm" class="form-horizontal" (ngSubmit)="addstb()">
+        <div class="form-group row">
+          <div class="col-sm-4" *ngIf="role.getroleid() > 777" >
+            <label>Select Headend Name<span style="color: red">*</span></label>
+            <auto-completen [addclass]="{ 'error': submit && this.AddStbForm.controls.hdid.errors}"
+              addclass="form-control" optValues="hdname"
+              (changed)="getcashead();getModelcas();getInvoicefun();getstbtype();typeClear('1');getoperatortypef();"
+              formControlName="hdid" (keyUp)="getHeadend()" placeholder="Select Headend Name" optId="hdid"
+              [item]="listhead">
+            </auto-completen>
+            <div *ngIf="
+                this.AddStbForm.controls.hdid.errors &&
+                this.AddStbForm.controls.hdid.errors.required &&
+                submit
+              " class="error-text">
+              Headend Name is required!
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <label> Select Cas Name<span style="color: red">*</span></label>
+            <auto-completen [addclass]="{ error: submit && this.AddStbForm.controls.casid.errors}"
+              addclass="form-control" optValues="cas_name" (changed)="getcashead(); getModelcas();clearcas()"
+              formControlName="casid" (keyUp)="getcashead($event)" placeholder="Select Case Type" optId="hdcasid"
+              [item]="listhdcas">
+            </auto-completen>
+            <div
+              *ngIf=" this.AddStbForm.controls.casid.errors && this.AddStbForm.controls.casid.errors.required && submit "
+              class="error-text">
+              Cas Name is required!
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <label>Select STB Model<span style="color: red">*</span></label>
+            <auto-completen [addclass]="{ error: submit && this.AddStbForm.controls.modelid.errors }"
+              addclass="form-control" optValues="modelname" (changed)="getInvoicefun(); setModelType(); getstbtype()"
+              formControlName="modelid" (keyUp)="getModelcas()" placeholder="Select STB Model" optId="bmid"
+              [item]="getmodel">
+            </auto-completen>
+            <div *ngIf=" this.AddStbForm.controls.modelid.errors && this.AddStbForm.controls.modelid.errors.required && submit
+              " class="error-text">
+              STB Model is required!
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <label class="control-label">Select Invoice<span style="color: red">*</span></label>
+            <auto-completen [addclass]="{error: submit && this.AddStbForm.controls.stockinwardid.errors}"
+              addclass="form-control" optValues="invoiceno" formControlName="stockinwardid" (keyUp)="getInvoicefun();"
+              placeholder="Select Invoice No" optId="stockinid" [item]="getinvoicedet">
+            </auto-completen>
+            <div *ngIf="this.AddStbForm.controls.stockinwardid.errors && this.AddStbForm.controls.stockinwardid.errors.required &&  submit
+              " class="error-text">
+              Invoice is required!
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <label class="control-label">Select STB Type <span style="color: red">*</span></label>
+            <select [ngClass]="{ 'is-invalid': submit && AddStbForm.controls.stb_type.errors }" name="stb_type"
+              formControlName="stb_type" class="form-control">
+              <option value="">Select STB Type</option>
+              <option *ngFor="let item of getstbtypeg" [ngValue]="item.boxtypeid">
+                {{ item.boxtypename }}
+              </option>
+            </select>
+            <div *ngIf="
+            this.AddStbForm.controls.stb_type.errors &&
+            this.AddStbForm.controls.stb_type.errors.required &&
+            submit
+          " class="error-text">
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <label class="control-label">Select Operator Type<span style="color: red">*</span></label>
+            <select class="form-control" (change)="getoperatortypef();typeClearopear('1')" name="usertype"
+              formControlName="usertype" [ngClass]="{'is-invalid': submit && this.AddStbForm.controls.usertype.errors}">
+              <option value="">Select Operator Type</option>
+              <option value="444">LCO</option>
+              <option value="666">Distributor</option>
+              <option value="555">Sub-Distributor</option>
+              <option value="333">Hotel</option>
+            </select>
+            <small *ngIf="
+                this.AddStbForm.controls.usertype.errors &&
+                this.AddStbForm.controls.usertype.errors.required &&
+                submit
+              " class="invalid-feedback">Operator Type is required!
+            </small>
+        </div>
+        <div class="col-sm-6">
+          <label>{{AddStbForm.value.usertype==444?'Select LCO ':AddStbForm.value.usertype==666?'Select Distributer ':AddStbForm.value.usertype==555?'Select Sub-Distributor':AddStbForm.value.usertype==333?'Select Hotel':'Select Operator'}}&nbsp;Name<span style="color: red">*</span></label>
+          <auto-completen 
+           [addclass]="{error: submit && this.AddStbForm.controls.lcoid.errors}"
+           addclass="form-control" optValues="business_name" formControlName="lcoid" placeholder="Select  Name"
+            Id="id" [item]="operatortype">
+          </auto-completen>
+          <div *ngIf="
+              this.AddStbForm.controls.lcoid.errors &&
+              this.AddStbForm.controls.lcoid.errors.required &&
+              submit
+            " class="error-text">
+            Operator Name is required!
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-6">
+          <div class="custom-control custom-checkbox">
+            <input (change)=" bulk = []" formControlName="status" name="status"
+              class="custom-control-input" type="checkbox" id="status" />
+            <label class="custom-control-label" for="status">Create Individuals</label>
+          </div>
+        </div>
+      </div>
+      <div class="row form-group" [hidden]="!AddStbForm.controls['status'].value">
+        <div class="col-sm-6">
+          <label class="control-label">Serial Number<span style="color: red">*</span></label>
+            <input type="text" class="form-control" name="boxno" formControlName="boxno"
+              placeholder="Enter Serial Name"
+              [ngClass]="{'is-invalid': submit && AddStbForm.controls.boxno.errors}" list='box_list' />
+            <datalist id="box_list">
+              <option *ngFor="let item of getboxlist">{{item.boxno}}</option>
+            </datalist>
+            <small *ngIf="AddStbForm.controls.boxno.errors && AddStbForm.controls.boxno.errors.required && submit 
+            " class="invalid-feedback">Serial Name is required!
+            </small>
+          </div>
+
+
+
+          
+          <div class="col-sm-6">
+            <label class="control-label">VC Number</label>
+            <input type="text" class="form-control" name="vcid" formControlName="vcid"
+              placeholder="Enter Sub-Distributor Name"
+              [ngClass]="{'is-invalid': submit && AddStbForm.controls.vcid.errors}" list='getvclist' />
+            <datalist id="getvclist">
+              <option *ngFor="let item of getvclist">{{item.vcno}}</option>
+            </datalist>
+            <small *ngIf="
+                AddStbForm.controls.vcid.errors &&
+                AddStbForm.controls.vcid.errors.required &&
+                submit
+              " class="invalid-feedback">VC Name is required!
+            </small>
+          </div>
+
+
+        </div>
+        <div class="row form-group" [hidden]="AddStbForm.controls['status'].value">
+          <div class="col-sm-6">
+            <label>Please Upload The excel File Format</label>
+            <input  #myFile type="file" (change)="changeListener($event.target.files[0])" class="form-control"
+              accept=".xlsx" />
+          </div>
+          <div class="col-sm-4">
+            <br />
+            <br />
+            <a href="../../../../assets/data/bulkstb.xlsx" target="_blank" download><b>Download Sample Here</b></a>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" status="success" nbButton>ADD</button>
+          <button type="button" class="btn btn-md btn-danger"
+            [routerLink]="['/pages/stbmanagement/stblist']">Back</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+
+</div>

@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ title }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+        <div style="overflow: auto;">
+          <div style="margin: 1em;text-align: center;-webkit-box-align: center;">
+            <i (click)="Download();" style="float:right;" class="green fa fa-download" aria-hidden="true"></i>
+        <table class="table table-condensed table-hover table-striped">
+          <tr >
+            <th>Error Message </th>
+            <th>Error code</th>
+            <th>STB No</th>
+          </tr>
+          <tr *ngFor="let items of item">
+            <td>{{items.msg }}</td>
+            <td>{{items.err_code}}</td>
+            <td>{{items.stb_no_or_vc}}</td>
+          </tr>
+        </table>
+        </div>
+   

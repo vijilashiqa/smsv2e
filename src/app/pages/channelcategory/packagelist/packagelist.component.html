@@ -1,0 +1,145 @@
+<!-- <p>packagelist works!</p> -->
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+  <nb-card-header>List Package</nb-card-header>
+  <nb-card-body>
+    <!-- <toaster-container></toaster-container> -->
+    <button status="success" nbButton [routerLink]="['/pages/channelcategory/addpackage']">
+      Add
+    </button>
+    <div class="form-group row">
+      <div class="col-sm-3" *ngIf="role.getroleid() >777">
+        <label>Headend</label>
+        <auto-completen addclass="form-control" optValues="hdname" [(ngModel)]="headend" name="headend"
+          (changed)="Getbroadcasteredit()" placeholder="Select Headend" optId="hdid" [item]="listhead">
+        </auto-completen>
+      </div>
+      <div class="col-sm-3" (change)="getpackage()">
+        <label>Pack Type</label>
+        <select class="form-control" id="pack_type" [(ngModel)]="pack_type">
+          <option value="" selected>Select Pack Type</option>
+          <option value="0">Base Package</option>
+          <option value="1">A-La-Carte</option>
+          <option value="2">Add-On Package</option>
+          <option value="3">Bundle Package</option>
+        </select>
+      </div>
+      <div class="col-sm-3">
+        <label>Package</label>
+        <auto-completen addclass="form-control" optValues="packname" [(ngModel)]="package" name="package"
+          placeholder="Select Package" optId="packid" [item]="getpackagelist">
+        </auto-completen>
+      </div>
+      <div class="col-sm-3">
+        <label>Broadcaster</label>
+        <auto-completen addclass="form-control" optValues="fullname" [(ngModel)]="bcid" name="bcid" id="bcid"
+          placeholder="Select Broadcaster" optId="id" [item]="broadcast">
+        </auto-completen>
+      </div>
+    </div>
+    <div class="form-group row"></div>
+    <button type="button" class="btn btn-md btn-success" (click)="initiallist()" style="margin: auto; display: block">
+      Search
+    </button>
+
+    &nbsp;&nbsp;&nbsp;
+    <hr style="border: 0px" />
+    <div class="row">
+      <div class="col-md-12">
+        <label class="left">
+          <h5>Package Count : {{ count }}</h5>
+        </label>
+        <i (click)="Download()" class="green right fa fa-file-excel" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div style="overflow: scroll">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th  *ngIf="role.getroleid() >777" >Headend Name</th>
+            <th>Package ID</th>
+            <th>Broadcaster Name</th>
+            <th>Package Type</th>
+            <th>Package Name</th>
+            <th>View Channels</th>
+            <th>Service Type</th>
+            <th>CAS Product Name</th>
+            <th>TAX Enable</th>
+            <th>TAX Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of pagedItems; let i = index">
+            <div style="display: table-row">
+              <td style="cursor: pointer" [routerLink]="['/pages/channelcategory/editpackage']"
+                [queryParams]="{ id: item.packid }">
+                <i class="nb-edit"></i>
+              </td>
+              <td  *ngIf="role.getroleid() >777" >{{ item.hdname }}</td>
+              <td>{{ item.packid }}</td>
+              <td>{{ item.fullname || "---" }}</td>
+              <td>
+                {{
+                item.packtype == 0 ? "BasePackage" : item.packtype == 1 ? "ALaCarte": item.packtype == 2 ? "AddOn Pack": item.packtype == 3 ? "Bundle Pack": "-"
+                }}
+              </td>
+              <td style="cursor: pointer" (click)="packshare(i)">
+                <i [ngClass]="{
+                    'fa-caret-down': index != i,
+                    fas: true,
+                    'fa-caret-up': index == i
+                  }"></i><b> {{ item.packname  }}</b>
+              </td>
+              <td *ngIf="item.packtype != 3">
+                <p (click)="channels(item)">
+                  <i class="fas fa-tv" nbPopoverPlacement="top"></i>
+                </p>
+              </td>
+              <td *ngIf="item.packtype == 3">--</td>
+              <td>{{ item.srvtype == 0 ? "Prepaid" : "Postpaid" }}</td>
+              <td>{{ item.channame }}</td>
+              <td>
+                <i [ngStyle]="{ color: item.enable_tax == 1 ? 'green' : 'red' }" [ngClass]="{
+                    'ion-close-round': item.enable_tax == 0 ? true : false,
+                    'ion-checkmark-round': item.enable_tax != 0 ? true : false
+                  }" [attr.title]="item.enable_tax == 1 ? 'Active' : 'Deactive'"></i>
+              </td>
+              <td>{{ item.tax_type == 0 ? "Include" : "Exclude" }}</td>
+            </div>
+            <ng-container *ngIf="index == i">
+              <tr *ngIf="share.length != 0">
+                <th>Operator Name</th>
+                <th>Broadcaster Share</th>
+                <th>Broadcaster Name</th>
+                <th></th>
+                <th>MSO Share</th>
+                <th>Distributer Share</th>
+                <th>Sub-Distributor Share</th>
+                <th>LCO Share</th>
+                <th>MSO Price</th>
+                <th>Customer Price</th>
+              </tr>
+              <tr>
+                <td *ngIf="share.length == 0" colspan="7" style="text-align: center">
+                  <h5><b>No Data Found</b></h5>
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+          <a [ngClass]="{disabled:pager.currentPage === 1}" (click)="page=1;getlist();">First</a>
+          <a [ngClass]="{disabled:pager.currentPage === 1}" (click)="page=page-1;getlist();">Previous</a>
+          <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}"
+            (click)="getlist(page);">{{page}}</a>
+          <a [ngClass]="{disabled:pager.currentPage === pager.totalPages}"
+            (click)="page=page+1;getlist();">Next</a>
+          <a [ngClass]="{disabled:pager.currentPage === pager.totalPages}"
+            (click)="page=pager.totalPages;getlist();">Last</a>
+        </ul>
+    </div>
+  </nb-card-body>
+</nb-card>

@@ -1,0 +1,114 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+  <nb-card-header>List Channels</nb-card-header>
+  <nb-card-body>
+    <button status="success" nbButton [routerLink]="['/pages/channelcategory/addchannels']">
+      Create
+    </button>
+    <div class="form-group row">
+      <div class="col-sm-3" *ngIf="role.getroleid() > 777" >
+        <label>Headend</label>
+        <auto-completen addclass="form-control" optValues="hdname" [(ngModel)]="headend" name="headend" (changed)="
+            listlang(); listgenre(); Getbroadcasteredit(); selectchanname()
+          " placeholder="Select Headend" optId="hdid" [item]="headendl">
+        </auto-completen>
+      </div>
+
+      <div class="col-sm-3">
+        <label>LCN Number</label>
+        <input type="Number" name="lcn_num" class="form-control" placeholder="Enter LCN Number" [(ngModel)]="lcn_num" />
+      </div>
+      <div class="col-sm-3">
+        <label>Language</label>
+        <auto-completen addclass="form-control" optValues="langname" [(ngModel)]="language" name="language"
+          (changed)="listgenre()" placeholder="Select Language" optId="langid" [item]="lang">
+        </auto-completen>
+      </div>
+      <div class="col-sm-3">
+        <label>Genre</label>
+        <auto-completen addclass="form-control" optValues="genrename" [(ngModel)]="genre" name="genre"
+          placeholder="Select Headend" optId="genreid" [item]="listgener">
+        </auto-completen>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-sm-3">
+        <label>Channel Type</label>
+        <select name="channel_type" [(ngModel)]="channel_type" class="form-control">
+          <option value="">Select Channel Type</option>
+          <option value="1">PAY</option>
+          <option value="2">FTA</option>
+          <option value="3">Local</option>
+        </select>
+      </div>
+      <div class="col-sm-3">
+        <label>Channel</label>
+        <auto-completen addclass="form-control" optValues="channame" [(ngModel)]="channel_name" name="channel_name"
+          placeholder="Select Channel" optId="chanid" [item]="selectchannel">
+        </auto-completen>
+      </div>
+      <div class="col-sm-3">
+        <label>Broadcaster</label>
+        <auto-completen addclass="form-control" optValues="fullname" [(ngModel)]="broadcaster" name="broadcaster"
+          placeholder="Select Broadcaster" Id="id" [item]="broadcast">
+        </auto-completen>
+      </div>
+      <div class="col-sm-3">
+        <label>Channel Mode</label>
+        <select name="channel_mode" [(ngModel)]="channel_mode" class="form-control">
+          <option value="">Select Channel Type</option>
+          <option value="1">HD</option>
+          <option value="2">SD</option>
+        </select>
+      </div>
+    </div>
+    <button type="button" class="btn btn-md btn-success" (click)="page = 1; initiallist()"
+      style="margin: auto; display: block">
+      Search
+    </button>
+
+    <table class="table">
+      <tr>
+        <th>Action</th>
+        <th *ngIf="role.getroleid() > 777">Headend Name</th>
+        <th>Broadcaster Name</th>
+        <th>Channel Name</th>
+        <th>LCN Number</th>
+        <th>Genre Name</th>
+        <th>Language Name</th>
+        <th>Channel Type</th>
+        <th>Channel Mode</th>
+        <th>Status</th>
+      </tr>
+      <tr *ngFor="let item of pagedItems">
+        <td style="cursor: pointer" [routerLink]="['/pages/channelcategory/addchannels']"
+          [queryParams]="{ id: item.chanid }">
+          <i class="nb-edit"></i>
+        </td>
+        <td *ngIf="role.getroleid() > 777">{{ item.hdname }}</td>
+        <td>{{ item.fullname }}</td>
+        <td>{{ item.channame }}</td>
+        <td>{{ item.chanlcm }}</td>
+        <td>{{ item.genrename }}</td>
+        <td>{{ item.langname }}</td>
+        <td>
+          {{item.chantype == 1? "Pay": item.chantype == 2 ? "FTA": "Local Channel"}}
+        </td>
+        <td>{{ item.chanmode == 1 ? "HD" : "SD" }}</td>
+        <td><i [ngStyle]="{'color': item.status==1? 'green':'red'}"
+          [ngClass]="{'ion-close-round':item.status==0 ? true:false,'ion-checkmark-round':item.status!=0 ? true:false  }"
+          [attr.title]="item.status==0 ? 'Active' : 'Deactive'"></i></td>
+      </tr>
+    </table>
+    <div class="pagination">
+      <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+        <a [ngClass]="{ disabled: pager.currentPage === 1 }" (click)="page = 1; list()">First</a>
+        <a [ngClass]="{ disabled: pager.currentPage === 1 }" (click)="page = page - 1; list()">Previous</a>
+        <a *ngFor="let page of pager.pages" [ngClass]="{ active: pager.currentPage === page }" (click)="list(page)">{{
+          page }}</a>
+        <a [ngClass]="{ disabled: pager.currentPage === pager.totalPages }" (click)="page = page + 1; list()">Next</a>
+        <a [ngClass]="{ disabled: pager.currentPage === pager.totalPages }"
+          (click)="page = pager.totalPages; list()">Last</a>
+      </ul>
+    </div>
+  </nb-card-body>
+</nb-card>

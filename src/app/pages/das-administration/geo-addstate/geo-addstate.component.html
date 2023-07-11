@@ -1,0 +1,43 @@
+<nb-card>
+  <nb-card-body>
+    <div class="modal-header">
+      <h4 class="modal-title">{{title}}</h4>
+      <!-- <button button type="button" class="close pull-right" aria-label="Close" (click)="onClose()" > -->
+      <button class="close" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form [formGroup]="stateForm" class="form-horizontal" (ngSubmit)="AddState()">
+      <div class="modal-body">
+        <div class="form-group row">
+          <div class="col-sm-12">
+            <label>Country<span style="color: red">*</span></label>
+            <auto-completen [addclass]="{ 'error': submit && this.stateForm.controls.country_fk.errors }"
+              addclass="form-control" optValues="name" formControlName="country_fk" (keyUp)="getCountry($event)"
+              placeholder='Select Country' optId="country_pk" [item]="count">
+            </auto-completen>
+            <div
+              *ngIf="this.stateForm.controls.country_fk.errors && (this.stateForm.controls.country_fk.errors.required) && submit"
+              class="error-text">
+              Country Name is required!
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-12">
+            <label>State<span style="color: red">*</span></label>
+            <input type="text" class="form-control" name="state_name" formControlName="state_name"
+              placeholder="Enter State" [ngClass]="{ 'is-invalid': submit && stateForm.controls.state_name.errors }" />
+            <small
+              *ngIf="stateForm.controls.state_name.errors &&(stateForm.controls.state_name.errors.required )&& submit"
+              class="invalid-feedback">statename is required! </small>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" status="success" nbButton>{{item ? 'Update' : 'Add'}}</button>
+        <button type="button" status="danger" nbButton (click)="close()">Cancel</button>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>

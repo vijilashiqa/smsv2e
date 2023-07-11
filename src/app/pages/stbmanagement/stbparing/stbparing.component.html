@@ -1,0 +1,137 @@
+<nb-card>
+  <nb-card-body>
+    <div class="modal-header">
+      <h4 class="modal-title">{{title}}</h4>
+      <button class="close" aria-label="Close" (click)="close();">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form [formGroup]="pairForm" class="form-horizontal" (ngSubmit)="paring();">
+      <div class="modal-body" >
+        <div class="form-group row"  (click)="typeclear()">
+          <div class="col-sm-6">
+            <input id="pair" type="radio" value=1 name="pair" formControlName="pairstatus">
+            <label>Paring</label>
+          </div>
+          <div class="col-sm-6">
+            <input id="unpair" type="radio" value=0 name="pair" formControlName="pairstatus">
+            <label>UnPairing</label>
+          </div>
+        </div>
+
+
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <label>Select Headend Name<span style="color:red">*</span></label>
+            <auto-completen [addclass]="{ 'error': submit && this.pairForm.controls.hdid.errors }"
+              addclass="form-control" optValues="hdname" (changed)="getbox(); getcashead();getvc();boxparing();getoperator()" formControlName="hdid"
+              (keyUp)="getHeadend($event)" placeholder='Select Headend Name' optId="hdid" [item]="listhead">
+            </auto-completen>
+            <div *ngIf="this.pairForm.controls.hdid.errors && (this.pairForm.controls.hdid.errors.required) && submit"
+              class="error-text">
+              Headend Name is required!
+            </div>
+          </div>
+
+
+          <div class="col-sm-6">
+            <label> Select Cas Name<span style="color: red">*</span></label>
+            <auto-completen [addclass]="{ error: submit && this.pairForm.controls.casid.errors}" addclass="form-control"
+              optValues="cas_name" (changed)="getcashead();getbox();boxparing();getoperator()" formControlName="casid"
+              (keyUp)="getcashead($event)" placeholder="Select Case Type" optId="hdcasid" [item]="listhdcas">
+            </auto-completen>
+            <div *ngIf=" this.pairForm.controls.casid.errors && this.pairForm.controls.casid.errors.required && submit "
+              class="error-text">
+              Cas Name is required!
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+        <div class="col-sm-6">
+          <label>Select Operator<span style="color: red">*</span></label>
+          <auto-completen [addclass]="{error: submit && this.pairForm.controls.userid.errors}"
+            addclass="form-control" optValues="profileid" formControlName="userid" (keyUp)="getoperator($event)"  (changed)="getvc();getbox()"
+            placeholder="Select Operator" optId="id" [item]="getoperatorlist">
+          </auto-completen>
+          <div
+            *ngIf="this.pairForm.controls.userid.errors && this.pairForm.controls.userid.errors.required && submit  "
+            class="error-text">
+            Operator type is required!
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="form-group row" >
+          <div class="col-sm-6"  *ngIf="this.pairForm.value['pairstatus']=='1'">
+            <label>Select STB Number <span style="color: red">*</span></label>
+            <auto-completen [addclass]="{ 'error': submit && this.pairForm.controls.boxno.errors }"
+              addclass="form-control" optValues="boxno" (changed)="getvc();" (keyUp)="getbox($event)"
+              formControlName="boxno" placeholder='Select STB Number' optId="boxid" [item]="getboxlist">
+            </auto-completen>
+          
+          <div *ngIf="this.pairForm.controls.boxno.errors && (this.pairForm.controls.boxno.errors.required) && submit"
+            class="error-text">
+            STB Number is required!
+          </div>
+      </div>
+
+   
+
+
+
+  
+        <div class="col-sm-6"  *ngIf="this.pairForm.value['pairstatus']=='1'">
+          <label>Select VC Number <span style="color: red">*</span></label>
+            <auto-completen [addclass]="{ 'error': submit && this.pairForm.controls.vcid.errors }"
+            addclass="form-control" optValues="vcno" 
+            formControlName="vcid" placeholder='Select VC Number' optId="vcid" [item]="getvclist">
+          </auto-completen>
+          <div *ngIf="this.pairForm.controls.vcid.errors && (this.pairForm.controls.vcid.errors.required) && submit"
+          class="error-text">
+          VC Number is required!
+        </div>
+        </div>
+       
+
+    
+
+          <div class="col-sm-6" *ngIf="this.pairForm.value['pairstatus']=='0'">
+            <label>Select STB Number unpair <span style="color: red">*</span></label>
+            <auto-completen [addclass]="{ 'error': submit && this.pairForm.controls.boxno.errors }"
+              addclass="form-control" optValues="boxno" (changed)="vcparing()" (keyUp)="boxparing($event,1)"
+              formControlName="boxno" placeholder='Select STB Number' optId="boxid" [item]="listboxpair">
+            </auto-completen>
+            <div *ngIf="this.pairForm.controls.boxno.errors && (this.pairForm.controls.boxno.errors.required) && submit"
+            class="error-text">
+            STB Number is required!
+          </div>
+          </div>
+          
+          <div class="col-sm-6" *ngIf="this.pairForm.value['pairstatus']=='0'">
+          <label>VC Number unpair <span style="color: red">*</span></label>
+          <auto-completen [addclass]="{ 'error': submit && this.pairForm.controls.vcid.errors }"
+          addclass="form-control" optValues="vcno" (changed)="getVcBoxpairData()" (keyUp)="boxparing($event,2)"
+          formControlName="vcid" placeholder='Select VC Number' optId="vcid" [item]="listvc">
+        </auto-completen>
+          <div *ngIf="this.pairForm.controls.vcid.errors && (this.pairForm.controls.vcid.errors.required) && submit" class="error-text">
+            VC NUMBER is required!
+           </div>
+        </div>
+    
+      </div>
+
+
+
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-md btn-success">{{pairForm.value['pairstatus']==1 ?'pair':'unpair'}}</button>
+        <button type="button" class="btn btn-md btn-danger " (click)="close();">Cancel</button>
+      </div>
+    </form>

@@ -1,0 +1,161 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+    <nb-card-header>List STB <a class="right" (click)="search=!search">Advanced Search</a></nb-card-header>
+    <nb-card-body>
+     <button  *ngIf="!role.getmenurole(702)"  status="success" nbButton  [routerLink]="['/pages/stbmanagement/addstb']">ADD STB</button> &nbsp;
+     <button  *ngIf="!role.getmenurole(714)"  status="success" nbButton (click)="addpair()">Pair/unpair</button>
+      <label class="right">
+        <h5>STB Count : {{count}}</h5> 
+      </label>
+
+      <form [hidden]='!search' class="form-horizontal">
+        <div class="modal-body">
+          <div class="form-group row">
+            <div class="col-sm-3"  *ngIf="role.getroleid() >777" >
+              <label>Headend</label>
+              <auto-completen [(ngModel)]="headend"   id="headend"
+               (changed)="getoperator();getModel();boxparing()"
+              addclass="form-control" optValues="hdname"   name ="headend"
+              placeholder='Select Headend'  optId="hdid"
+              [item]="listhead">
+            </auto-completen> 
+            </div>
+            <div class="col-sm-3" (change)="getoperator()">
+              <label>Operator Type</label>
+              <select class="form-control" name="op_type" [(ngModel)]="op_type">
+                <option value="" selected>Select Operator Type</option>
+                <option value="444">LCO</option>
+                <option value="666">Distributor</option>
+                <option value="555">Sub-Distributor</option>
+                <option value="333">Hotel</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <label>Operator Name</label>
+              <auto-completen
+                addclass="form-control"
+                optValues="fullname"
+                name="operator_name"
+                placeholder="Select Operator"
+                Id="id"
+                [(ngModel)]="profileid"
+                [item]="operatortypelist">
+              </auto-completen>
+            </div>
+
+            <div class="col-sm-3">
+              <label>STB Status</label>
+              <select name="status" class="form-control"   [(ngModel)]="status" >
+                <option value="" selected>Select Status</option>
+                <option value="1">Active</option>
+                <option value="2">Inactive</option>
+              </select>
+            </div>
+
+          </div>
+          <div class="form-group row">
+           <div class="col-sm-3">
+            <label>STB Model</label>
+            <auto-completen [(ngModel)]="modelname"   id="modelname"
+            addclass="form-control" optValues="modelname"   name ="modelname"
+            placeholder='Select Model'  optId="bmid"
+            [item]="getmodellist">
+          </auto-completen> 
+          </div>
+          <div class="col-sm-3" >
+            <label>STB  Number</label>
+            <auto-completen [(ngModel)]="stbopt" (changed)="vcparing();boxparing()" id="stbopt"
+            addclass="form-control" optValues="boxno"   name ="stbopt"
+            placeholder='Select STB Number'  optId="boxid"
+            [item]="listboxpair">
+          </auto-completen>
+          </div>
+        <div class="col-sm-3">
+          <label>VC Number</label>
+           <select  name="vc"  class="form-control" [(ngModel)]="vc" name="vc"
+           placeholder='Select VC Number ' >
+          <option *ngFor='let item of listvc' [ngValue]=item.vcid>{{item.vcno}}</option>
+          </select>
+        </div>
+
+
+          <div class="col-sm-3">
+            <label>Pair/Unpair</label>
+            <select  name="pair" class="form-control" [(ngModel)]="pair">
+              <option value="" selected>Select </option>
+              <option value="1">Paired</option>
+              <option value="0">Unpaired</option>
+            </select>
+          </div>
+          </div>
+          <div class="form-group row">
+           
+            <div class="col-sm-3">
+              <label>Assigned/Unassigned</label>
+              <select name="assign" class="form-control"  [(ngModel)]="assign" >
+                <option value="" selected>Select </option>
+                <option value="1">Assigned</option>
+                <option value="0">Unassigned</option>
+              </select>
+            </div>
+  
+            <div class="col-sm-3">
+              <label>From Created Date</label>
+              <input type="date"  [(ngModel)]="from_date" name="from_date" placeholder="Select Date "
+                class="form-control" />
+            </div>
+            <div class="col-sm-3">
+              <label>To Created Date</label>
+              <input type="date"  [(ngModel)]="to_date"  name="to_date" placeholder="Select Date " class="form-control" />
+            </div>
+          </div>
+  
+          <button type="button" class="btn btn-md btn-success" (click)='initiallist();'
+            style="margin: auto; display: block;">Search</button>
+   
+        </div>
+      </form>
+       
+      <div class="row">
+        <!-- <div class="col-md-12">
+          <i (click)="Download();" class="green right fa fa-file-excel" ></i>
+        </div> -->
+      </div>
+      <table class="table table-condensed table-hover">
+        <tr>
+          <!-- <th>Action</th> -->
+          <th *ngIf="role.getroleid() >777">Headend ID</th>
+          <th>CAS Name</th>
+          <th>STB Model</th>
+          <th>Invoice NO</th>
+          <th>VC Number</th>
+          <th>Serial NO</th>
+          <th>Pair Status</th>
+          <th>Operator name</th>
+       
+        </tr>
+        <!-- <tr > -->
+          <tr *ngFor="let item of pagedItems">
+            <td *ngIf="role.getroleid() >777">{{item.hdname}}</td>
+            <td>{{item.cas_name}}</td>
+            <td>{{item.modelname}}</td>
+            <td>{{item.invoiceno}}</td>
+            <td>{{item.vcno||'--'}}</td>
+            <td>{{item.boxno}}</td>
+            <td>{{item.pairflg == 1? 'paired':'unpair'}}</td>
+            <td>{{item.fullname||'--'}}</td>
+           
+          </tr>
+        </table>
+        <div class="pagination">
+          <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+            <a [ngClass]="{disabled:pager.currentPage === 1}" (click)="page=1;getlist();">First</a>
+            <a [ngClass]="{disabled:pager.currentPage === 1}" (click)="page=page-1;getlist();">Previous</a>
+            <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}"
+              (click)="getlist(page);">{{page}}</a>
+            <a [ngClass]="{disabled:pager.currentPage === pager.totalPages}" (click)="page=page+1;getlist();">Next</a>
+            <a [ngClass]="{disabled:pager.currentPage === pager.totalPages}"
+              (click)="page=pager.totalPages;getlist();">Last</a>
+          </ul>
+        </div>
+      </nb-card-body>
+  </nb-card>

@@ -1,0 +1,147 @@
+<!-- <p>adddeposit works!</p> -->
+<div class="col-md-12">
+   <nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+      <!-- <toaster-container></toaster-container> -->
+      <nb-card-header> </nb-card-header>
+      <nb-card-body>
+         <form [formGroup]="depositForm" class="form-horizontal" (ngSubmit)="deposit();">
+            <div class="modal-body">
+               <div class="form-group row" >
+                  <div class="col-sm-4"  *ngIf="role.getroleid() > 777">
+                     <label>Select Headend Name<span style="color: red">*</span></label>
+                     <auto-completen [addclass]="{ 'error': submit && this.depositForm.controls.hdid.errors}"
+                        addclass="form-control" optValues="hdname" (change)="getoperatortypef();clearheaddend();" formControlName="hdid"
+                        (keyUp)="getHeadend()" placeholder="Select Headend Name" optId="hdid" [item]="listhead">
+                     </auto-completen>
+                     <div *ngIf="
+                         this.depositForm.controls.hdid.errors &&
+                         this.depositForm.controls.hdid.errors.required &&
+                         submit
+                       " class="error-text">
+                        Headend Name is required!
+                     </div>
+                  </div>
+                  <div class="col-sm-4">
+                     <label class="control-label">Select Operator Type<span style="color: red">*</span></label>
+                     <select class="form-control" name="role" formControlName="role" (change)="getoperatortypef();typeoperator()"
+                        [ngClass]="{'is-invalid': submit && this.depositForm.controls.role.errors}">
+                        <option value="">Select Operator Type</option>
+                        <option value="444">LCO</option>
+                        <option value="666">Distributor</option>
+                        <option value="555">Sub-Distributor</option>
+                        <option value="333">Hotel</option>
+                     </select>
+                     <small *ngIf="
+                         this.depositForm.controls.role.errors &&
+                         this.depositForm.controls.role.errors.required && submit
+                       " class="invalid-feedback">Operator Type is required!
+                     </small>
+                  </div>
+                  <div class="col-sm-4">
+                     <label>{{depositForm.value.role==444?'Select LCO':depositForm.value.role==666?' Select Distributer':depositForm.value.role==555?'Select Sub-Distributor':depositForm.value.role==333?'Select Hotel':' Select Operator'}}&nbsp;Name<span style="color: red">*</span></label>
+                     <auto-completen 
+                        [addclass]="{error: submit && this.depositForm.controls.userid.errors}"
+                        addclass="form-control" optValues="business_name" formControlName="userid"  
+                        placeholder="Select Name" Id="id" [item]="operatortype">
+                     </auto-completen>
+                     <div *ngIf="
+                         this.depositForm.controls.userid.errors &&
+                         this.depositForm.controls.userid.errors.required &&
+                         submit
+                       " class="error-text">
+                        Operator Name is required!
+                     </div>
+                  </div>
+               </div>
+               <hr>
+               <div class="form-group row">
+                  <div class="col-sm-6">
+                     <label> Select Payment Type<span style="color: red">*</span></label>
+                     <select class="form-control" name="paymode" formControlName="paymode"
+                        [ngClass]="{'is-invalid': submit && this.depositForm.controls.paymode.errors}">
+                        <option value="" selected>Select Pay Type</option>
+                        <option value="1">Cash</option>
+                        <option value="2">NetBanking</option>
+                        <option value="3">Cheque</option>
+                        <option value="4">Bank Deposit</option>
+                        <option value="5">UPI</option>
+                     </select>
+                     <small *ngIf="
+                      this.depositForm.controls.paymode.errors &&
+                      this.depositForm.controls.paymode.errors.required &&
+                      submit
+                    " class="invalid-feedback">Pay Type is required!
+                     </small>
+                  </div>
+                  <div class="col-sm-6">
+                     <label>Select Payment Mode<span style="color: red">*</span></label>
+                     <auto-completen [addclass]="{error: submit && this.depositForm.controls.deposit_type.errors}"
+                        addclass="form-control" optValues="dep_mode_name" formControlName="deposit_type"
+                        placeholder="Select Payment Mode" Id="id" [item]="depositlist">
+                     </auto-completen>
+                     <div *ngIf="
+                this.depositForm.controls.deposit_type.errors &&
+                this.depositForm.controls.deposit_type.errors.required &&
+                submit
+              " class="error-text">
+                        Payment Mode is required!
+                     </div>
+                  </div>
+               </div>
+
+               <div class="form-group row">
+                  <div class="col-sm-6">
+                     <label>Reason</label>
+                     <textarea name="note" formControlName="note" class="form-control"
+                        [ngClass]="{ 'is-invalid': submit && this.depositForm.controls.note.errors }"
+                        placeholder="Enter Reason"></textarea>
+                  </div>
+                  <div class="col-sm-6" [hidden]="depositForm.value['paymode']!=2">
+                     <label>UTR<span style="color: red">*</span></label>
+                     <textarea name="utr" formControlName="utr" class="form-control"
+                        [ngClass]="{ 'is-invalid': submit && this.depositForm.controls.utr.errors }"
+                        placeholder="Enter UTR"></textarea>
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <div class="col-sm-6">
+                     <label>Upload Challan<span style="color: red">*</span></label>
+                     <input type="file" name="img" class="form-control" (change)="handleFile($event.target.files)"
+                        [ngClass]="{'is-invalid' : submit && this.depositForm.controls.img.errors  }"
+                        formControlName="img">
+                     <div
+                        *ngIf="this.depositForm.controls.img.errors && this.depositForm.controls.img.errors.required && submit  "
+                        class="invalid-feedback">
+                        Upload Challan Proff is required
+                     </div>
+                  </div>
+                  <div class="col-sm-6" *ngIf='imageURL'>
+                     <label>Challan</label>
+                     <img [src]="imageURL" style="width: 100%;height: 200px">
+                  </div>
+               </div>
+
+               <div class="form-group row">
+                  <div class="col-sm-6">
+                     <label>Deposit Amount<span style="color: red">*</span></label>
+                     <input type="text" class="form-control" name="deposit_amount" formControlName="deposit_amount"
+                        placeholder="INR"
+                        [ngClass]="{ 'is-invalid': submit && depositForm.controls.deposit_amount.errors}" />
+                     <small *ngIf="depositForm.controls.deposit_amount.errors && depositForm.controls.deposit_amount.errors.required && submit
+                    " class="invalid-feedback">Deposit Amount required!
+                     </small>
+                  </div>
+               </div>
+            </div>
+
+
+
+            <div class="modal-footer">
+               <button type="submit" class="btn btn-md btn-success">Submit</button>
+               <button type="button" class="btn btn-md btn-danger"
+                  [routerLink]="['/pages/accounts/depositlist']">Cancel</button>
+            </div>
+         </form>
+      </nb-card-body>
+   </nb-card>
+</div>

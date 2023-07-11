@@ -1,0 +1,41 @@
+<!-- <p>listchannelcategory works!</p> -->
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+    <nb-card-header>List Language </nb-card-header>
+    <nb-card-body>
+      <!-- <toaster-container></toaster-container> -->
+      <div class="row" style="padding-left: 10px;">
+        <div style="padding: 2px;">
+          <button status="success" nbButton (click)=" addlang()">Create</button>
+        
+        </div>
+      </div>
+      <table class="table">
+        <tr>
+          <th>Action</th>
+          <th *ngIf="role.getroleid() >777">Headend ID</th>
+          <th>Language</th>
+          <th>Status</th>
+        </tr>
+        <tr *ngFor="let item of pagedItems">
+          <!-- <td><a (click)="EditPincode(item);" title="Update"><i class="nb-edit"></i></a></td> -->
+          <td><a (click)="Edit(item.langid);" title="Update"><i class="nb-edit"></i></a></td> 
+          <td *ngIf="role.getroleid() >777">{{item.hdname}}</td>
+          <td>{{item.langname}}</td>
+          <td><i [ngStyle]="{'color': item.STATUS ==1? 'green':'red'}"
+                 [ngClass]="{'ion-close-round':item.STATUS ==0 ? true:false,'ion-checkmark-round':item.STATUS !=0 ? true:false  }"
+              [attr.title]="item.STATUS ==1 ? 'Active' : 'Deactive'"></i></td>
+        </tr>
+      </table>
+      <div class="pagination">
+        <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+          <a [ngClass]="{disabled:pager.currentPage === 1}" (click)="page=1;list();">First</a>
+          <a [ngClass]="{disabled:pager.currentPage === 1}" (click)="page=page-1;list();">Previous</a>
+          <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}"
+            (click)="list(page);">{{page}}</a>
+          <a [ngClass]="{disabled:pager.currentPage === pager.totalPages}" (click)="page=page+1;list();">Next</a>
+          <a [ngClass]="{disabled:pager.currentPage === pager.totalPages}"
+            (click)="page=pager.totalPages;list();">Last</a>
+        </ul>
+      </div>
+    </nb-card-body>
+  </nb-card>
