@@ -22,7 +22,7 @@
             <label>Select Operator<span style="color: red">*</span></label>
             <auto-completen
              [addclass]="{error: submit && this.AddCustForm.controls.userid.errors}"
-              addclass="form-control" optValues="profileid" formControlName="userid" (keyUp)="getoperator()"
+              addclass="form-control" optValues="profileid" formControlName="userid" (keyUp)="getoperator()" (changed)="getbox()"
               placeholder="Select Operator" Id="id" [item]="getoperatorlist">
             </auto-completen>
             <div

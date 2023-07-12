@@ -9,6 +9,7 @@ import { Md5 } from 'ts-md5';
 import * as JSXLSX from 'xlsx';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ErrormsgComponent } from '../../channelcategory/errormsg/errormsg.component';
+import { StbmanagementService } from '../../_services/stbmanagement.service';
 @Component({
   selector: 'ngx-add-cust',
   templateUrl: './add-cust.component.html',
@@ -30,6 +31,7 @@ export class AddCustComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private subscribers: SubscriberService,
     private aRoute: ActivatedRoute,
+    private stbm :StbmanagementService,
     private modal: NgbModal,) {
     this.submit = false;
   }
@@ -468,7 +470,7 @@ export class AddCustComponent implements OnInit {
 
   }
   async getbox() {
-    this.getboxlist = await this.subscribers.getbox({ hdid: this.AddCustForm.value['hdid'] })
+    this.getboxlist = await this.stbm.getbox({ hdid: this.AddCustForm.value['hdid'] , pairstatus : 0 , userid : this.AddCustForm.value['userid']})
     console.log('getbox', this.getboxlist)
   }
   async getboxedit() {

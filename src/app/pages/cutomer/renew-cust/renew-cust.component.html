@@ -15,14 +15,6 @@
       <div class="row">
 
         <div class="col-sm-4">
-      <!-- <label>Select STB Number<span style="color: red">*</span></label>
-          <auto-completen 
-            addclass="form-control" optValues="boxno"  (keyUp)="getbox()"  name="stb_no"   [(ngModel)]='stb_no' formControlName ="stb_no" (changed)="getpack() "
-            placeholder="Select STB Number" optId="boxid" [item]="getboxlist">
-          </auto-completen>  -->
-
-
-         
             <label>Select STB Number<span style="color: red">*</span></label>
             <auto-completen [addclass]="{error: submit && this.RenewForm.controls.stb_no.errors}"
               addclass="form-control" optValues="boxno" formControlName="stb_no" (keyUp)="getbox()" (changed)="getpack()"
@@ -34,23 +26,6 @@
             STB Number is required!
           </div>
           </div>
-       
-
-         <!-- <select (change)='getpack()' name="stb_no"  
-            [(ngModel)]='stb_no' class="form-control">
-            <option value="">Select STB Number</option>
-            <option *ngFor="let item of getboxlist" [value]=item.boxid>{{item.boxno}}</option>
-          </select> -->
-
-
-        <!-- <div class="col-sm-3">
-          <label>Select STB Number<span style="color: red">*</span></label>
-          <auto-completen optValues="boxno" name="stb_no" [(ngModel)]="stb_no" (keyUp)="getbox()" (changed)="getpack()"
-            placeholder="Select BOX No" optId="boxid" [item]="getboxlist">
-          </auto-completen>
-        </div> -->
-
-
         <div class="col-sm-4">
           <label>Renewal Type</label>
           <select autofocus #input class="form-control" name="renewal_type" formControlName="renewal_type">
@@ -73,7 +48,7 @@
     <div class="row">
       <div class="col-sm-6">
         <label class="left">
-          <h5>Lco Balance : {{ data.deposit_amt | number : "1.0-2" }}</h5>
+          <h5>Lco Balance : {{ displaybalance | number : "1.0-2" }}</h5>
         </label>
       </div>
     </div>
@@ -106,7 +81,7 @@
             <td class="text-center">
               <label class="container">
                 <input [disabled]="baseBackAct" (change)="disablePackage()" type="radio" name="sizecb"
-                  [value]="item.pack_id" [(ngModel)]="baseBack" />
+                  [value]="item.packid" [(ngModel)]="baseBack" />
                 <span class="checkmark" [ngStyle]="{ opacity: baseBackAct == 1 ? '0.6' : '' }"></span>
               </label>
             </td>
@@ -116,7 +91,7 @@
             <td >
               <div >
                 <!-- <input [disabled]="baseBackAct" class="form-control" [(ngModel)]="item.quantity" type="number" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"> -->
-                <select [disabled]="baseBackAct" class="form-control" [(ngModel)]="item.r_price" placeholder="Quantity"
+                <select [disabled]="baseBackAct" class="form-control" [(ngModel)]="item.quantity" placeholder="Quantity"
                   style="width: 80px; height: 25px; padding: 1px"
                   (change)="selectThisMonth(item, item.unit_type, item.day)">
                   <!-- <option value=" ">QTY</option> -->
@@ -135,7 +110,7 @@
                 </select>
               </div>
             </td>
-            <td>{{ item.mprice * (item.r_price || 0) }}</td>
+            <td>{{ item.r_price * (item.quantity || 0) }}</td>
             <td>
               {{
               item.expiry_date || (item.unit_type == 1 ? day : months)
@@ -155,7 +130,7 @@
     <table class="table table-header table-bordered table-striped">
       <thead>
         <th colspan="5">
-          <input placeholder="Search Bouquet Here" class="form-control" [(ngModel)]="searchaddon" style="
+          <input placeholder="Search ADD ON PACK Here" class="form-control" [(ngModel)]="searchaddon" style="
               width: 30%;
               border: none;
               border-bottom: 2px solid;
@@ -184,10 +159,10 @@
           " style="text-transform: uppercase">
           <td class="text-center">
             <label class="containerbox">
-              <input [disabled]="item.active_pack == 1 || item.bandleFlg" type="checkbox" name="sizecb[]"
+              <input [disabled]="item.pack_status == 1 || item.bandleFlg" type="checkbox" name="sizecb[]"
                 [(ngModel)]="item.state" />
               <span class="checkmarkbox" [ngStyle]="{
-                  opacity: item.active_pack == 1 || item.bandleFlg ? '0.5' : '1'
+                  opacity: item.pack_status == 1 || item.bandleFlg ? '0.5' : '1'
                 }"></span>
             </label>
           </td>
@@ -196,11 +171,10 @@
           </td>
           <td class="ng2-smart-th ng-star-inserted">
             <div class="ng2-smart-filter ng-star-inserted">
-              <!-- <input [disabled]="item.active_pack==1||item.bandleFlg" class="form-control" [(ngModel)]="item.quantity" type="number" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"> -->
-              <select [disabled]="item.active_pack == 1 || item.bandleFlg" class="form-control"
-                [(ngModel)]="item.r_price" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"
+              <!-- <input [disabled]="item.pack_status==1||item.bandleFlg" class="form-control" [(ngModel)]="item.quantity" type="number" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"> -->
+              <select [disabled]="item.pack_status == 1 || item.bandleFlg" class="form-control"
+                [(ngModel)]="item.quantity" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"
                 (change)="selectThisMonth(item, item.unit_type, item.day)">
-                <option value="" selected>QTY</option>
                 <option [ngValue]="1">1 Month</option>
                 <option [ngValue]="2">2 Months</option>
                 <option [ngValue]="3">3 Months</option>
@@ -216,7 +190,7 @@
               </select>
             </div>
           </td>
-          <td>{{ item.mprice * (item.r_price || 0) }}</td>
+          <td>{{ item.r_price * (item.quantity || 0) }}</td>
           <td>
             {{
             item.expiry_date || (item.unit_type == 1 ? day : months)
@@ -258,21 +232,20 @@
           " style="text-transform: uppercase">
           <td class="text-center">
             <label class="containerbox">
-              <input [disabled]="item.active_pack == 1 || item.bandleFlg" type="checkbox" name="sizecb[]"
+              <input [disabled]="item.pack_status == 1 || item.bandleFlg" type="checkbox" name="sizecb[]"
                 [(ngModel)]="item.state" />
               <span [ngStyle]="{
-                  opacity: item.active_pack == 1 || item.bandleFlg ? '0.5' : '1'
+                  opacity: item.pack_status == 1 || item.bandleFlg ? '0.5' : '1'
                 }" class="checkmarkbox"></span>
             </label>
           </td>
           <td>{{ item.packname }}</td>
           <td class="ng2-smart-th ng-star-inserted">
             <div class="ng2-smart-filter ng-star-inserted">
-              <!--  <input [disabled]="item.active_pack==1||item.bandleFlg" class="form-control" [(ngModel)]="item.quantity" type="number" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"> -->
-              <select [disabled]="item.active_pack == 1 || item.bandleFlg" class="form-control"
-                [(ngModel)]="item.r_price" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"
+              <!--  <input [disabled]="item.pack_status==1||item.bandleFlg" class="form-control" [(ngModel)]="item.quantity" type="number" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"> -->
+              <select [disabled]="item.pack_status == 1 || item.bandleFlg" class="form-control"
+                [(ngModel)]="item.quantity" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"
                 (change)="selectThisMonth(item, item.unit_type, item.day)">
-                <option value="" selected>QTY</option>
                 <option [ngValue]="1">1 Month</option>
                 <option [ngValue]="2">2 Months</option>
                 <option [ngValue]="3">3 Months</option>
@@ -288,7 +261,7 @@
               </select>
             </div>
           </td>
-          <td>{{ (item.r_price || 0) * item.mprice }}</td>
+          <td>{{ (item.quantity || 0) * item.r_price }}</td>
           <td>
             {{
             item.expiry_date || (item.unit_type == 1 ? day : months)

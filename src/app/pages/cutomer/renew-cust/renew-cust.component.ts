@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PackageService } from '../../_services';
 import { SubscriberService } from '../../_services/subscriber.service';
+import { StbmanagementService } from '../../_services/stbmanagement.service';
+import { OperatorService } from '../../_services/operator.service';
 
 const now = new Date();
 @Component({
@@ -20,8 +22,8 @@ export class RenewCustComponent implements OnInit {
   public loading = false; failpack: any = [];
   baseBack; baseBackAct = false; arr: any = []; s: any = ''; 
   submit: boolean = false; RenewForm; pack_type: any; months: any = ''; day: any = ''; getboxlist
-  package: any = []; cust_id: any = []; package_price: any = []; bpack: any = []; getbundle
-  addonpack: any = []; alacartepack: any = []; searchalcart: string; searchaddon: string;
+  package: any = []; cust_id: any = []; package_price: any = []; bpack: any = []; getbundle;balance
+  addonpack: any = []; alacartepack: any = []; searchalcart: string; searchaddon: string;displaybalance
   searchbase: string; now: Date = new Date(); data: any = []; toDate: any = ''; fdate: any = '';
   @ViewChildren('input') input: QueryList<ElementRef>;
   confirmationDialogService: any;
@@ -29,7 +31,8 @@ export class RenewCustComponent implements OnInit {
     private alert: ToasterService,
     private router: Router,
     private nasmodel: NgbModal,
-    private subscribers: SubscriberService,
+    private operatorser: OperatorService,
+    private stbm:StbmanagementService,
     private packageservices: PackageService,
 
   ) {
@@ -68,6 +71,7 @@ export class RenewCustComponent implements OnInit {
     this.getpack();
     this.operator();
     this.getbox();
+    this.getbalance();
   }
   defaultdate(result) {
 
@@ -77,16 +81,12 @@ export class RenewCustComponent implements OnInit {
     var d = new Date(year, month, 0).getDate();
     var newexpdate = new Date();
     var newexpdates = new Date();
-
-    console.log('ssfdffggg')
-
-
     this.months = newexpdate.setDate(this.now.getDate() + d);
-    // console.log(this.months)
+  //  console.log("month@@@@@@@",this.months)
     for (var i = 0; i < result.length; i++) {
-      console.log(result[i].day)
+     // console.log(result[i].day)
       this.s = result[i].day
-      // console.log(this.day)
+   //   console.log("day@@@@@",this.day)
     }
     this.day = newexpdates.setDate(this.now.getDate() + (this.s));
 
@@ -95,16 +95,15 @@ export class RenewCustComponent implements OnInit {
 
 
   async getbox() {
-    this.getboxlist = await this.subscribers.getbox({ hdid: this.cust_id['hdid'] })
+    this.getboxlist = await this.stbm.getbox({ hdid: this.cust_id['hdid'] ,  custid :this.cust_id['cust_id'],})
     console.log('getbox', this.getboxlist)
   }
 
   selectThisMonth(item, unit, day) {
-    console.log(day)
     let year = now.getFullYear();
     let month = now.getMonth() + 1;
 
-    let q = month + item.r_price
+    let q = month + item.quantity
     this.toDate = new Date(year, month, 0).getDate()
     const arr = []
     for (var i = month; i < q; i++) {
@@ -123,6 +122,16 @@ export class RenewCustComponent implements OnInit {
     }
   }
 
+
+
+ async getbalance(){
+this.balance = await this.operatorser.getuser({ userid:this.cust_id['resellerid'] })
+
+this.displaybalance =this.balance[0].depositamt;
+
+
+  }
+
   disablePackage() {
     // console.log(this.bpack.packid)
     let packId = this.bpack.find(item => item.packid == this.baseBack);
@@ -138,67 +147,58 @@ export class RenewCustComponent implements OnInit {
   }
 
   async getpack() {
-    let packagedet = await this.subscribers.listsubscriberpack(
+    let packagedet = await this.packageservices.getrenewalpack(
       {
-        resellerid: this.cust_id['resellerid'],
-        boxid: this.RenewForm.value['stb_no'],
+         resellerid: this.cust_id['resellerid'],
+         boxid: this.RenewForm.value['stb_no'],
+        custid :this.cust_id['cust_id'],
       })
 
     // packagedet = result1
     console.log("package list ", packagedet)
-    // if (packagedet) {
+    if (packagedet) {
 
-    //   this.package = packagedet;
-    //   this.defaultdate(packagedet);
+      this.package = packagedet;
+      this.defaultdate(packagedet);
 
-    //    console.log('packkkkkk',packagedet)
-    //   this.bpack = this.package.filter(item => { if (item.packtype == 1 || item.packtype == 3) { item.r_price = 1; return item; } });
-    //   if (this.bpack.find(item => item.active_pack == 1)) {
-    //     this.baseBack = this.bpack.find(item => item.active_pack == 1).packid;
-    //   }
-    //  console.log(this.baseBack)
+       console.log('packkkkkk',packagedet)
+      this.bpack = this.package.filter(item => { if (item.packtype == 0 || item.packtype == 3) { item.quantity = 1; return item; } });
+      if (this.bpack.find(item => item.pack_status == 1)) {
+        this.baseBack = this.bpack.find(item => item.pack_status == 1).packid;
+      }
+     console.log(this.baseBack)
 
-    //   this.baseBackAct = this.baseBack ? true : false;
+      this.baseBackAct = this.baseBack ? true : false;
 
-    //   this.addonpack = this.package.filter(item => {
-    //     if (item.packtype == 1) {
-    //       item.state = item.active_pack == 1
-    //       item.r_price = 1;
-    //       return item;
-    //     }
+      this.addonpack = this.package.filter(item => {
+        if (item.packtype == 2) {
+          item.state = item.pack_status == 1
+          item.quantity = 1;
+          return item;
+        }
 
-    //   });
-    //   console.log(this.addonpack);
-    //   this.alacartepack = this.package.filter(item => {
-    //     if (item.packtype == 0) {
-    //       item.state = item.active_pack == 1;
-    //       item.r_price = 1;
-    //       return item;
-    //     }
-    //   });
-    //   console.log(this.alacartepack)
-    // }
+      });
+      console.log(this.addonpack);
 
-    this.getbundle = packagedet[0];
-    if (this.getbundle) {
-      this.package = this.getbundle;
-      this.bpack = this.package.filter((item) => item.packtype == 0);
-      console.log("packtype bpack", this.bpack);
-      this.addonpack = this.package.filter((item) => item.packtype == 2);
-      console.log("packtype addonpack", this.addonpack);
-      this.alacartepack = this.package.filter((item) => item.packtype == 1);
-      console.log("packtype alacartepack", this.alacartepack);
+
+      
+      this.alacartepack = this.package.filter(item => {
+        if (item.packtype == 1) {
+          item.state = item.pack_status == 1;
+          item.quantity = 1;
+          return item;
+        }
+      });
+      console.log(this.alacartepack)
     }
-    console.log("get bundle data********", this.getbundle);
     this.disablePackage();
-
   }
 
   checkaddonpack(checked) {
-    this.addonpack.forEach((x) => (x.state = checked));
+    this.addonpack.forEach(x => { if (x.pack_status != 1) x.state = checked })
   }
   checkalcartepack(checked) {
-    this.alacartepack.forEach((x) => (x.state = checked));
+    this.alacartepack.forEach(x => { if (x.pack_status != 1) x.state = checked })
   }
 
 
@@ -208,7 +208,6 @@ export class RenewCustComponent implements OnInit {
     //   this.pack.getpackprice({ cust_id: this.cust_id['cust_id'], packid: val }).subscribe(result => {
     //     if (result) {
     //       this.package_price = result;
-    //       // console.log(this.package_price)
     //     }
     //   });
     // }
@@ -298,6 +297,14 @@ export class RenewCustComponent implements OnInit {
       })
 
   }
+
+
+
+
+
+
+
+
 
   disablepack(item) {
     // console.log('adsgffghfh')
