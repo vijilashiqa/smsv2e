@@ -82,7 +82,7 @@ export class PackagemanagComponent implements OnInit {
 
   async amount() {
     this.valamount = this.package;
-    this.amountv = Number(this.getpackagelist.filter(x => x.packid == this.valamount).map(x => x.amt).join(''));
+    this.amountv = Number(this.getpackagelist.filter(x => x.packid == this.valamount).map(x => x.bcamt).join(''));
   }
 
 
@@ -166,7 +166,7 @@ export class PackagemanagComponent implements OnInit {
       mso_share: [mso_share],
       sub_dist_share: [{ value: sub_dist_share, disabled: subdistid == 0 ? true : null }],
       reseller_share: [reseller_share],
-      mso_price: [amountv]
+      r_price: [amountv]
     }
     );
 

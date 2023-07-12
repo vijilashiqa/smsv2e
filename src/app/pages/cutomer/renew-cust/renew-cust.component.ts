@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PackageService } from '../../_services';
+import { SubscriberService } from '../../_services/subscriber.service';
 
 const now = new Date();
 @Component({
@@ -17,9 +18,9 @@ export class RenewCustComponent implements OnInit {
   public primaryColour = '#dd0031';
   public secondaryColour = '#006ddd';
   public loading = false; failpack: any = [];
-  baseBack; baseBackAct = false; arr: any = []; s: any = '';
-  submit: boolean = false; RenewForm; pack_type: any; months: any = ''; day: any = '';
-  package: any = []; cust_id: any = []; package_price: any = []; bpack: any = [];getbundle
+  baseBack; baseBackAct = false; arr: any = []; s: any = ''; 
+  submit: boolean = false; RenewForm; pack_type: any; months: any = ''; day: any = ''; getboxlist
+  package: any = []; cust_id: any = []; package_price: any = []; bpack: any = []; getbundle
   addonpack: any = []; alacartepack: any = []; searchalcart: string; searchaddon: string;
   searchbase: string; now: Date = new Date(); data: any = []; toDate: any = ''; fdate: any = '';
   @ViewChildren('input') input: QueryList<ElementRef>;
@@ -28,7 +29,7 @@ export class RenewCustComponent implements OnInit {
     private alert: ToasterService,
     private router: Router,
     private nasmodel: NgbModal,
-    //  private user: userService,
+    private subscribers: SubscriberService,
     private packageservices: PackageService,
 
   ) {
@@ -66,21 +67,8 @@ export class RenewCustComponent implements OnInit {
     this.createForm();
     this.getpack();
     this.operator();
+    this.getbox();
   }
-
-
-  //   calculateExpiryDate(qty = 0, price = 0,unit) {
-  //     var newexpdate = new Date(), pr;
-  //     // if(unit==1){
-  //     newexpdate.setDate(this.now.getDate() (qty*30) ;
-  //   // }
-  //   if(unit==2){
-  //     newexpdate.setDate(this.now.getDate() + this.toDate);
-  //   }
-  //     price *= qty
-  // this.selectThisMonth(qty)
-  //     return { expdate: newexpdate, price: price };
-  //   }
   defaultdate(result) {
 
     // console.log('qwerty')
@@ -105,12 +93,18 @@ export class RenewCustComponent implements OnInit {
 
   }
 
+
+  async getbox() {
+    this.getboxlist = await this.subscribers.getbox({ hdid: this.cust_id['hdid'] })
+    console.log('getbox', this.getboxlist)
+  }
+
   selectThisMonth(item, unit, day) {
     console.log(day)
     let year = now.getFullYear();
     let month = now.getMonth() + 1;
 
-    let q = month + item.quantity
+    let q = month + item.r_price
     this.toDate = new Date(year, month, 0).getDate()
     const arr = []
     for (var i = month; i < q; i++) {
@@ -125,7 +119,7 @@ export class RenewCustComponent implements OnInit {
       item.expiry_date = newexpdate.setDate(this.now.getDate() + d);
     }
     if (unit == 1) {
-      item.expiry_date = newexpdates.setDate(this.now.getDate() + (item.quantity * day));
+      item.expiry_date = newexpdates.setDate(this.now.getDate() + (item.r_price * day));
     }
   }
 
@@ -143,71 +137,69 @@ export class RenewCustComponent implements OnInit {
     }
   }
 
- async getpack() {
-   let packagedet=await this.packageservices.listbundlepack(
+  async getpack() {
+    let packagedet = await this.subscribers.listsubscriberpack(
       {
-        // user_type: this.cust_id['usertype'],
-        // pack_type: this.pack_type,
-        hdid: this.cust_id['hdid'],
-        // branch: this.cust_id['branch'],
-        // cust_id: this.cust_id['cust_id']
+        resellerid: this.cust_id['resellerid'],
+        boxid: this.RenewForm.value['stb_no'],
       })
-      
+
     // packagedet = result1
-      console.log("package list ",packagedet)
-        // if (packagedet) {
+    console.log("package list ", packagedet)
+    // if (packagedet) {
 
-        //   this.package = packagedet;
-        //   this.defaultdate(packagedet);
+    //   this.package = packagedet;
+    //   this.defaultdate(packagedet);
 
-        //    // console.log('packkkkkk',this.package)
-        //   this.bpack = this.package.filter(item => { if (item.a_la_cart == 0 || item.a_la_cart == 4) { item.quantity = 1; return item; } });
-        //   if (this.bpack.find(item => item.active_pack == 1)) {
-        //     this.baseBack = this.bpack.find(item => item.active_pack == 1).packid;
-        //   }
-        //   // console.log(this.baseBack)
+    //    console.log('packkkkkk',packagedet)
+    //   this.bpack = this.package.filter(item => { if (item.packtype == 1 || item.packtype == 3) { item.r_price = 1; return item; } });
+    //   if (this.bpack.find(item => item.active_pack == 1)) {
+    //     this.baseBack = this.bpack.find(item => item.active_pack == 1).packid;
+    //   }
+    //  console.log(this.baseBack)
 
-        //   this.baseBackAct = this.baseBack ? true : false;
+    //   this.baseBackAct = this.baseBack ? true : false;
 
-        //   this.addonpack = this.package.filter(item => {
-        //     if (item.a_la_cart == 2) {
-        //       item.state = item.active_pack == 1
-        //       item.quantity = 1;
-        //       return item;
-        //     }
+    //   this.addonpack = this.package.filter(item => {
+    //     if (item.packtype == 1) {
+    //       item.state = item.active_pack == 1
+    //       item.r_price = 1;
+    //       return item;
+    //     }
 
-        //   });
-        //   // console.log(this.addonpack);
-        //   this.alacartepack = this.package.filter(item => {
-        //     if (item.a_la_cart == 1) {
-        //       item.state = item.active_pack == 1;
-        //       item.quantity = 1;
-        //       return item;
-        //     }
-        //   });
-        //   // console.log(this.alacartepack)
-        // }
+    //   });
+    //   console.log(this.addonpack);
+    //   this.alacartepack = this.package.filter(item => {
+    //     if (item.packtype == 0) {
+    //       item.state = item.active_pack == 1;
+    //       item.r_price = 1;
+    //       return item;
+    //     }
+    //   });
+    //   console.log(this.alacartepack)
+    // }
 
-        this.getbundle = packagedet[0];
-        if (this.getbundle) {
-          this.package = this.getbundle;
-          this.bpack = this.package.filter((item) => item.packtype == 0);
-          console.log("packtype bpack", this.bpack);
-          this.addonpack = this.package.filter((item) => item.packtype == 2);
-          console.log("packtype addonpack", this.addonpack);
-          this.alacartepack = this.package.filter((item) => item.packtype == 1);
-          console.log("packtype alacartepack", this.alacartepack);
-        }
-        console.log("get bundle data********", this.getbundle);
-        this.disablePackage();
-    
+    this.getbundle = packagedet[0];
+    if (this.getbundle) {
+      this.package = this.getbundle;
+      this.bpack = this.package.filter((item) => item.packtype == 0);
+      console.log("packtype bpack", this.bpack);
+      this.addonpack = this.package.filter((item) => item.packtype == 2);
+      console.log("packtype addonpack", this.addonpack);
+      this.alacartepack = this.package.filter((item) => item.packtype == 1);
+      console.log("packtype alacartepack", this.alacartepack);
+    }
+    console.log("get bundle data********", this.getbundle);
+    this.disablePackage();
+
   }
 
   checkaddonpack(checked) {
     this.addonpack.forEach((x) => (x.state = checked));
   }
   checkalcartepack(checked) {
-    this.alacartepack.forEach((x) => (x.state = checked));  }
+    this.alacartepack.forEach((x) => (x.state = checked));
+  }
 
 
   getpackprice() {
@@ -226,8 +218,8 @@ export class RenewCustComponent implements OnInit {
     let checkaddonpack = this.addonpack.filter(item => item.state && item.active_pack != 1 && !item.bandleFlg).map(item => {
       return {
         package: item.packid,
-        quantity: item.quantity || 0,
-        alacart: item.a_la_cart,
+        r_price: item.r_price || 0,
+        alacart: item.packtype,
         vc_no: this.cust_id['vc_no'],
         cust_id: this.cust_id['cust_id'],
         renewal: 1,
@@ -240,8 +232,8 @@ export class RenewCustComponent implements OnInit {
       checkalacatepack = this.alacartepack.filter(item => item.state && item.active_pack != 1 && !item.bandleFlg).map(item => {
         return {
           package: item.packid,
-          quantity: item.quantity || 0,
-          alacart: item.a_la_cart,
+          r_price: item.r_price || 0,
+          alacart: item.packtype,
           vc_no: this.cust_id['vc_no'],
           cust_id: this.cust_id['cust_id'],
           renewal: 1,
@@ -270,8 +262,8 @@ export class RenewCustComponent implements OnInit {
             if (bpack) {
               renewal['package'].push({
                 package: bpack.packid,
-                quantity: bpack.quantity || 0,
-                alacart: bpack.a_la_cart,
+                r_price: bpack.r_price || 0,
+                alacart: bpack.packtype,
                 vc_no: this.cust_id['vc_no'],
                 cust_id: this.cust_id['cust_id'],
                 renewal: 1,
@@ -327,13 +319,14 @@ export class RenewCustComponent implements OnInit {
     this.RenewForm = new FormGroup({
       renewal_type: new FormControl(1),
       schedule: new FormControl(''),
+      stb_no :new FormControl('')
     });
   }
 
   balValidation(total = 0, packages = []) {
     let status = true;
     for (let item of packages) {
-      total -= this.taxcharge(item.quantity, item.mso_price, item.cust_price, item.tax_type, item.lco_share);
+      total -= this.taxcharge(item.r_price, item.mso_price, item.cust_price, item.tax_type, item.lco_share);
       // if (total < 0) {
       //   status = false;
       // }

@@ -41,6 +41,10 @@ export class SubscriberService {
   async listsurrender(params) {
     return await this.http.post("/subscriber/listsurrendersubscriber", params).toPromise();
   }
+  async listsubscriberpack(params) {
+    return await this.http.post("/subscriber/listsubscriberpack", params).toPromise();
+  }
+
 
 
 }

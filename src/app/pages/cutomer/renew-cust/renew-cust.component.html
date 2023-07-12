@@ -13,6 +13,44 @@
   <nb-card-body>
     <form [formGroup]="RenewForm" class="form-horizontal" (ngSubmit)="renewval()">
       <div class="row">
+
+        <div class="col-sm-4">
+      <!-- <label>Select STB Number<span style="color: red">*</span></label>
+          <auto-completen 
+            addclass="form-control" optValues="boxno"  (keyUp)="getbox()"  name="stb_no"   [(ngModel)]='stb_no' formControlName ="stb_no" (changed)="getpack() "
+            placeholder="Select STB Number" optId="boxid" [item]="getboxlist">
+          </auto-completen>  -->
+
+
+         
+            <label>Select STB Number<span style="color: red">*</span></label>
+            <auto-completen [addclass]="{error: submit && this.RenewForm.controls.stb_no.errors}"
+              addclass="form-control" optValues="boxno" formControlName="stb_no" (keyUp)="getbox()" (changed)="getpack()"
+              placeholder="Select STB Number" optId="boxid" [item]="getboxlist">
+            </auto-completen>
+            <div
+            *ngIf="this.RenewForm.controls.stb_no.errors && this.RenewForm.controls.stb_no.errors.required && submit  "
+            class="error-text">
+            STB Number is required!
+          </div>
+          </div>
+       
+
+         <!-- <select (change)='getpack()' name="stb_no"  
+            [(ngModel)]='stb_no' class="form-control">
+            <option value="">Select STB Number</option>
+            <option *ngFor="let item of getboxlist" [value]=item.boxid>{{item.boxno}}</option>
+          </select> -->
+
+
+        <!-- <div class="col-sm-3">
+          <label>Select STB Number<span style="color: red">*</span></label>
+          <auto-completen optValues="boxno" name="stb_no" [(ngModel)]="stb_no" (keyUp)="getbox()" (changed)="getpack()"
+            placeholder="Select BOX No" optId="boxid" [item]="getboxlist">
+          </auto-completen>
+        </div> -->
+
+
         <div class="col-sm-4">
           <label>Renewal Type</label>
           <select autofocus #input class="form-control" name="renewal_type" formControlName="renewal_type">
@@ -75,13 +113,13 @@
             <td>
               <a (click)="channels(item)">{{ item.packname }}</a>
             </td>
-            <td class="ng2-smart-th ng-star-inserted">
-              <div class="ng2-smart-filter ng-star-inserted">
+            <td >
+              <div >
                 <!-- <input [disabled]="baseBackAct" class="form-control" [(ngModel)]="item.quantity" type="number" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"> -->
-                <select [disabled]="baseBackAct" class="form-control" [(ngModel)]="item.quantity" placeholder="Quantity"
+                <select [disabled]="baseBackAct" class="form-control" [(ngModel)]="item.r_price" placeholder="Quantity"
                   style="width: 80px; height: 25px; padding: 1px"
                   (change)="selectThisMonth(item, item.unit_type, item.day)">
-                  <selected value="">QTY</selected>
+                  <!-- <option value=" ">QTY</option> -->
                   <option [ngValue]="1">1 Month</option>
                   <option [ngValue]="2">2 Months</option>
                   <option [ngValue]="3">3 Months</option>
@@ -97,7 +135,7 @@
                 </select>
               </div>
             </td>
-            <td>{{ item.mprice * (item.quantity || 0) }}</td>
+            <td>{{ item.mprice * (item.r_price || 0) }}</td>
             <td>
               {{
               item.expiry_date || (item.unit_type == 1 ? day : months)
@@ -160,7 +198,7 @@
             <div class="ng2-smart-filter ng-star-inserted">
               <!-- <input [disabled]="item.active_pack==1||item.bandleFlg" class="form-control" [(ngModel)]="item.quantity" type="number" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"> -->
               <select [disabled]="item.active_pack == 1 || item.bandleFlg" class="form-control"
-                [(ngModel)]="item.quantity" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"
+                [(ngModel)]="item.r_price" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"
                 (change)="selectThisMonth(item, item.unit_type, item.day)">
                 <option value="" selected>QTY</option>
                 <option [ngValue]="1">1 Month</option>
@@ -178,7 +216,7 @@
               </select>
             </div>
           </td>
-          <td>{{ item.mprice * (item.quantity || 0) }}</td>
+          <td>{{ item.mprice * (item.r_price || 0) }}</td>
           <td>
             {{
             item.expiry_date || (item.unit_type == 1 ? day : months)
@@ -232,7 +270,7 @@
             <div class="ng2-smart-filter ng-star-inserted">
               <!--  <input [disabled]="item.active_pack==1||item.bandleFlg" class="form-control" [(ngModel)]="item.quantity" type="number" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"> -->
               <select [disabled]="item.active_pack == 1 || item.bandleFlg" class="form-control"
-                [(ngModel)]="item.quantity" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"
+                [(ngModel)]="item.r_price" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"
                 (change)="selectThisMonth(item, item.unit_type, item.day)">
                 <option value="" selected>QTY</option>
                 <option [ngValue]="1">1 Month</option>
@@ -250,7 +288,7 @@
               </select>
             </div>
           </td>
-          <td>{{ (item.quantity || 0) * item.mprice }}</td>
+          <td>{{ (item.r_price || 0) * item.mprice }}</td>
           <td>
             {{
             item.expiry_date || (item.unit_type == 1 ? day : months)
