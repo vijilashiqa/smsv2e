@@ -83,7 +83,7 @@
                 item.packtype == 0 ? "BasePackage" : item.packtype == 1 ? "ALaCarte": item.packtype == 2 ? "AddOn Pack": item.packtype == 3 ? "Bundle Pack": "-"
                 }}
               </td>
-              <td style="cursor: pointer" (click)="packshare(i)">
+              <td style="cursor: pointer">
                 <i [ngClass]="{
                     'fa-caret-down': index != i,
                     fas: true,

@@ -30,6 +30,7 @@ import { EditCustComponent } from './edit-cust/edit-cust.component';
 import { ViewCustComponent } from './view-cust/view-cust.component';
 import { RenewCustComponent } from './renew-cust/renew-cust.component';
 import { SurrenderComponent } from './surrender/surrender.component';
+import { RenewalchannelComponent } from './renewalchannel/renewalchannel.component';
 @NgModule({
   declarations: [
     AddCustComponent,
@@ -39,7 +40,8 @@ import { SurrenderComponent } from './surrender/surrender.component';
     EditCustComponent,
     ViewCustComponent,
     RenewCustComponent,
-    SurrenderComponent
+    SurrenderComponent,
+    RenewalchannelComponent
   ],
   imports: [
     CommonModule,

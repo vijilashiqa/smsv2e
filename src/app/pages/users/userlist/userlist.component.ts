@@ -23,15 +23,15 @@ export class UserlistComponent implements OnInit {
     private operator: OperatorService,
     public role: RoleservicesService,
     private headends: HeadendService
-  ) {}
+  ) { }
 
   async ngOnInit() {
-   await this.initiallist();
-   if (this.role.getroleid() > 777 ) {
-    this.getHeadend();
+    await this.initiallist();
+    if (this.role.getroleid() > 777) {
+      this.getHeadend();
     } else {
-      this.headend = JSON.parse(localStorage.getItem('userinfo'))['hdid']; 
-       }
+      this.headend = JSON.parse(localStorage.getItem('userinfo'))['hdid'];
+    }
   }
   async initiallist() {
     this.loading = true;
@@ -44,6 +44,7 @@ export class UserlistComponent implements OnInit {
       id: this.profileid
     });
     this.data = this.listoperator[0];
+    console.log("user list ", this.data)
     this.count = this.listoperator[1].count;
     this.loading = false;
     this.setPage();
@@ -98,7 +99,7 @@ export class UserlistComponent implements OnInit {
         let parm = {};
         parm['Operator Type'] = temp[i]['rolename'];
         parm['Operator Name'] = temp[i]['fullname'];
-       parm['Business Name'] = temp[i]['business_name'];
+        parm['Business Name'] = temp[i]['business_name'];
         parm['Mobile Number'] = temp[i]['mobile'];
         parm['Email ID'] = temp[i]['email1'];
         tempdata[i] = parm;

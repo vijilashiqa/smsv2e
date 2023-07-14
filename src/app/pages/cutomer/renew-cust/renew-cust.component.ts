@@ -8,6 +8,8 @@ import { PackageService } from '../../_services';
 import { SubscriberService } from '../../_services/subscriber.service';
 import { StbmanagementService } from '../../_services/stbmanagement.service';
 import { OperatorService } from '../../_services/operator.service';
+import { PackagechannelComponent } from '../../channelcategory/packagechannel/packagechannel.component';
+import { RenewalchannelComponent } from '../renewalchannel/renewalchannel.component';
 
 const now = new Date();
 @Component({
@@ -20,10 +22,10 @@ export class RenewCustComponent implements OnInit {
   public primaryColour = '#dd0031';
   public secondaryColour = '#006ddd';
   public loading = false; failpack: any = [];
-  baseBack; baseBackAct = false; arr: any = []; s: any = ''; 
-  submit: boolean = false; RenewForm; pack_type: any; months: any = ''; day: any = ''; getboxlist
-  package: any = []; cust_id: any = []; package_price: any = []; bpack: any = []; getbundle;balance
-  addonpack: any = []; alacartepack: any = []; searchalcart: string; searchaddon: string;displaybalance
+  baseBack; baseBackAct = false; arr: any = []; s: any = ''; packId
+  submit: boolean = false; RenewForm; pack_type: any; months: any = ''; day: any = ''; getboxlist; bundledet; displaydata;diss
+  package: any = []; cust_id: any = []; package_price: any = []; bpack: any = []; getbundle; balance; packagedet; displaydata1 = false
+  addonpack: any = []; alacartepack: any = []; searchalcart: string; searchaddon: string; displaybalance; getdata
   searchbase: string; now: Date = new Date(); data: any = []; toDate: any = ''; fdate: any = '';
   @ViewChildren('input') input: QueryList<ElementRef>;
   confirmationDialogService: any;
@@ -32,7 +34,8 @@ export class RenewCustComponent implements OnInit {
     private router: Router,
     private nasmodel: NgbModal,
     private operatorser: OperatorService,
-    private stbm:StbmanagementService,
+    private stbm: StbmanagementService,
+    private modal: NgbModal,
     private packageservices: PackageService,
 
   ) {
@@ -72,6 +75,7 @@ export class RenewCustComponent implements OnInit {
     this.operator();
     this.getbox();
     this.getbalance();
+    // this.getbundlep();
   }
   defaultdate(result) {
 
@@ -82,11 +86,11 @@ export class RenewCustComponent implements OnInit {
     var newexpdate = new Date();
     var newexpdates = new Date();
     this.months = newexpdate.setDate(this.now.getDate() + d);
-  //  console.log("month@@@@@@@",this.months)
+    //  console.log("month@@@@@@@",this.months)
     for (var i = 0; i < result.length; i++) {
-     // console.log(result[i].day)
+      // console.log(result[i].day)
       this.s = result[i].day
-   //   console.log("day@@@@@",this.day)
+      //   console.log("day@@@@@",this.day)
     }
     this.day = newexpdates.setDate(this.now.getDate() + (this.s));
 
@@ -95,7 +99,7 @@ export class RenewCustComponent implements OnInit {
 
 
   async getbox() {
-    this.getboxlist = await this.stbm.getbox({ hdid: this.cust_id['hdid'] ,  custid :this.cust_id['cust_id'],})
+    this.getboxlist = await this.stbm.getbox({ hdid: this.cust_id['hdid'], custid: this.cust_id['cust_id'], })
     console.log('getbox', this.getboxlist)
   }
 
@@ -124,51 +128,43 @@ export class RenewCustComponent implements OnInit {
 
 
 
- async getbalance(){
-this.balance = await this.operatorser.getuser({ userid:this.cust_id['resellerid'] })
-
-this.displaybalance =this.balance[0].depositamt;
-
-
+  async getbalance() {
+    this.balance = await this.operatorser.getuser({ userid: this.cust_id['resellerid'] })
+    this.displaybalance = this.balance[0].depositamt;
   }
 
-  disablePackage() {
-    // console.log(this.bpack.packid)
-    let packId = this.bpack.find(item => item.packid == this.baseBack);
-    packId = packId ? packId.bundle_pack : null;
-    // console.log(packId)
-    if (packId) {
-      packId = JSON.parse(packId);
-      this.addonpack.filter(item => { if (item.active_pack != 1 && packId.includes(item.packid)) { item.state = true; item.bandleFlg = true; } });
-      this.alacartepack.filter(item => { if (item.active_pack != 1 && packId.includes(item.packid)) { item.state = true; item.bandleFlg = true; } });
-      // console.log(this.addonpack)
-      // console.log(this.alacartepack)
-    }
-  }
+
 
   async getpack() {
-    let packagedet = await this.packageservices.getrenewalpack(
+    this.packagedet = await this.packageservices.getrenewalpack(
       {
-         resellerid: this.cust_id['resellerid'],
-         boxid: this.RenewForm.value['stb_no'],
-        custid :this.cust_id['cust_id'],
+        resellerid: this.cust_id['resellerid'],
+        boxid: this.RenewForm.value['stb_no'],
+        custid: this.cust_id['cust_id'],
       })
 
     // packagedet = result1
-    console.log("package list ", packagedet)
-    if (packagedet) {
+    console.log("package list ", this.packagedet)
+    if (this.packagedet) {
 
-      this.package = packagedet;
-      this.defaultdate(packagedet);
+      this.package = this.packagedet;
+      this.defaultdate(this.packagedet);
 
-       console.log('packkkkkk',packagedet)
+      console.log('packkkkkk', this.packagedet)
       this.bpack = this.package.filter(item => { if (item.packtype == 0 || item.packtype == 3) { item.quantity = 1; return item; } });
+      
+      
       if (this.bpack.find(item => item.pack_status == 1)) {
         this.baseBack = this.bpack.find(item => item.pack_status == 1).packid;
       }
-     console.log(this.baseBack)
+      console.log("@@@@@@@@@@@@@@@@@@@222222222", this.bpack)
 
-      this.baseBackAct = this.baseBack ? true : false;
+      // this.baseBack.filter(item => { if (item.pack_status != 1 && packId.includes(item.packid)) { item.state = true; item.bandleFlg = true; } });
+
+
+      this.baseBackAct = this.baseBack;
+
+      console.log("diaable the list inthe html",this.baseBackAct)
 
       this.addonpack = this.package.filter(item => {
         if (item.packtype == 2) {
@@ -181,7 +177,7 @@ this.displaybalance =this.balance[0].depositamt;
       console.log(this.addonpack);
 
 
-      
+
       this.alacartepack = this.package.filter(item => {
         if (item.packtype == 1) {
           item.state = item.pack_status == 1;
@@ -189,11 +185,22 @@ this.displaybalance =this.balance[0].depositamt;
           return item;
         }
       });
-      console.log(this.alacartepack)
+      console.log("alCARDTT@@", this.alacartepack)
     }
+
+
+    // this.getdata = this.packagedet.filter(x => x.packtype == 3).map(x => x.packid);
+
+    // console.log("pack id ^^^^^^^^^^^^^", this.getdata);
+    // this.getbundlep();
+
     this.disablePackage();
+
+
   }
 
+
+ 
   checkaddonpack(checked) {
     this.addonpack.forEach(x => { if (x.pack_status != 1) x.state = checked })
   }
@@ -213,8 +220,45 @@ this.displaybalance =this.balance[0].depositamt;
     // }
   }
 
+  // async getbundlep() {
+  //   this.bundledet = await this.packageservices.getbundlepack({ packid: this.getdata });
+  //   console.log("bundle", this.bundledet)
+
+  //   this.displaydata = this.bundledet.find(x => x.status == 1 && x.packtype == 2).packid
+
+  //   console.log("sdfsdfsadf", this.displaydata)
+
+  //   console.log("@@@@@@@@@@@@@@@@@@@", this.displaydata)
+
+  //   this.displaydata1 = this.displaydata ? true : false;
+  //  this.disablePackage()
+
+  // }
+
+
+
+  disablePackage() {
+    console.log("@@@@@@@@@@@@@@@@",this.bpack)
+    let packId = this.bpack.find(item => item.packid == this.baseBack);
+    console.log("@@@@@@@@@@@@@",packId)
+    packId = packId ? packId.bundlepack : null;
+    console.log("@@@@@@@@@@@@@ NULLs",packId)
+    if (packId) {
+      this.addonpack.filter(item => { if (item.pack_status != 1 && packId.includes(item.packid)) { item.state = true; item.bandleFlg = true; } });
+      this.alacartepack.filter(item => { if (item.pack_status != 1 && packId.includes(item.packid)) { item.state = true; item.bandleFlg = true; } });
+      console.log("add on pack",this.addonpack)
+      console.log("alA CART@@@@@",this.alacartepack)
+    }
+  }
+
+
+
   renewval() {
-    let checkaddonpack = this.addonpack.filter(item => item.state && item.active_pack != 1 && !item.bandleFlg).map(item => {
+
+
+
+
+    let checkaddonpack = this.addonpack.filter(item => item.state && item.pack_status != 1 && !item.bandleFlg).map(item => {
       return {
         package: item.packid,
         r_price: item.r_price || 0,
@@ -228,7 +272,11 @@ this.displaybalance =this.balance[0].depositamt;
         lco_share: item.lco_share
       }
     }),
-      checkalacatepack = this.alacartepack.filter(item => item.state && item.active_pack != 1 && !item.bandleFlg).map(item => {
+
+    // console.log("",addonpack),
+
+
+      checkalacatepack = this.alacartepack.filter(item => item.state && item.pack_status != 1 && !item.bandleFlg).map(item => {
         return {
           package: item.packid,
           r_price: item.r_price || 0,
@@ -243,42 +291,44 @@ this.displaybalance =this.balance[0].depositamt;
         }
       });
 
-    this.confirmationDialogService.confirm('Confirm Box', 'Please Confirm Your Request')
-      .then((confirmed) => {
-        if (confirmed == true) {
-          this.loading = true;
-          this.submit = true;
-          // console.log(confirmed,"confirmed");
+    // this.confirmationDialogService.confirm('Confirm Box', 'Please Confirm Your Request')
+    //   .then((confirmed) => {
+    //     if (confirmed == true) {
+    //       this.loading = true;
+    //       this.submit = true;
+    //       // console.log(confirmed,"confirmed");
           let form = this.RenewForm, renewal = form.value;
           // if(form.invalid){
           //   return;
           // }
 
-          renewal['package'] = [...checkaddonpack, ...checkalacatepack];
-          if (!this.baseBackAct) {
-            let bpack = this.bpack.find(item => item.packid == this.baseBack);
-            // console.log(bpack)
-            if (bpack) {
-              renewal['package'].push({
-                package: bpack.packid,
-                r_price: bpack.r_price || 0,
-                alacart: bpack.packtype,
-                vc_no: this.cust_id['vc_no'],
-                cust_id: this.cust_id['cust_id'],
-                renewal: 1,
-                cust_price: bpack.cprice,
-                mso_price: bpack.mprice,
-                tax_type: bpack.tax_type,
-                lco_share: bpack.lco_share
-              });
-            }
-          }
-          // Clone A Variable
-          let totalamt = JSON.parse(JSON.stringify(this.data.deposit_amt || 0));
+       let ress=   renewal['package'] = [...checkaddonpack, ...checkalacatepack];
 
-          if (!this.balValidation(totalamt, renewal['package'])) {
-            return;
-          }
+console.log("result",ress)
+    //       if (!this.baseBackAct) {
+    //         let bpack = this.bpack.find(item => item.packid == this.baseBack);
+    //         // console.log(bpack)
+    //         if (bpack) {
+    //           renewal['package'].push({
+    //             package: bpack.packid,
+    //             r_price: bpack.r_price || 0,
+    //             alacart: bpack.packtype,
+    //             vc_no: this.cust_id['vc_no'],
+    //             cust_id: this.cust_id['cust_id'],
+    //             renewal: 1,
+    //             cust_price: bpack.cprice,
+    //             mso_price: bpack.mprice,
+    //             tax_type: bpack.tax_type,
+    //             lco_share: bpack.lco_share
+    //           });
+    //         }
+    //       }
+          // Clone A Variable
+          // let totalamt = JSON.parse(JSON.stringify(this.data.deposit_amt || 0));
+
+          // if (!this.balValidation(totalamt, renewal['package'])) {
+          //   return;
+          // }
 
           // this.stb.bulk_renewal({ renewal: renewal['package'] }).subscribe(result => {
           //   if (result) {
@@ -293,8 +343,8 @@ this.displaybalance =this.balance[0].depositamt;
           //     this.loading = false;
           //   }
           // });
-        }
-      })
+      //   }
+      // })
 
   }
 
@@ -307,17 +357,17 @@ this.displaybalance =this.balance[0].depositamt;
 
 
   disablepack(item) {
-    // console.log('adsgffghfh')
+   console.log('adsgffghdisablepackdisablepackdisablepackfh')
     this.failpack = item.filter(item => item.Error_msg == 0).map(item => item.packid);
     this.baseBackAct = this.baseBackAct || this.bpack.find(item => this.failpack.includes(item.packid)) ? true : false;
     this.addonpack.filter(item => {
       if (this.failpack.includes(item.packid)) {
-        item.active_pack = 1;
+        item.pack_status = 1;
       }
     });
     this.alacartepack.filter(item => {
       if (this.failpack.includes(item.packid)) {
-        item.active_pack = 1;
+        item.pack_status = 1;
       }
     });
   }
@@ -326,7 +376,7 @@ this.displaybalance =this.balance[0].depositamt;
     this.RenewForm = new FormGroup({
       renewal_type: new FormControl(1),
       schedule: new FormControl(''),
-      stb_no :new FormControl('')
+      stb_no: new FormControl('')
     });
   }
 
@@ -379,12 +429,15 @@ this.displaybalance =this.balance[0].depositamt;
   }
 
   channels(item) {
-    // const activeModal = this.nasmodel.open(renewalchannel, { size: 'sm', container: 'nb-layout' });
-    // activeModal.componentInstance.modalHeader = 'Channel List';
-    // activeModal.componentInstance.item = item.packid;
+    const modalRef = this.modal.open(RenewalchannelComponent, { size: 'sm', container: 'nb-layout', backdrop: false });
+    modalRef.componentInstance.modalHeader = 'Channel List';
+    modalRef.componentInstance.item = item;
+    modalRef.result.then((data) => {
+      ;
+
+    })
+
   }
-
-
   showResult(item) {
     // const activeModal = this.nasmodel.open(renewalResult, { size: 'lg', backdrop: 'static', container: 'nb-layout' });
     // activeModal.componentInstance.modalHeader = 'Result';

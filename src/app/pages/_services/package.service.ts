@@ -36,35 +36,43 @@ export class PackageService {
   }
 
 
-  async searchpack(params){
+  async searchpack(params) {
 
-    return await this.http.post("/package/searchpack",params).toPromise();
+    return await this.http.post("/package/searchpack", params).toPromise();
   }
 
 
 
-  async getproductid(params){
+  async getproductid(params) {
 
-    return await this.http.post("/package/getproductid",params).toPromise();
+    return await this.http.post("/package/getproductid", params).toPromise();
   }
 
 
 
-  async searchpackshare(params){
+  async searchpackshare(params) {
 
-    return await this.http.post("/package/searchpackshare",params).toPromise();
+    return await this.http.post("/package/searchpackshare", params).toPromise();
   }
+
+  async searchpackshareone(params) {
+
+    return await this.http.post("/package/searchpackshareone", params).toPromise();
+  }
+
+
+  async getrenewalpack(params) {
+
+    return await this.http.post("/package/getrenewalpack", params).toPromise();
+  }
+
+
+  async getbundlepack(params) {
+
+    return await this.http.post("/package/getbundlepack", params).toPromise();
+  }
+
+
   
-  async searchpackshareone(params){
-
-    return await this.http.post("/package/searchpackshareone",params).toPromise();
-  }
-
-
-  async getrenewalpack(params){
-
-    return await this.http.post("/package/getrenewalpack",params).toPromise();
-  }
-
 
 }
