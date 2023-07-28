@@ -127,9 +127,15 @@ export class PackagemanagComponent implements OnInit {
       }
     }
     if (this.vall != 100) {
-      this.toast.warning("share not equal to 100 ")
+      this.toast.error("Share is not equal to 100 ")
     }
     this.searchpackage.value.share_details = this.searchpackage.value.share_details.filter(x => x.checked == true);
+    let data1 = this.searchpackage.value.share_details = this.searchpackage.value.share_details.filter(x => x.checked == true)
+    let data2 = data1.filter(x => x.mso_share == 0 || x.dist_share == 0 || x.sub_dist_share == 0 || x.reseller_share == 0);
+    if (data2.length !== 0) {
+      this.toast.error("All  share should  have some values ")
+    }
+
     this.searchpackage.value.hdid = this.headend;
     this.searchpackage.value.packid = this.package;
     this.result = await this.packservices.packpriceshare(this.searchpackage.value);
@@ -153,12 +159,12 @@ export class PackagemanagComponent implements OnInit {
     console.log("share @@@@@@@@@@@@@@", this.vall)
 
 
-    console.log("data from the form arrays",this.searchpackage.value["share_details"][index]["mso_share"])
+    // console.log("data from the form arrays",this.searchpackage.value["share_details"][index]["mso_share"])
     // , {
     //   validator: sumValidator(100, 'mso_share', 'dist_share', 'sub_dist_share', 'reseller_share')
     // }
-    
-   
+
+
   }
 
 
@@ -166,7 +172,7 @@ export class PackagemanagComponent implements OnInit {
 
   createReseller(dist_share, mso_share, reseller_share, sub_dist_share, distid, profileid, subdistid, id, amountv): FormGroup {
     return this._fb.group({
-      checked: [true],
+      checked: [],
       resellerid: [id],
       profileid: [profileid],
       dist_share: [{ value: dist_share, disabled: distid == 0 ? true : null }],
@@ -181,7 +187,7 @@ export class PackagemanagComponent implements OnInit {
   }
 
 
-  
+
   createForm() {
     this.searchpackage = new FormGroup({
       share_details: new FormArray([])
