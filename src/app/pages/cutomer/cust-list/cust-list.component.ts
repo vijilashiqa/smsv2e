@@ -9,6 +9,7 @@ import { SubscriberService } from '../../_services/subscriber.service';
 import { Router } from '@angular/router';
 import { OperatorService } from '../../_services/operator.service';
 import { StockService } from '../../_services/stock.service';
+import { ReportService } from '../../_services/report.service';
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 const EXCEL_EXTENSION = '.xlsx';
 @Component({
@@ -23,10 +24,10 @@ export class CustListComponent implements OnInit {
   // public loading = false;
   data; count = 0; search: boolean = false; model: any = []; head: any = [];
   pager: any = {}; page: number = 1; opt: any = []; stbdet: any = [];
-  pagedItems: any = []; locitem: any = []; branchitem: any = [];boxvc_data =[]
-  vcdet: any = []; Custform; limit: number = 25; headend = '';getpackagelist;
-  profileid = ''; loc = ''; branch = ''; op_type = ''; listhead;custid;ufirst
-  model_opt = ''; stbopt = ''; vc = ''; status = ''; to_cdate = '';loading=false;
+  pagedItems: any = []; locitem: any = []; branchitem: any = []; boxvc_data = []
+  vcdet: any = []; Custform; limit: number = 25; headend = ''; getpackagelist;
+  profileid = ''; loc = ''; branch = ''; op_type = ''; listhead; custid; ufirst
+  model_opt = ''; stbopt = ''; vc = ''; status = ''; to_cdate = ''; loading = false;
   from_date = ''; to_date = ''; head_opt = ''; address = ''; operatortypelist;
   pack: any = []; pack_type = ''; package = ''; from_cdate = ''; listvc; pair_status
   cas: any = []; castype = ''; listsubscriberl; getmodellist; getcas; listboxpair
@@ -39,9 +40,10 @@ export class CustListComponent implements OnInit {
     private subscriber: SubscriberService,
     private router: Router,
     public role: RoleservicesService,
+    private report: ReportService,
     private stock: StockService,
     private stb: StbmanagementService,
-    private packageser : PackageService
+    private packageser: PackageService
 
   ) { }
 
@@ -49,16 +51,16 @@ export class CustListComponent implements OnInit {
   ngOnInit() {
     this.initiallist();
     this.createForm();
-    if (this.role.getroleid() > 777 ) {
+    if (this.role.getroleid() > 777) {
       this.getHeadend();
-      } else {
-        this.headend = JSON.parse(localStorage.getItem('userinfo'))['hdid']; 
-         }
+    } else {
+      this.headend = JSON.parse(localStorage.getItem('userinfo'))['hdid'];
+    }
     this.getModel();
     this.GetCas();
   }
   async initiallist() {
-  this.loading=true;
+    this.loading = true;
     this.listsubscriberl = await this.subscriber.listsubscriber({
       index: (this.page - 1) * this.limit,
       limit: this.limit,
@@ -77,31 +79,31 @@ export class CustListComponent implements OnInit {
     });
     console.log('list subscriber=====', this.listsubscriberl)
     this.data = this.listsubscriberl[0];
-    console.log("data in  the list",this.data)
+    console.log("data in  the list", this.data)
     this.count = this.listsubscriberl[1].count;
-    this.loading=false;
+    this.loading = false;
     this.setPage();
 
   }
 
-async getpackage(){
- this.getpackagelist = await this.packageser.searchpack({  hdid: this.headend  , packtype :this.pack_type})
- console.log("get package ",this.getpackagelist)
-}
+  async getpackage() {
+    this.getpackagelist = await this.packageser.searchpack({ hdid: this.headend, packtype: this.pack_type })
+    console.log("get package ", this.getpackagelist)
+  }
 
   async boxparing() {
-    this.listboxpair = await this.stb.getboxpair({ hdid: this.headend })
+    this.listboxpair = await this.report.searchgetbox({ hdid: this.headend })
     console.log('listboxpair', this.listboxpair)
   }
 
   async vcparing() {
     let boxno = this.stbopt;
     console.log('listboxpair in funxction', this.listboxpair)
-     this.boxvc_data = this.listboxpair?.filter(x => x.boxid == boxno)
+    this.boxvc_data = this.listboxpair?.filter(x => x.boxid == boxno)
     console.log('stbno in aarray', boxno)
     console.log('vcid here', this.boxvc_data);
     this.pair_status = this.boxvc_data[0].pairflg;
-    console.log("pair status @@@@@",this.pair_status)
+    console.log("pair status @@@@@", this.pair_status)
     this.listvc = [];
     if (this.boxvc_data[0].vcid) {
       console.log("boxdata@@@@@@@@", this.boxvc_data[0].vcid)
@@ -113,9 +115,9 @@ async getpackage(){
         const value = { vcid: v.vcid, vcno: v.vcno }
         data.push(value)
         return data
-       
+
       }, [])
-      console.log("data",data)
+      console.log("data", data)
       this.listvc = vclist
       console.log('vclist', vclist);
     }
@@ -164,7 +166,7 @@ async getpackage(){
     this.listhead = await this.headends.getHeadend({})
     console.log(this.listhead)
   }
- 
+
   async getModel() {
     this.getmodellist = await this.stock.getstockmodel({});
   }
@@ -187,7 +189,7 @@ async getpackage(){
       act_check: new FormControl(true),
       exp_check: new FormControl(true),
       addr_check: new FormControl(true),
-      headend : new FormControl(true)
+      headend: new FormControl(true)
     });
   }
 
@@ -210,71 +212,71 @@ async getpackage(){
       }
     )
     this.data = this.listsubscriberl[0];
-         console.log("result in console",this.data)
-        if ( this.data) {
-          let tempdata = [], temp: any =  this.data;
-          for (var i = 0; i < temp.length; i++) {
-            let parm = {};
-            if (this.Custform.value['optname_check']) {
-              parm['Operator Name'] = temp[i]['usertype'] == 444 ? 'LCO ' : temp[i]['usertype'] == 666 ? 'Distributor' :temp[i]['usertype'] == 555 ? 'Sub-Distributor' : 'Hotel'  ;
-            }
-            if (this.Custform.value['custid_check']) {
-              parm['Customer ID'] = temp[i]['custid'];
-            }
-            if (this.Custform.value['subname_check']) {
-              parm['Subscriber Name'] = temp[i]['fullname'] ;
-            }
-            if (this.Custform.value['addr_check']) {
-              parm['Address'] = temp[i]['installation_addr'];
-            }
-            if (this.Custform.value['caf_check']) {
-              parm['CAF Number'] = temp[i]['cafno'];
-            }
-            if (this.Custform.value['status_check']) {
-              parm['Status'] = temp[i]['purchase_flg'] == 1 ? 'Active' : 'Inactive';
-            }
-            if (this.Custform.value['cas_check']) {
-              parm['STB Type'] = temp[i]['model_name'];
-            }
-            if (this.Custform.value['stb_check']) {
-              parm['STB Number'] = temp[i]['boxno'] + '';
-            }
-            if (this.Custform.value['vc_check']) {
-              parm['VC Number'] = temp[i]['vc_no'] + '';
-
-            }
-
-            parm['Pack type'] = temp[i]['a_la_cart'] == 0 ? 'BasePack' : temp[i]['a_la_cart'] == 4 ? 'Bouquet' : 'N/A';
-
-            parm['Pack Name '] = temp[i]['pack_name'];
-
-            if (this.Custform.value['loc_check']) {
-              parm['Location'] = temp[i]['loc_name'];
-            }
-            if (this.Custform.value['mob_check']) {
-              parm['Mobile'] = temp[i]['mobile'] ? temp[i]['mobile'] + '' : '';
-            }
-            if (this.Custform.value['act_check']) {
-              parm['Activate Date'] = temp[i]['active_date'] ? temp[i]['active_date'].substring(0, 10) : '';
-            }
-            if (this.Custform.value['exp_check']) {
-              parm['Expiry Date'] = temp[i]['expiry_date'] ? temp[i]['expiry_date'].substring(0, 10) : '';
-            }
-            tempdata[i] = parm;
-          }
-          const worksheet: JSXLSX.WorkSheet = JSXLSX.utils.json_to_sheet(tempdata);
-          const wb: JSXLSX.WorkBook = JSXLSX.utils.book_new();
-          JSXLSX.utils.book_append_sheet(wb, worksheet, 'Sheet1');
-          JSXLSX.writeFile(wb, 'Subscriber_report' + EXCEL_EXTENSION);
+    console.log("result in console", this.data)
+    if (this.data) {
+      let tempdata = [], temp: any = this.data;
+      for (var i = 0; i < temp.length; i++) {
+        let parm = {};
+        if (this.Custform.value['optname_check']) {
+          parm['Operator Name'] = temp[i]['usertype'] == 444 ? 'LCO ' : temp[i]['usertype'] == 666 ? 'Distributor' : temp[i]['usertype'] == 555 ? 'Sub-Distributor' : 'Hotel';
         }
- 
+        if (this.Custform.value['custid_check']) {
+          parm['Customer ID'] = temp[i]['custid'];
+        }
+        if (this.Custform.value['subname_check']) {
+          parm['Subscriber Name'] = temp[i]['fullname'];
+        }
+        if (this.Custform.value['addr_check']) {
+          parm['Address'] = temp[i]['installation_addr'];
+        }
+        if (this.Custform.value['caf_check']) {
+          parm['CAF Number'] = temp[i]['cafno'];
+        }
+        if (this.Custform.value['status_check']) {
+          parm['Status'] = temp[i]['purchase_flg'] == 1 ? 'Active' : 'Inactive';
+        }
+        // if (this.Custform.value['cas_check']) {
+        //   parm['STB Type'] = temp[i]['model_name'];
+        // }
+        // if (this.Custform.value['stb_check']) {
+        //   parm['STB Number'] = temp[i]['boxno'] + '';
+        // }
+        if (this.Custform.value['vc_check']) {
+          parm['VC Number'] = temp[i]['vc_no'] + '';
+
+        }
+
+        parm['Pack type'] = temp[i]['a_la_cart'] == 0 ? 'BasePack' : temp[i]['a_la_cart'] == 4 ? 'Bouquet' : 'N/A';
+
+        // parm['Pack Name '] = temp[i]['pack_name'];
+
+        if (this.Custform.value['loc_check']) {
+          parm['Location'] = temp[i]['loc_name'];
+        }
+        if (this.Custform.value['mob_check']) {
+          parm['Mobile'] = temp[i]['mobile'] ? temp[i]['mobile'] + '' : '';
+        }
+        // if (this.Custform.value['act_check']) {
+        //   parm['Activate Date'] = temp[i]['active_date'] ? temp[i]['active_date'].substring(0, 10) : '';
+        // }
+        // if (this.Custform.value['exp_check']) {
+        //   parm['Expiry Date'] = temp[i]['expiry_date'] ? temp[i]['expiry_date'].substring(0, 10) : '';
+        // }
+        tempdata[i] = parm;
+      }
+      const worksheet: JSXLSX.WorkSheet = JSXLSX.utils.json_to_sheet(tempdata);
+      const wb: JSXLSX.WorkBook = JSXLSX.utils.book_new();
+      JSXLSX.utils.book_append_sheet(wb, worksheet, 'Sheet1');
+      JSXLSX.writeFile(wb, 'Subscriber_report' + EXCEL_EXTENSION);
+    }
+
   }
 
 
-  
 
 
- 
+
+
 
 
 

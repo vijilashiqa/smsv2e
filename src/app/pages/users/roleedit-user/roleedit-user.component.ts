@@ -353,7 +353,7 @@ export class RoleeditUserComponent implements OnInit {
   ngOnInit() {
     this.createForm();
     this.id = this.aRoute.snapshot.queryParams.id;
-    this.createForm();
+    // this.createForm();
     if(this.id){
       console.log('id***********************',this.id)
       this.editRole();
@@ -403,7 +403,7 @@ async  AddProfile() {
     let data = JSON.parse(item);
     console.log('dat i the item',data)
     let index: number = data.indexOf(404);
-    if (index !== -1) {
+    if (index !== -1 ) {
       data.splice(index, 1);
     }
     for (var i = 0; i < data.length; ++i) {

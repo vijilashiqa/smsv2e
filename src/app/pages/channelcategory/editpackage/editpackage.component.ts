@@ -332,7 +332,7 @@ export class EditpackageComponent implements OnInit {
       packname: new FormControl(this.editdata?.packname || '', Validators.required),
       bcid: new FormControl(this.editdata?.bcid || '', Validators.required),
       srvtype: new FormControl(this.editdata?.srvtype.toString() || '', Validators.required),
-      tax_type: new FormControl(this.editdata?.tax_type || '', Validators.required),
+      tax_type: new FormControl(this.editdata?.tax_type.toString() || '', Validators.required),
       hdid: new FormControl(this.editdata?.hdid || '', Validators.required),
       status: new FormControl(this.editdata?.status || '',),
       enable_tax: new FormControl(this.editdata?.enable_tax),

@@ -23,9 +23,9 @@ export class RenewCustComponent implements OnInit {
   public secondaryColour = '#006ddd';
   public loading = false; failpack: any = [];
   baseBack; baseBackAct = false; arr: any = []; s: any = ''; packId
-  submit: boolean = false; RenewForm; pack_type: any; months: any = ''; day: any = ''; getboxlist; bundledet; displaydata;diss
+  submit: boolean = false; RenewForm; pack_type: any; months: any = ''; day: any = ''; getboxlist; bundledet; displaydata; diss
   package: any = []; cust_id: any = []; package_price: any = []; bpack: any = []; getbundle; balance; packagedet; displaydata1 = false
-  addonpack: any = []; alacartepack: any = []; searchalcart: string; searchaddon: string; displaybalance; getdata
+  addonpack: any = []; alacartepack: any = []; searchalcart: string; searchaddon: string; displaybalance; getdata; renewaldata
   searchbase: string; now: Date = new Date(); data: any = []; toDate: any = ''; fdate: any = '';
   @ViewChildren('input') input: QueryList<ElementRef>;
   confirmationDialogService: any;
@@ -71,8 +71,8 @@ export class RenewCustComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
-    this.getpack();
-    this.operator();
+    // this.getpack();
+    // this.operator();
     this.getbox();
     this.getbalance();
     // this.getbundlep();
@@ -139,45 +139,29 @@ export class RenewCustComponent implements OnInit {
     this.packagedet = await this.packageservices.getrenewalpack(
       {
         resellerid: this.cust_id['resellerid'],
-        boxid: this.RenewForm.value['stb_no'],
+        boxid: this.RenewForm.value['boxid'],
         custid: this.cust_id['cust_id'],
       })
-
-    // packagedet = result1
     console.log("package list ", this.packagedet)
     if (this.packagedet) {
-
       this.package = this.packagedet;
       this.defaultdate(this.packagedet);
-
       console.log('packkkkkk', this.packagedet)
       this.bpack = this.package.filter(item => { if (item.packtype == 0 || item.packtype == 3) { item.quantity = 1; return item; } });
-      
-      
       if (this.bpack.find(item => item.pack_status == 1)) {
         this.baseBack = this.bpack.find(item => item.pack_status == 1).packid;
       }
       console.log("@@@@@@@@@@@@@@@@@@@222222222", this.bpack)
-
-      // this.baseBack.filter(item => { if (item.pack_status != 1 && packId.includes(item.packid)) { item.state = true; item.bandleFlg = true; } });
-
-
       this.baseBackAct = this.baseBack;
-
-      console.log("diaable the list inthe html",this.baseBackAct)
-
+      console.log("diaable the list inthe html", this.baseBackAct)
       this.addonpack = this.package.filter(item => {
         if (item.packtype == 2) {
           item.state = item.pack_status == 1
           item.quantity = 1;
           return item;
         }
-
       });
       console.log(this.addonpack);
-
-
-
       this.alacartepack = this.package.filter(item => {
         if (item.packtype == 1) {
           item.state = item.pack_status == 1;
@@ -187,20 +171,11 @@ export class RenewCustComponent implements OnInit {
       });
       console.log("alCARDTT@@", this.alacartepack)
     }
-
-
-    // this.getdata = this.packagedet.filter(x => x.packtype == 3).map(x => x.packid);
-
-    // console.log("pack id ^^^^^^^^^^^^^", this.getdata);
-    // this.getbundlep();
-
     this.disablePackage();
-
-
   }
 
 
- 
+
   checkaddonpack(checked) {
     this.addonpack.forEach(x => { if (x.pack_status != 1) x.state = checked })
   }
@@ -220,131 +195,74 @@ export class RenewCustComponent implements OnInit {
     // }
   }
 
-  // async getbundlep() {
-  //   this.bundledet = await this.packageservices.getbundlepack({ packid: this.getdata });
-  //   console.log("bundle", this.bundledet)
-
-  //   this.displaydata = this.bundledet.find(x => x.status == 1 && x.packtype == 2).packid
-
-  //   console.log("sdfsdfsadf", this.displaydata)
-
-  //   console.log("@@@@@@@@@@@@@@@@@@@", this.displaydata)
-
-  //   this.displaydata1 = this.displaydata ? true : false;
-  //  this.disablePackage()
-
-  // }
 
 
 
   disablePackage() {
-    console.log("@@@@@@@@@@@@@@@@",this.bpack)
+    console.log("@@@@@@@@@@@@@@@@", this.bpack)
     let packId = this.bpack.find(item => item.packid == this.baseBack);
-    console.log("@@@@@@@@@@@@@",packId)
+    console.log("@@@@@@@@@@@@@", packId)
     packId = packId ? packId.bundlepack : null;
-    console.log("@@@@@@@@@@@@@ NULLs",packId)
+    console.log("@@@@@@@@@@@@@ NULLs", packId)
     if (packId) {
       this.addonpack.filter(item => { if (item.pack_status != 1 && packId.includes(item.packid)) { item.state = true; item.bandleFlg = true; } });
       this.alacartepack.filter(item => { if (item.pack_status != 1 && packId.includes(item.packid)) { item.state = true; item.bandleFlg = true; } });
-      console.log("add on pack",this.addonpack)
-      console.log("alA CART@@@@@",this.alacartepack)
+      console.log("add on pack", this.addonpack)
+      console.log("alA CART@@@@@", this.alacartepack)
     }
   }
 
 
 
-  renewval() {
-
-
-
-
-    let checkaddonpack = this.addonpack.filter(item => item.state && item.pack_status != 1 && !item.bandleFlg).map(item => {
-      return {
-        package: item.packid,
-        r_price: item.r_price || 0,
-        alacart: item.packtype,
-        vc_no: this.cust_id['vc_no'],
-        cust_id: this.cust_id['cust_id'],
-        renewal: 1,
-        cust_price: item.cprice,
-        mso_price: item.mprice,
-        tax_type: item.tax_type,
-        lco_share: item.lco_share
+  async renewval() {
+    let form = this.RenewForm, renewal = form.value;
+    let checkaddonpack1 = this.addonpack.filter(item => item.state && item.pack_status != 1 && !item.bandleFlg).map(item => item.packid)
+    let checkalacatepack = this.alacartepack.filter(item => item.state && item.pack_status != 1 && !item.bandleFlg).map(item => item.packid)
+ renewal['package'] = [...checkaddonpack1, ...checkalacatepack];
+ renewal['hdid'] = this.cust_id['hdid'];
+//  renewal['vc_no']= this.cust_id['vc_no'];
+ renewal['resellerid']= this.cust_id['resellerid'];
+ renewal['cust_id'] = this.cust_id['cust_id']
+  console.log("result", renewal)
+    if (!this.baseBackAct) {
+     
+      let bpack = this.bpack.find(item => item.packid == this.baseBack)
+      console.log("package this", bpack)
+      console.log('pack@@@@@@@@@@@@@@@@@@@@@@@@@@@@',this.bpack.find(item => item.packid == this.baseBack))
+  
+      if (bpack) {
+        renewal['package'].push(bpack.packid);
+        console.log("result@@@@@@@@", this.RenewForm.value)
       }
-    }),
+    }
+  this.renewaldata = await this.operatorser.packrenewal(renewal)
+  console.log("result data",this.renewaldata)
 
-    // console.log("",addonpack),
+ 
 
+    // console.log("renewal pack",[[renewal['package']]])
+    // Clone A Variable
+    // let totalamt = JSON.parse(JSON.stringify(this.data.deposit_amt || 0));
 
-      checkalacatepack = this.alacartepack.filter(item => item.state && item.pack_status != 1 && !item.bandleFlg).map(item => {
-        return {
-          package: item.packid,
-          r_price: item.r_price || 0,
-          alacart: item.packtype,
-          vc_no: this.cust_id['vc_no'],
-          cust_id: this.cust_id['cust_id'],
-          renewal: 1,
-          cust_price: item.cprice,
-          mso_price: item.mprice,
-          tax_type: item.tax_type,
-          lco_share: item.lco_share
-        }
-      });
+    // if (!this.balValidation(totalamt, renewal['package'])) {
+    //   return;
+    // }
 
-    // this.confirmationDialogService.confirm('Confirm Box', 'Please Confirm Your Request')
-    //   .then((confirmed) => {
-    //     if (confirmed == true) {
-    //       this.loading = true;
-    //       this.submit = true;
-    //       // console.log(confirmed,"confirmed");
-          let form = this.RenewForm, renewal = form.value;
-          // if(form.invalid){
-          //   return;
-          // }
+    // this.stb.bulk_renewal({ renewal: renewal['package'] }).subscribe(result => {
+    //   if (result) {
+    //     // console.log(result)
+    //     this.showResult(result);
+    //     this.disablepack(result);
+    //     let packis = this.bpack.bundle_pack;
 
-       let ress=   renewal['package'] = [...checkaddonpack, ...checkalacatepack];
-
-console.log("result",ress)
-    //       if (!this.baseBackAct) {
-    //         let bpack = this.bpack.find(item => item.packid == this.baseBack);
-    //         // console.log(bpack)
-    //         if (bpack) {
-    //           renewal['package'].push({
-    //             package: bpack.packid,
-    //             r_price: bpack.r_price || 0,
-    //             alacart: bpack.packtype,
-    //             vc_no: this.cust_id['vc_no'],
-    //             cust_id: this.cust_id['cust_id'],
-    //             renewal: 1,
-    //             cust_price: bpack.cprice,
-    //             mso_price: bpack.mprice,
-    //             tax_type: bpack.tax_type,
-    //             lco_share: bpack.lco_share
-    //           });
-    //         }
-    //       }
-          // Clone A Variable
-          // let totalamt = JSON.parse(JSON.stringify(this.data.deposit_amt || 0));
-
-          // if (!this.balValidation(totalamt, renewal['package'])) {
-          //   return;
-          // }
-
-          // this.stb.bulk_renewal({ renewal: renewal['package'] }).subscribe(result => {
-          //   if (result) {
-          //     // console.log(result)
-          //     this.showResult(result);
-          //     this.disablepack(result);
-          //     let packis = this.bpack.bundle_pack;
-
-          //     if (packis) {
-          //       this.disablePackage();
-          //     }
-          //     this.loading = false;
-          //   }
-          // });
-      //   }
-      // })
+    //     if (packis) {
+    //       this.disablePackage();
+    //     }
+    //     this.loading = false;
+    //   }
+    // });
+    //   }
+    // })
 
   }
 
@@ -357,7 +275,7 @@ console.log("result",ress)
 
 
   disablepack(item) {
-   console.log('adsgffghdisablepackdisablepackdisablepackfh')
+    console.log('adsgffghdisablepackdisablepackdisablepackfh')
     this.failpack = item.filter(item => item.Error_msg == 0).map(item => item.packid);
     this.baseBackAct = this.baseBackAct || this.bpack.find(item => this.failpack.includes(item.packid)) ? true : false;
     this.addonpack.filter(item => {
@@ -374,9 +292,9 @@ console.log("result",ress)
 
   createForm() {
     this.RenewForm = new FormGroup({
-      renewal_type: new FormControl(1),
-      schedule: new FormControl(''),
-      stb_no: new FormControl('')
+       renewal_type: new FormControl(1),
+      // schedule: new FormControl(''),
+      boxid: new FormControl('')
     });
   }
 

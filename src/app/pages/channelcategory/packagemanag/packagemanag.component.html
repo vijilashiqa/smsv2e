@@ -28,7 +28,7 @@
       </div>
 
       <div class="col-sm-1">
-        <label>BC Share</label>
+        <label>BC Share,Price</label>
         <input class="form-control" [disabled]="true" addclass="form-control" [(ngModel)]="bcshare" id="bcshare" name="bcshare">
 
       </div>
@@ -67,25 +67,45 @@
                             <label>Reseller Name<span style="color:red">*</span></label> <br>
                             <label><b> {{ user.profileid }} </b></label>
                           </td>
+                        
                           <td>
                             <label>MSO Share<span style="color:red">*</span></label>
                             <input type="number" name="mso_share" formControlName="mso_share" class="form-control" (keyup)="onkeyupQty(idx)" />
-                            
+                            <!-- <div>
+                              <small
+                              *ngIf="searchpackage.controls.mso_share.errors &&(searchpackage.controls.mso_share.errors.required )&& (searchpackage.controls.mso_share.errors?.limitNotMatch )&& submit"
+                              class="invalid-feedback">Tax Type is required! </small>
+                            </div> -->
                           </td>
                           <td>
                             <label>Distributor Share<span style="color:red">*</span></label>
                             <input type="number"   name="dist_share" formControlName="dist_share"
                               placeholder="Enter Distributor Share" class="form-control" (keyup)="onkeyupQty(idx)" />
+                              <!-- <div>
+                                <small
+                                *ngIf="searchpackage.controls.dist_share.errors &&(searchpackage.controls.dist_share.errors.required )&& (searchpackage.controls.dist_share.errors?.limitNotMatch )&& submit"
+                                class="invalid-feedback">Tax Type is required! </small>
+                              </div> -->
                           </td>
                           <td>
                             <label>Sub Distributor Share<span style="color:red">*</span></label>
                             <input type="number" name="sub_dist_share" formControlName="sub_dist_share"
                               placeholder="Sub Distributor Share " class="form-control" (keyup)="onkeyupQty(idx)" />
+                              <!-- <div>
+                                <small
+                                *ngIf="searchpackage.controls.sub_dist_share.errors &&(searchpackage.controls.sub_dist_share.errors.required )&& (searchpackage.controls.sub_dist_share.errors?.limitNotMatch )&& submit"
+                                class="invalid-feedback">Tax Type is required! </small>
+                              </div> -->
                           </td>
                           <td>
                             <label>Reseller Share<span style="color:red">*</span></label>
                             <input type="number" name="reseller_share" formControlName="reseller_share"
                               placeholder="reseller_share" class="form-control" (keyup)="onkeyupQty(idx)" />
+                              <!-- <div>
+                                <small
+                                *ngIf="searchpackage.controls.reseller_share.errors &&(searchpackage.controls.reseller_share.errors.required )&& (searchpackage.controls.reseller_share.errors?.limitNotMatch )&& submit"
+                                class="invalid-feedback">Tax Type is required! </small>
+                              </div> -->
                           </td>
 
                           <td>

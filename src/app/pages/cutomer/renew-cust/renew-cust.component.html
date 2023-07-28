@@ -17,12 +17,12 @@
 
         <div class="col-sm-4">
           <label>Select STB Number<span style="color: red">*</span></label>
-          <auto-completen [addclass]="{error: submit && this.RenewForm.controls.stb_no.errors}" addclass="form-control"
-            optValues="boxno" formControlName="stb_no" (keyUp)="getbox()" (changed)="getpack()"
+          <auto-completen [addclass]="{error: submit && this.RenewForm.controls.boxid.errors}" addclass="form-control"
+            optValues="boxno" formControlName="boxid" (keyUp)="getbox()" (changed)="getpack()"
             placeholder="Select STB Number" optId="boxid" [item]="getboxlist">
           </auto-completen>
           <div
-            *ngIf="this.RenewForm.controls.stb_no.errors && this.RenewForm.controls.stb_no.errors.required && submit  "
+            *ngIf="this.RenewForm.controls.boxid.errors && this.RenewForm.controls.boxid.errors.required && submit  "
             class="error-text">
             STB Number is required!
           </div>
@@ -81,7 +81,7 @@
             " style="text-transform: uppercase">
             <td class="text-center">
               <label class="container">
-                <input [disabled]="item.pack_status ==1||item.cust_packid != null" (change)="disablePackage();"
+                <input [disabled]="baseBackAct" (change)="disablePackage();"
                   type="radio" name="sizecb" [value]="item.packid" [(ngModel)]="baseBack" />
                 <span class="checkmark" [ngStyle]="{'opacity': item.pack_status ==1 ? '0.6':''}"></span>
               </label>
@@ -92,7 +92,7 @@
             <td class="ng2-smart-th ng-star-inserted">
               <div class="ng2-smart-filter ng-star-inserted">
                 <!-- <input [disabled]="baseBackAct" class="form-control" [(ngModel)]="item.quantity" type="number" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"> -->
-                <select [disabled]="item.pack_status ==1||item.cust_packid != null" class="form-control"
+                <select [disabled]="baseBackAct" class="form-control"
                   [(ngModel)]="item.quantity" placeholder="Quantity" style="width: 80px; height: 25px; padding: 1px"
                   (change)="selectThisMonth(item, item.unit_type, item.day)">
                   <!-- <option value=" ">QTY</option> -->
@@ -163,7 +163,7 @@
               <input [disabled]="item.pack_status ==1||item.bandleFlg" type="checkbox" name="sizecb[]"
                 [(ngModel)]="item.state" />
               <span class="checkmarkbox" [ngStyle]="{
-                  opacity: diss ? '0.5' : '1'
+                  opacity: item.pack_status ==1||item.bandleFlg ? '0.5' : '1'
                 }"></span>
             </label>
           </td>
@@ -214,7 +214,7 @@
       </thead>
     </table>
     <div class="table-body table-wrapper table-scroll">
-      <table class="table table-bordered table-striped">
+      <table class="table table-bordered table-striped"  >
         <tr>
           <th class="text-center">
             <label class="containerbox">All

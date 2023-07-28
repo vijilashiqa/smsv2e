@@ -33,7 +33,7 @@ export class EditCustComponent implements OnInit {
     this.id = this.aRoute.snapshot.queryParams.id;
     this.createForm();
     this.getCountry();
-    this.getbox();
+    // this.getbox();
     if (this.id) {
       console.log('id.................', this.id);
       this.disabled = !this.disabled;

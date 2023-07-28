@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { BroadcasterService, HeadendService, PackageService, PagerService, RoleservicesService } from '../../_services';
+import { BroadcasterService, HeadendService, PackageService, PagerService, RoleservicesService, sumValidator } from '../../_services';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PackagechannelComponent } from '../packagechannel/packagechannel.component';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PackpriceshareService } from '../../_services/packpriceshare.service';
 
 @Component({
@@ -89,7 +89,7 @@ export class PackagemanagComponent implements OnInit {
   async arary() {
     await this.createForm();
     for (let item of this.data) {
-      this.addreseller(item.dist_share, item.mso_share, item.reseller_share, item.sub_dist_share, item.distid, item.profileid, item.subdistid, item.id, this.amountv, this.bcamount, this.checkdata, this.resp)
+      this.addreseller(item.dist_share, item.mso_share, item.reseller_share, item.sub_dist_share, item.distid, item.profileid, item.subdistid, item.id, this.amountv)
     }
 
   }
@@ -108,8 +108,8 @@ export class PackagemanagComponent implements OnInit {
     return this.searchpackage.get('share_details') as FormArray;
   }
 
-  addreseller(dist_share = 0, mso_share = 0, reseller_share = 0, sub_dist_share = 0, distid = 0, profileid = 0, subdistid = 0, id = 0, amountv = 0, bcamount, resp, checkdata) {
-    this.share_details.push(this.createReseller(dist_share, mso_share, reseller_share, sub_dist_share, distid, profileid, subdistid, id, amountv, bcamount, resp, checkdata));
+  addreseller(dist_share = 0, mso_share = 0, reseller_share = 0, sub_dist_share = 0, distid = 0, profileid = 0, subdistid = 0, id = 0, amountv = 0) {
+    this.share_details.push(this.createReseller(dist_share, mso_share, reseller_share, sub_dist_share, distid, profileid, subdistid, id, amountv));
   }
 
   async Updatepack() {
@@ -151,15 +151,22 @@ export class PackagemanagComponent implements OnInit {
     this.bcsharev = Number(this.bcassign);
     this.vall = this.msov + this.distv + this.subdistv + this.resellerv + this.bcsharev;
     console.log("share @@@@@@@@@@@@@@", this.vall)
+
+
+    console.log("data from the form arrays",this.searchpackage.value["share_details"][index]["mso_share"])
+    // , {
+    //   validator: sumValidator(100, 'mso_share', 'dist_share', 'sub_dist_share', 'reseller_share')
+    // }
+    
    
   }
 
 
 
 
-  createReseller(dist_share, mso_share, reseller_share, sub_dist_share, distid, profileid, subdistid, id, amountv, bcamount, resp, checkdata): FormGroup {
+  createReseller(dist_share, mso_share, reseller_share, sub_dist_share, distid, profileid, subdistid, id, amountv): FormGroup {
     return this._fb.group({
-      checked: [],
+      checked: [true],
       resellerid: [id],
       profileid: [profileid],
       dist_share: [{ value: dist_share, disabled: distid == 0 ? true : null }],
@@ -168,10 +175,13 @@ export class PackagemanagComponent implements OnInit {
       reseller_share: [reseller_share],
       r_price: [amountv]
     }
+
     );
 
   }
 
+
+  
   createForm() {
     this.searchpackage = new FormGroup({
       share_details: new FormArray([])
