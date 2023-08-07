@@ -53,6 +53,7 @@ async editlang(){
     this.submit = true;
     if (this.addlanguageForm.invalid) {
       // window.alert('Please fill the mandatory fields')
+      this.toast.warning('tsting')
       return;
     }
     let method = this.item ? 'editlanguage' : 'addlanguage';
@@ -76,7 +77,6 @@ async editlang(){
       hdid:new FormControl(this.listlang?.hdid  || '', Validators.required),
       langname: new FormControl(this.listlang?.langname || '', Validators.required),
       status: new FormControl(this.listlang ? this.listlang['STATUS'] == 1 ? true : false: true),
-      // status: new FormControl(this.listlang?.STATUS),
     });
   }
 }

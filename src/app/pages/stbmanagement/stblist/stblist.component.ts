@@ -6,6 +6,7 @@ import { StbparingComponent } from '../stbparing/stbparing.component';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { OperatorService } from '../../_services/operator.service';
 import { StockService } from '../../_services/stock.service';
+import { ReportService } from '../../_services/report.service';
 
 @Component({
   selector: 'ngx-stblist',
@@ -31,6 +32,7 @@ export class StblistComponent implements OnInit {
     public pageservice: PagerService,
     private stb: StbmanagementService,
     private modal: NgbModal,
+    private report : ReportService,
     private stock: StockService,
     private headends: HeadendService,
     private operator: OperatorService,
@@ -82,49 +84,43 @@ export class StblistComponent implements OnInit {
 
 
   async boxparing() {
-    this.listboxpair = await this.stb.searchgetboxpair({ hdid: this.headend })
-    console.log('listboxpair', this.listboxpair)
+    this.listboxpair = await this.report.searchgetbox({ hdid: this.headend })
+    // console.log('listboxpair', this.listboxpair)
   }
 
   async vcparing() {
     let boxno = this.stbopt;
-    console.log('listboxpair in funxction', this.listboxpair)
     const boxvc_data = this.listboxpair?.filter(x => x.boxid == boxno)
-    console.log('stbno in aarray', boxno)
-    console.log('vcid here', boxvc_data);
     this.pair_status = boxvc_data[0].pairflg;
-    console.log("pair status @@@@@", this.pair_status)
     this.listvc = [];
     if (boxvc_data[0].vcid) {
-      console.log("boxdata@@@@@@@@", boxvc_data[0].vcid)
       this.listvc = [{ vcid: boxvc_data[0].vcid, vcno: boxvc_data[0].vcno }]
-      console.log('listvc**********', this.listvc)
     } else {
       const data = []
       let vclist = this.listboxpair.filter(x => x.vcno !== 0 && x.vcno !== null)
-      console.log('empty list', vclist)
+      console.log("vc lists in the data ",vclist)
       vclist.reduce((a, v) => {
+        console.log("@@@@@@@@@@@2",a)
+        console.log("%%%%%%%%%%%%%%%%",v)
         const value = { vcid: v.vcid, vcno: v.vcno }
         data.push(value)
         return data
 
       }, [])
-      console.log("data", data)
       this.listvc = vclist
-      console.log('vclist', vclist);
     }
   }
 
 
   async getoperator() {
     this.operatortypelist = await this.operator.searchoperator({ usertype: this.op_type, hdid: this.headend })
-    console.log('list operator', this.operatortypelist)
+    // console.log('list operator', this.operatortypelist)
   }
 
 
   async getModel() {
     this.getmodellist = await this.stock.getstockmodel({});
-    console.log('stb list', this.getmodellist)
+    // console.log('stb list', this.getmodellist)
   }
   getlist(page) {
     var total = Math.ceil(this.count / this.limit);

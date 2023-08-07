@@ -1,16 +1,19 @@
 <nb-card>
   <nb-card-header>List Package</nb-card-header>
   <nb-card-body>
+    <!-- <form #f="ngForm"> -->
     <div class="form-group row">
-      <div class="col-sm-3" *ngIf="role.getroleid() > 777">
+      <div class="col-sm-2" *ngIf="role.getroleid() > 777">
         <label>Headend</label>
-        <auto-completen addclass="form-control" optValues="hdname"  [(ngModel)]="headend" name="headend"
+        <auto-completen addclass="form-control" optValues="hdname" [(ngModel)]="headend" name="headend" required
           (changed)="Getbroadcasteredit()" placeholder="Select Headend" optId="hdid" [item]="listhead">
         </auto-completen>
       </div>
-      <div class="col-sm-3" (change)="getpackage(); clearpackage();">
+
+
+      <div class="col-sm-2" (change)="getpackage(); clearpackage();">
         <label>Pack Type</label>
-        <select class="form-control" id="pack_type" [(ngModel)]="pack_type">
+        <select class="form-control" id="pack_type" [(ngModel)]="pack_type" required>
           <option value="" selected>Select Pack Type</option>
           <option value="0">Base Package</option>
           <option value="1">A-La-Carte</option>
@@ -20,100 +23,129 @@
       </div>
 
 
-      <div class="col-sm-3"  >
+
+
+
+
+
+      <div class="col-sm-2">
         <label>Package</label>
-        <auto-completen  addclass="form-control"  optValues="packname" [(ngModel)]="package" name="package"
+        <auto-completen addclass="form-control" optValues="packname" [(ngModel)]="package" name="package"
           placeholder="Select Package" optId="packid" [item]="getpackagelist" (changed)="getbcshare();amount();">
         </auto-completen>
       </div>
 
-      <div class="col-sm-1">
-        <label>BC Share,Price</label>
-        <input class="form-control" [disabled]="true" addclass="form-control" [(ngModel)]="bcshare" id="bcshare" name="bcshare">
-
+      <div class="col-sm-2">
+        <label>BC Share/Price</label>
+        <input class="form-control" [disabled]="true" addclass="form-control" [(ngModel)]="bcshare" id="bcshare"
+          name="bcshare">
       </div>
+
 
       <div class="col-sm-2">
         <label>Select Mode</label>
-        <select class="form-control" id="mode" [(ngModel)]="mode">
+        <select class="form-control" id="mode" [(ngModel)]="mode"  (click)="clearfun()" >
           <option value="" selected>Select Mode</option>
           <option value="0">Individual</option>
-          <option value="1">Bulk</option>
-          <option value="3">Upload</option>
+          <option value="1">Bulk Edit</option>
+          <option value="2">Bulk Assign</option>
         </select>
       </div>
+
+
+      <!-- <div class="col-sm-2"  *ngIf="mode =='0'">
+        <label for="userid">Select Operator<span style="color: red">*</span></label>
+        <auto-completen
+          addclass="form-control" optValues="profileid"  [(ngModel)]="userid" (keyUp)="getoperator()" 
+          placeholder="Select Operator" Id="id" [item]="getoperatorlist"   >
+        </auto-completen>
+      </div>  -->
+
+
     </div>
     <button type="button" class="btn btn-md btn-success" (click)="initiallist()" style="margin: auto; display: block">
       Search
     </button>
+    <!-- </form> -->
     <form [formGroup]="searchpackage" (ngSubmit)="Updatepack()">
       <div class="modal-body">
-        <div >
+        <div>
           <table class="table">
             <tbody>
               <ng-container>
 
-                
+
                 <div style="display: table-row" formArrayName="share_details">
                   <div class="col-sm-12">
-                    <div *ngFor=" let user of data; index as idx;  let last = last">
+                    <div *ngFor=" let user of share_details.controls; index as idx;  let last = last">
                       <div class="row" [formGroupName]="idx">
                         <div style="display: table-row">
-                          <td>
+                          <td *ngIf="mode !=='2' && mode !=='0'">
                             <br>
-                           <input type="checkbox" [value]="user.id" (change)="checkBoxChecked();" [(ngModel)]="user.checked" class="form-control" id="checked" formControlName="checked" class="checkbox-control" >
+                            <input type="checkbox" [value]="user.id" (change)="checkBoxChecked();"
+                              [(ngModel)]="user.checked" class="form-control" id="checked" formControlName="checked"
+                              class="checkbox-control">
+                          </td>
+                          <td *ngIf="mode !=='2' && mode !=='0'">
+                            <label>Reseller Name <span style="color:red">*</span></label> <br>
+                            <input type="text" name="profileid" formControlName="profileid" class="form-control"
+                              class="form-control">
+                          </td>
+
+                          <td *ngIf="mode =='0'">
+                            <label>Select Operator<span style="color: red">*</span></label>
+                            <auto-completen addclass="form-control" optValues="profileid" formControlName="userid"
+                              (keyUp)="getoperator()" (changed)="changedrop($event,idx)" placeholder="Select Operator" Id="id"
+                              [item]="getoperatorlist">
+                            </auto-completen>
                           </td>
                           <td>
-                            <label>Reseller Name<span style="color:red">*</span></label> <br>
-                            <label><b> {{ user.profileid }} </b></label>
+                            <label>MSO Share<sspan style="color:red">*</sspan></label>
+                            <input type="number" name="mso_share" formControlName="mso_share" class="form-control"
+                              (keyup)="onkeyupQty(idx)" />
                           </td>
-                        
-                          <td>
-                            <label>MSO Share<span style="color:red">*</span></label>
-                            <input type="number" name="mso_share" formControlName="mso_share" class="form-control" (keyup)="onkeyupQty(idx)" />
-                            <!-- <div>
-                              <small
-                              *ngIf="searchpackage.controls.mso_share.errors &&(searchpackage.controls.mso_share.errors.required )&& (searchpackage.controls.mso_share.errors?.limitNotMatch )&& submit"
-                              class="invalid-feedback">Tax Type is required! </small>
-                            </div> -->
-                          </td>
-                          <td>
+                          <td *ngIf="mode !=='2'">
                             <label>Distributor Share<span style="color:red">*</span></label>
-                            <input type="number"   name="dist_share" formControlName="dist_share"
+                            <input type="number" name="dist_share" formControlName="dist_share"
                               placeholder="Enter Distributor Share" class="form-control" (keyup)="onkeyupQty(idx)" />
-                              <!-- <div>
-                                <small
-                                *ngIf="searchpackage.controls.dist_share.errors &&(searchpackage.controls.dist_share.errors.required )&& (searchpackage.controls.dist_share.errors?.limitNotMatch )&& submit"
-                                class="invalid-feedback">Tax Type is required! </small>
-                              </div> -->
                           </td>
-                          <td>
+                          <td *ngIf="mode !=='2'">
                             <label>Sub Distributor Share<span style="color:red">*</span></label>
                             <input type="number" name="sub_dist_share" formControlName="sub_dist_share"
                               placeholder="Sub Distributor Share " class="form-control" (keyup)="onkeyupQty(idx)" />
-                              <!-- <div>
-                                <small
-                                *ngIf="searchpackage.controls.sub_dist_share.errors &&(searchpackage.controls.sub_dist_share.errors.required )&& (searchpackage.controls.sub_dist_share.errors?.limitNotMatch )&& submit"
-                                class="invalid-feedback">Tax Type is required! </small>
-                              </div> -->
                           </td>
                           <td>
                             <label>Reseller Share<span style="color:red">*</span></label>
                             <input type="number" name="reseller_share" formControlName="reseller_share"
                               placeholder="reseller_share" class="form-control" (keyup)="onkeyupQty(idx)" />
-                              <!-- <div>
-                                <small
-                                *ngIf="searchpackage.controls.reseller_share.errors &&(searchpackage.controls.reseller_share.errors.required )&& (searchpackage.controls.reseller_share.errors?.limitNotMatch )&& submit"
-                                class="invalid-feedback">Tax Type is required! </small>
-                              </div> -->
                           </td>
 
                           <td>
                             <label>Reseller Amount<span style="color:red">*</span></label>
-                            <input type="number"  name="r_price" formControlName="r_price"
-                              placeholder="Reseller amount" class="form-control" />
+                            <input type="number" name="r_price" formControlName="r_price" placeholder="Reseller amount"
+                              class="form-control" />
 
                           </td>
+                          <td>
+                            <div *ngIf="last || idx != 0 ">
+                              <div class="btn-group" *ngIf="mode =='0'">
+                                <button type="button" style="margin-top: 31%"
+                                  class="btn btn-md btn-success dropdown-toggle" data-bs-toggle="dropdown">
+                                  Action
+                                </button>
+                                <div class="dropdown-menu">
+                                  <a (click)="deleteMatField(idx)" class="dropdown-item" *ngIf="idx != 0"><i
+                                      title="Edit Complaint" class="ion-android-delete"></i>&nbsp;Delete</a>
+                                  <a (click)="addreseller();" class="dropdown-item" *ngIf="last"><i
+                                      title="Edit Complaint" class="ion-ios-plus-outline"></i>&nbsp;ADD
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+
+                          </td>
+
+
                         </div>
                       </div>
                     </div>
