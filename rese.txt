@@ -1,0 +1,68 @@
+chennaidist (DISTRIBUTER) =>chennaisubdist1(SUB-DISTRIBUTER)	 ===  
+
+chennaisubdist1(SUB-DISTRIBUTER)	 ->reseller(chennaiUdist )
+
+msoadmin1( MSO)	  -reseller(chennaiUdist )
+
+
+
+
+
+
+chennaidist  ===  DISTRIBUTER
+chennaisubdist1	 === SUB-DISTRIBUTER	
+chennaiUdist === LCO
+msoadmin1	=== MSO
+
+
+mso = isp(limras)
+dist = sub isp(grey sky)
+sub dist = sub isp dist(sun light)
+lco= reseller(Ash newtwork)
+
+
+mso => dist
+mso => lco
+mso => dist => sub dist 
+mso => dist =>sub dist => lco
+mso => dist => lco
+
+chennai_dist (grey sky)
+show mso and reseller share. other share need to disable
+
+checnnai_sub_dist_under_chennai_dist(sun light)
+show mso,dist and reseller share. sub dist share need to disable
+
+chennai_reseller_no_under(Ash newtwork)
+show mso and reseller share. other share need to disable.
+
+lco_under_dist(greyadminudist)
+show mso, dist and reseller. sub dist need to disable
+
+
+lco__under__sub_dist(grey_u_sub)
+show all share details
+
+
+
+
+
+
+
+
+
+
+
+LCO   
+
+DISTRIBUTER
+
+SUB-DISTRIBUTER	
+
+MSO	
+
+HOTEL
+
+
+
+

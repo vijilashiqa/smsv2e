@@ -588,7 +588,31 @@ export class PagesComponent {
       },
 
 
+      {
+        title: 'Reports',
+        // hidden: !(this.role.find(x => x == 801) || this.role.find(x => x == 802) || this.role.find(x => x == 804) || this.role.find(x => x == 809)),
 
+        icon: 'file-text',
+        children: [
+          {
+            title: 'STB Pair',
+            link: '/pages/report/stbreport',
+            // hidden: !this.role.find(x => x == 801),
+          },
+          {
+            title: 'Subcriber Box Assign',
+            link: '/pages/report/custboxassignlog',
+          },
+          {
+            title: 'Deposite',
+            link: '/pages/report/depositlog',
+          },
+          {
+            title: 'Package',
+            link: '/pages/report/packagelog',
+          },
+        ],
+      },
       // {
       //   title: 'FEATURES',
       //   group: true,

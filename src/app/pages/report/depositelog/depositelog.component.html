@@ -1,0 +1,88 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+  <nb-card-header>Deposite Log <a class="right" (click)="search=!search">Advanced Search</a></nb-card-header>
+  <nb-card-body>
+    <label class="left">
+      <h5>Deposite Log Count : {{count}}</h5>
+    </label>
+    <form [hidden]='!search' class="form-horizontal">
+      <div class="modal-body">
+        <div class="form-group row">
+          <div class="col-sm-3" *ngIf="role.getroleid() >777">
+            <label>Headend</label>
+            <auto-completen [(ngModel)]="headend" id="headend" (changed)="getModel();"
+              addclass="form-control" optValues="hdname" name="headend" placeholder='Select Headend' optId="hdid"
+              [item]="listhead">
+            </auto-completen>
+          </div>
+          <div class="col-sm-3" (change)="getoperator();">
+            <label> Operator Type</label>
+            <select class="form-control" name="op_type" [(ngModel)]="op_type">
+              <option value="" selected>Select Operator Type</option>
+              <option value="444">LCO</option>
+              <option value="666">Distributor</option>
+              <option value="555">Sub-Distributor</option>
+              <option value="333">Hotel</option>
+            </select>
+          </div>
+
+          <div class="col-sm-3">
+            <label>Operator Name</label>
+            <auto-completen addclass="form-control" optValues="fullname" [(ngModel)]="profileid" name="operator_name"
+             placeholder="Select Operator" optId="id" [item]="operatortypelist">
+            </auto-completen>
+          </div>  
+          <div class="col-sm-3">
+            <label>Deposit Mode</label>
+            <auto-completen addclass="form-control" optValues="dep_mode_name" [(ngModel)]="dep_mode_name" name="dep_mode_name"
+             placeholder="Select Deposite Mode" Id="deposit_type" [item]="depositpaymode">
+            </auto-completen>
+          </div>  
+
+        </div>
+
+        <button type="button" class="btn btn-md btn-success" (click)='initiallist();'
+          style="margin: auto; display: block;">Search</button>
+      </div>
+    </form>
+    <table class="table">
+      <tr>
+        <th *ngIf="role.getroleid() >777">Headend Name</th>
+        <th>Role Name</th>
+        <th>Operator Name</th>
+        <th>Deposite Mode</th>
+        <th>Deposit Amount</th>
+        <th>Pay Mode</th>
+        <th>UTR</th>
+
+        <th>Performed By</th>
+        <th>Performed On</th>
+      </tr>
+      <tr *ngFor="let item of pagedItems">
+        <td *ngIf="role.getroleid() >777">{{item.hdname}}</td>
+        <td>{{item.rolename}}</td>
+        <td>{{item.fullname}}</td>
+        <td>{{item.dep_mode_name}}</td>
+        <td>{{item.deposit_amount}}</td>
+        <td>{{item.paymode==1?'Cash':item.paymode==2?'NetBanking':item.paymode==3?'Cheque':item.paymode==4?'Bank
+          Deposit':'UPI' }}</td>
+        <td>{{item.utr || '-'}}</td>
+
+        <td>{{item.fullname}}</td>
+        <td>{{item.cdate|date :'short'}}</td>
+
+      </tr>
+    </table>
+
+    <div class="pagination">
+      <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+        <a [ngClass]="{disabled:pager.currentPage === 1}" (click)="page=1;getlist();">First</a>
+        <a [ngClass]="{disabled:pager.currentPage === 1}" (click)="page=page-1;getlist();">Previous</a>
+        <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}"
+          (click)="getlist(page);">{{page}}</a>
+        <a [ngClass]="{disabled:pager.currentPage === pager.totalPages}" (click)="page=page+1;getlist();">Next</a>
+        <a [ngClass]="{disabled:pager.currentPage === pager.totalPages}"
+          (click)="page=pager.totalPages;getlist();">Last</a>
+      </ul>
+    </div>
+  </nb-card-body>
+</nb-card>

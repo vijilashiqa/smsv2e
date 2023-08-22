@@ -24,6 +24,7 @@ import { AddstbtypeComponent } from './addstbtype/addstbtype.component';
 import { AddmodelComponent } from './addmodel/addmodel.component';
 import { AddhsnComponent } from './addhsn/addhsn.component';
 import { EditstockComponent } from './editstock/editstock.component';
+import { SearchpopComponent } from './searchpop/searchpop.component';
 @NgModule({
   declarations: [
     VendorlistComponent,
@@ -40,7 +41,8 @@ import { EditstockComponent } from './editstock/editstock.component';
     AddstbtypeComponent,
     AddmodelComponent,
     AddhsnComponent,
-    EditstockComponent
+    EditstockComponent,
+    SearchpopComponent
   ],
   imports: [
     CommonModule,
@@ -72,7 +74,8 @@ import { EditstockComponent } from './editstock/editstock.component';
     AddvendorComponent,
     AddstbtypeComponent,
     AddmodelComponent,
-    AddhsnComponent
+    AddhsnComponent,
+    // SearchpopComponent
   ],
 })
 export class InventoryModule { }

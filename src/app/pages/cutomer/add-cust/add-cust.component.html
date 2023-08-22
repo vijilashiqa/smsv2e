@@ -376,7 +376,8 @@
           <div class="col-sm-6" [hidden]='sameaddressandid'>
             <label>Select ID Proof Type<span style="color: red">*</span></label>
             <select class="form-control"
-              [ngClass]="{'is-invalid': submit && this.AddCustForm.controls.id_proof_type.errors}" name="id_proof_type"
+              [ngClass]="{'is-invalid': submit && this.AddCustForm.controls.id_proof_type.errors}"
+               name="id_proof_type"
               formControlName="id_proof_type">
               <option value="" selected>Select Proof Type</option>
               <option value="1">PAN Card</option>

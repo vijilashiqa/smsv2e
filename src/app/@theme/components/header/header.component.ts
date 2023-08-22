@@ -8,6 +8,10 @@ import { Subject } from 'rxjs';
 import { ChangepasswordComponent } from '../changepassword/changepassword.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RoleservicesService } from '../../../pages/_services';
+import { AddlangComponent } from '../../../pages/channelcategory/addlang/addlang.component';
+import { SearchpopComponent } from '../../../pages/inventory/searchpop/searchpop.component';
+// import { SearchpopComponent } from '../searchpop/searchpop.component';
+
 
 @Component({
   selector: 'ngx-header',
@@ -77,7 +81,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     return false;
   }
-
+  search() {
+    const modalRef = this.modal.open(SearchpopComponent, { container: 'nb-layout', backdrop: false });
+    modalRef.componentInstance.title = 'Search';
+    modalRef.result.then((data) => {
+   
+    })
+  };
   navigateHome() {
 
     this.menuService.navigateHome();

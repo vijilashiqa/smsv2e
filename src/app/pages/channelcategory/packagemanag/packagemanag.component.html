@@ -5,62 +5,66 @@
     <div class="form-group row">
       <div class="col-sm-2" *ngIf="role.getroleid() > 777">
         <label>Headend</label>
-        <auto-completen addclass="form-control" optValues="hdname" [(ngModel)]="headend" name="headend" required
-          (changed)="Getbroadcasteredit()" placeholder="Select Headend" optId="hdid" [item]="listhead">
+        <auto-completen
+        [addclass]="(isSearch && !headend)?'error':'form-control'"
+        addclass="form-control" optValues="hdname" [(ngModel)]="headend" name="headend" required
+          (changed)="Getbroadcasteredit();clearheadend()" placeholder="Select Headend" optId="hdid" [item]="listhead">
         </auto-completen>
+        <small class="error-text" *ngIf="isSearch && !headend">Headend Required</small>
+
+      </div>
+
+
+      <div class="col-sm-2">
+        <label>Select Mode</label>
+        <select
+        [ngClass]="(isSearch && !mode)?'error':'form-control'"
+
+       
+         class="form-control" id="mode" [(ngModel)]="mode"  (change)="clearfun() ;clearMode()" >
+          <option value="" selected>Select Mode</option>
+          <option value="0">Individual</option>
+          <option value="1">Bulk Edit</option>
+          <option value="2">Bulk Assign</option>
+        </select>
+        <small class="error-text" *ngIf="isSearch && !mode">Mode Required</small>
       </div>
 
 
       <div class="col-sm-2" (change)="getpackage(); clearpackage();">
         <label>Pack Type</label>
-        <select class="form-control" id="pack_type" [(ngModel)]="pack_type" required>
+        <select 
+        [ngClass]="(isSearch && !pack_type)?'error':'form-control'"
+
+        class="form-control"
+        
+        id="pack_type" [(ngModel)]="pack_type" required>
           <option value="" selected>Select Pack Type</option>
           <option value="0">Base Package</option>
           <option value="1">A-La-Carte</option>
           <option value="2">Add-On Package</option>
           <option value="3">Bundle Package</option>
         </select>
+        <small class="error-text" *ngIf="isSearch && !pack_type">PackType Required</small>
+
       </div>
-
-
-
-
-
-
 
       <div class="col-sm-2">
         <label>Package</label>
-        <auto-completen addclass="form-control" optValues="packname" [(ngModel)]="package" name="package"
+        <auto-completen   [addclass]="(isSearch && !package)?'error':'form-control'" optValues="packname" [(ngModel)]="package" name="package"
           placeholder="Select Package" optId="packid" [item]="getpackagelist" (changed)="getbcshare();amount();">
         </auto-completen>
+   <small class="error-text" *ngIf="isSearch && !package">Package Required</small>
       </div>
 
       <div class="col-sm-2">
         <label>BC Share/Price</label>
-        <input class="form-control" [disabled]="true" addclass="form-control" [(ngModel)]="bcshare" id="bcshare"
+        <input [ngClass]="(isSearch && !bcshare)?'error':'form-control'" [disabled]="true" addclass="form-control"
+         [(ngModel)]="bcshare" id="bcshare" class="form-control"
           name="bcshare">
+          <small class="error-text" *ngIf="isSearch && !bcshare">Share Required</small>
+
       </div>
-
-
-      <div class="col-sm-2">
-        <label>Select Mode</label>
-        <select class="form-control" id="mode" [(ngModel)]="mode"  (click)="clearfun()" >
-          <option value="" selected>Select Mode</option>
-          <option value="0">Individual</option>
-          <option value="1">Bulk Edit</option>
-          <option value="2">Bulk Assign</option>
-        </select>
-      </div>
-
-
-      <!-- <div class="col-sm-2"  *ngIf="mode =='0'">
-        <label for="userid">Select Operator<span style="color: red">*</span></label>
-        <auto-completen
-          addclass="form-control" optValues="profileid"  [(ngModel)]="userid" (keyUp)="getoperator()" 
-          placeholder="Select Operator" Id="id" [item]="getoperatorlist"   >
-        </auto-completen>
-      </div>  -->
-
 
     </div>
     <button type="button" class="btn btn-md btn-success" (click)="initiallist()" style="margin: auto; display: block">
@@ -73,7 +77,6 @@
           <table class="table">
             <tbody>
               <ng-container>
-
 
                 <div style="display: table-row" formArrayName="share_details">
                   <div class="col-sm-12">
@@ -119,7 +122,6 @@
                             <input type="number" name="reseller_share" formControlName="reseller_share"
                               placeholder="reseller_share" class="form-control" (keyup)="onkeyupQty(idx)" />
                           </td>
-
                           <td>
                             <label>Reseller Amount<span style="color:red">*</span></label>
                             <input type="number" name="r_price" formControlName="r_price" placeholder="Reseller amount"
@@ -142,9 +144,7 @@
                                 </div>
                               </div>
                             </div>
-
                           </td>
-
 
                         </div>
                       </div>
@@ -162,6 +162,5 @@
         </div>
       </div>
     </form>
-
   </nb-card-body>
 </nb-card>

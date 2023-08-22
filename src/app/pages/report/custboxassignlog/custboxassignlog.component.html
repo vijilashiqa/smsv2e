@@ -1,0 +1,95 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+  <nb-card-header>Subscriber box Assign <a class="right" (click)="search=!search">Advanced Search</a></nb-card-header>
+  <nb-card-body>
+    <label class="left">
+      <h5>Subscriber box assign Log Count : {{count}}</h5>
+    </label>
+    <form [hidden]='!search' class="form-horizontal">
+      <div class="modal-body">
+        <div class="form-group row">
+          <div class="col-sm-3" *ngIf="role.getroleid() >777">
+            <label>Headend</label>
+            <auto-completen [(ngModel)]="headend" id="headend"
+             (changed)="getoperator();getModel();"
+            addclass="form-control" optValues="hdname" name="headend" placeholder='Select Headend' optId="hdid"
+              [item]="listhead">
+            </auto-completen>
+          </div>
+          <div class="col-sm-3" (change)="getoperator();subid();">
+            <label> Operator Type</label>
+            <select class="form-control" name="op_type" [(ngModel)]="op_type">
+              <option value="" selected>Select Operator Type</option>
+              <option value="444">LCO</option>
+              <option value="666">Distributor</option>
+              <option value="555">Sub-Distributor</option>
+              <option value="333">Hotel</option>
+            </select>
+          </div>
+
+          <div class="col-sm-3">
+            <label>Operator Name</label>
+            <auto-completen 
+            addclass="form-control" 
+            optValues="fullname"
+             [(ngModel)]="profileid" name="operator_name"
+              placeholder="Select Operator" Id="id" [item]="operatortypelist">
+            </auto-completen>
+          </div>
+          <div class="col-sm-3" (change)="boxparing();">
+            <label>Subscriber Id</label>
+            <auto-completen addclass="form-control"
+             optValues="subscriber_name" 
+             [(ngModel)]="subscriber_name"
+              name="subscriber_name" optId="custid"
+               placeholder='Select Subscriber Id'
+                [item]="data">
+            </auto-completen>
+
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-3">
+            <label>STB Number</label>
+            <auto-completen addclass="form-control" optValues="boxno" [(ngModel)]="stbopt" name="stbopt" optId="boxid"
+              placeholder='Select STB Number' [item]="data">
+            </auto-completen>
+          </div>
+        </div>
+        <button type="button" class="btn btn-md btn-success" (click)='initiallist();'
+          style="margin: auto; display: block;">Search</button>
+      </div>
+    </form>
+    <table class="table table-condensed table-hover">
+      <tr>
+        <th *ngIf="role.getroleid() >777">Headend Name</th>
+        <th>CAS Name</th>
+        <th>Operator Name</th>
+        <th>Subscriber Name</th>
+        <th>Serial Number</th>
+        <th>Performed By</th>
+        <th>Performed On</th>
+      </tr>
+
+      <tr *ngFor="let item of pagedItems">
+        <td *ngIf="role.getroleid() >777">{{item.hdname}}</td>
+        <td>{{item.cas_name}}</td>
+        <td>{{item.fullname}}</td>
+        <td>{{item.subscriber_name}}</td>
+        <td>{{item.boxno}}</td>
+        <td>{{item.fullname}}</td>
+        <td>{{item.cdate|date :'short'}}</td>
+      </tr>
+    </table>
+    <div class="pagination">
+      <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+        <a [ngClass]="{disabled:pager.currentPage === 1}" (click)="page=1;getlist();">First</a>
+        <a [ngClass]="{disabled:pager.currentPage === 1}" (click)="page=page-1;getlist();">Previous</a>
+        <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}"
+          (click)="getlist(page);">{{page}}</a>
+        <a [ngClass]="{disabled:pager.currentPage === pager.totalPages}" (click)="page=page+1;getlist();">Next</a>
+        <a [ngClass]="{disabled:pager.currentPage === pager.totalPages}"
+          (click)="page=pager.totalPages;getlist();">Last</a>
+      </ul>
+    </div>
+  </nb-card-body>
+</nb-card>

@@ -1,0 +1,12 @@
+<div class="modal-header">
+    <span style="font-weight: bold;">{{ modalHeader }}</span>
+    <button class="close" aria-label="Close" (click)="activeModal.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+    <br>
+
+      <p *ngFor="let item of logmsg">&nbsp;&nbsp;{{item}} </p>
+    
+  

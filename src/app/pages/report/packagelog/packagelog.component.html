@@ -1,0 +1,100 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="success">
+    <nb-card-header>Package Log <a class="right" (click)="search=!search">Advanced Search</a></nb-card-header>
+    <nb-card-body>
+     <label class="left">
+        <h5>Package Log Count : {{count}}</h5> 
+      </label>
+      <form [hidden]='!search' class="form-horizontal">
+        <div class="modal-body">
+          <div class="form-group row">
+            <div class="col-sm-3" *ngIf="role.getroleid() >777">
+              <label>Headend</label>
+              <auto-completen addclass="form-control" optValues="hdname" [(ngModel)]="headend" name="headend"
+                (changed)="Getbroadcasteredit()" placeholder="Select Headend" optId="hdid" [item]="listhead">
+              </auto-completen>
+            </div>
+            <div class="col-sm-3" (change)="getpackage()">
+              <label>Pack Type</label>
+              <select class="form-control" id="pack_type" [(ngModel)]="pack_type">
+                <option value="" selected>Select Pack Type</option>
+                <option value="0">Base Package</option>
+                <option value="1">A-La-Carte</option>
+                <option value="2">Add-On Package</option>
+                <option value="3">Bundle Package</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <label>Package</label>
+              <auto-completen addclass="form-control" optValues="packname" [(ngModel)]="package" name="package"
+                placeholder="Select Package" optId="packid" [item]="getpackagelist">
+              </auto-completen>
+            </div>
+            <div class="col-sm-3">
+              <label>Broadcaster</label>
+              <auto-completen addclass="form-control" optValues="fullname" [(ngModel)]="bcid" name="bcid" id="bcid"
+                placeholder="Select Broadcaster" optId="id" [item]="broadcast">
+              </auto-completen>
+            </div>
+        </div>
+            <!-- <div class="form-group row">
+              <div class="col-sm-3">
+                <label>Service Type</label>
+                <auto-completen addclass="form-control" optValues="srvtype" [(ngModel)]="servicetype" name="stype" id="stype"
+                  placeholder="Select Service Type" optId="stype" [item]="servtype">
+                </auto-completen>
+              </div>
+            </div> -->
+<button type="button" class="btn btn-md btn-success" (click)='initiallist();'
+            style="margin: auto; display: block;">Search</button>
+          </div>
+          </form>
+          <div style="overflow: scroll">
+        <table class="table">
+          <thead>
+              <tr>
+              <th  *ngIf="role.getroleid() >777" >Headend Name</th>
+              <th>Package Name</th>
+              <th>Broadcaster Name</th>
+              <th>TAX Type</th>
+              <th>Service Type</th>
+              <th>Remarks</th>
+              <th>Performed By</th>
+              <th>Performed On</th>
+     </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let item of pagedItems; let i = index">
+        <div style="display: table-row">
+                <td  *ngIf="role.getroleid() >777" >{{ item.hdname }}</td>
+                <td>{{ item.packname  }}</td>
+                  <td>{{ item.fullname || "---" }}</td>
+                  <td>{{ item.tax_type == 0 ? "Include" : "Exclude" }}</td>
+                  <td>{{ item.srvtype == 0 ? "Prepaid" : "Postpaid" }}</td>
+                  <td *ngIf="item.logmsg != 1">
+                    <p (click)="packages(item)">
+                      <i class="fas fa-file" nbPopoverPlacement="top"></i>
+                    </p>
+                  </td>  
+                  <td *ngIf="item.logmsg == 1">--</td>
+                  <td>{{ item.fullname || "---" }}</td>
+                  <td>{{item.cdate|date :'short'}}</td>
+            
+              </div>
+              </ng-container>
+              </tbody>
+              </table>
+     </div>
+      <div class="pagination">
+        <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+            <a [ngClass]="{disabled:pager.currentPage === 1}" (click)="page=1;getlist();">First</a>
+            <a [ngClass]="{disabled:pager.currentPage === 1}" (click)="page=page-1;getlist();">Previous</a>
+            <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}"
+              (click)="getlist(page);">{{page}}</a>
+            <a [ngClass]="{disabled:pager.currentPage === pager.totalPages}"
+              (click)="page=page+1;getlist();">Next</a>
+            <a [ngClass]="{disabled:pager.currentPage === pager.totalPages}"
+              (click)="page=pager.totalPages;getlist();">Last</a>
+          </ul>
+      </div>
+      </nb-card-body>
+  </nb-card>
