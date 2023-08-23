@@ -31,7 +31,7 @@
       </div>
 
 
-      <div class="col-sm-2" (change)="getpackage(); clearpackage();">
+      <div class="col-sm-2" (change)="getpackage();clearfun() ; clearpackage();">
         <label>Pack Type</label>
         <select 
         [ngClass]="(isSearch && !pack_type)?'error':'form-control'"
@@ -52,7 +52,7 @@
       <div class="col-sm-2">
         <label>Package</label>
         <auto-completen   [addclass]="(isSearch && !package)?'error':'form-control'" optValues="packname" [(ngModel)]="package" name="package"
-          placeholder="Select Package" optId="packid" [item]="getpackagelist" (changed)="getbcshare();amount();">
+          placeholder="Select Package" optId="packid" [item]="getpackagelist" (changed)="getbcshare();amount();clearfun() ">
         </auto-completen>
    <small class="error-text" *ngIf="isSearch && !package">Package Required</small>
       </div>
@@ -91,9 +91,12 @@
                           </td>
                           <td *ngIf="mode !=='2' && mode !=='0'">
                             <label>Reseller Name <span style="color:red">*</span></label> <br>
-                            <input type="text" name="profileid" formControlName="profileid" class="form-control"
-                              class="form-control">
+                            <!-- <input type="text" name="profileid" formControlName="profileid" class="form-control"
+                              class="form-control"> -->
+                              <label>{{user.value.profileid}}</label>
                           </td>
+
+                        
 
                           <td *ngIf="mode =='0'">
                             <label>Select Operator<span style="color: red">*</span></label>

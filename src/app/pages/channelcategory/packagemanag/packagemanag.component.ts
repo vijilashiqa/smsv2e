@@ -18,7 +18,7 @@ export class PackagemanagComponent implements OnInit {
   pack_type = ''; pack: any = []; package = ''; getpackagelist; disable = false; val; check_count; result; entry; id22; data11
   index = -1; cas: any = []; cas_type = ''; prod_id = ''; bcshare: any; bbshare; msov; distv; subdistv; bcsharev; resellerv;
   broadlist: any = []; bcid = ''; modalRef: BsModalRef; vall; getoperatorlist; userid; getbcamountv; bcamt; bcassign1
-  submit: boolean;
+  submit: boolean;msoshare1;reseller1;distshare1;subdistshare1
   isSearch = false;
   formGroup: any;
   constructor(
@@ -50,8 +50,8 @@ export class PackagemanagComponent implements OnInit {
 
 
   async initiallist() {
-    console.log('form', this.searchpackage);
-    console.log('ctrl', this.shareCtrl.length);
+    // console.log('form', this.searchpackage);
+    // console.log('ctrl', this.shareCtrl.length);
 
     this.isSearch = true;
     if (!this.headend || !this.pack_type || !this.mode || !this.package || !this.bcshare) {
@@ -72,8 +72,7 @@ export class PackagemanagComponent implements OnInit {
       this.getoperator();
       if (this.mode === '1') this.arary();
       else this.addreseller()
-      this.getbcshare();
-      this.getbcshare1();
+       this.getbcshare();
     }
 }
   clearpackage() {
@@ -97,6 +96,8 @@ export class PackagemanagComponent implements OnInit {
     this.bbshare = this.package;
     const [{ bcshare, bcamt }] = this.getpackagelist.filter(x => x.packid == this.bbshare);
     this.bcshare = bcshare + '/' + bcamt;
+    this.bcassign1 = this.getpackagelist.filter(x => x.packid == this.bbshare).map(x => x.bcshare)
+    console.log("get bc share", this.bcassign1)
   }
 
 
@@ -108,13 +109,6 @@ export class PackagemanagComponent implements OnInit {
 
 
 
-
-  async getbcshare1() {
-    this.bbshare = this.package;
-    this.bcassign1 = this.getpackagelist.filter(x => x.packid == this.bbshare).map(x => x.bcshare)
-    this.bcshare = this.bcassign1;
-    console.log("get bc share", this.bcassign1)
-  }
 
 
   async arary() {
@@ -130,12 +124,19 @@ export class PackagemanagComponent implements OnInit {
   }
 
   changedrop($event, index = 0) {
-    console.log("data dropdown")
+    this.getShareByIndex(index).dist_share.enable();
+    this.getShareByIndex(index).sub_dist_share.enable()
     this.dropdownvalue = $event.id;
-    const [filteredData] = this.data.filter(x => x.id == this.dropdownvalue);
-    if (filteredData.distid == 0) this.getShareByIndex(index).dist_share.disable();
-    if (filteredData.subdistid == 0) this.getShareByIndex(index).sub_dist_share.disable();
-    this.getShareByIndex(index).r_price.setValue(this.amountv)
+    const [{distid,subdistid,dist_share,sub_dist_share,mso_share,reseller_share}] = this.data.filter(x => x.id == this.dropdownvalue);
+    console.log("drop down data @@@@@@@@@",distid,subdistid)
+    
+    if (distid == 0) this.getShareByIndex(index).dist_share.disable();
+    else this.getShareByIndex(index).dist_share.setValue(dist_share); 
+    if (subdistid == 0) this.getShareByIndex(index).sub_dist_share.disable();
+    else  this.getShareByIndex(index).dist_share.setValue(sub_dist_share); 
+    this.getShareByIndex(index).r_price.setValue(this.amountv);
+    this.getShareByIndex(index).mso_share.setValue(mso_share);
+    this.getShareByIndex(index).reseller_share.setValue(reseller_share)
 
   }
 
@@ -169,7 +170,7 @@ export class PackagemanagComponent implements OnInit {
   }
 
   getShareByIndex(i) {
-    console.log("controls", i)
+    // console.log("controls", i)
     return this.shareCtrl[i]['controls']
   }
 
@@ -181,8 +182,9 @@ export class PackagemanagComponent implements OnInit {
 
     console.log("click here")
     this.submit = true;
-    if (this.vall != 100) {
+    if (this.vall != 100 && this.mode !== '2') {
       this.toast.error("Share is not equal to 100 ")
+      return
     }
     if (this.mode == '1') {
       this.searchpackage.value.share_details = this.searchpackage.value.share_details.filter(x => x.checked == true);
