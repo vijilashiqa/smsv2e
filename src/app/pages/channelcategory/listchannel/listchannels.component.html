@@ -8,7 +8,7 @@
       <div class="col-sm-3" *ngIf="role.getroleid() > 777" >
         <label>Headend</label>
         <auto-completen addclass="form-control" optValues="hdname" [(ngModel)]="headend" name="headend" (changed)="
-            listlang(); listgenre(); Getbroadcasteredit(); selectchanname()
+            listlang(); listgenre(); Getbroadcasteredit();ClearHeadend(); selectchanname()
           " placeholder="Select Headend" optId="hdid" [item]="headendl">
         </auto-completen>
       </div>
@@ -20,7 +20,7 @@
       <div class="col-sm-3">
         <label>Language</label>
         <auto-completen addclass="form-control" optValues="langname" [(ngModel)]="language" name="language"
-          (changed)="listgenre()" placeholder="Select Language" optId="langid" [item]="lang">
+          (changed)="listgenre();Clearlang()" placeholder="Select Language" optId="langid" [item]="lang">
         </auto-completen>
       </div>
       <div class="col-sm-3">
@@ -42,7 +42,7 @@
       </div>
       <div class="col-sm-3">
         <label>Channel</label>
-        <auto-completen addclass="form-control" optValues="channame" [(ngModel)]="channel_name" name="channel_name"
+        <auto-completen addclass="form-control" optValues="channame" [(ngModel)]="channel_name" name="channel_name" (changed)="ClearChannel()"
           placeholder="Select Channel" optId="chanid" [item]="selectchannel">
         </auto-completen>
       </div>

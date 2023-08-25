@@ -68,7 +68,7 @@ export class AutoCompleteNComponent implements ControlValueAccessor, OnInit {
         }
       });
     } else {
-      this.itemsFilter = this.items.filter(x => x[this.optValues] + ''.toLowerCase().includes((this.textbox + '').toLowerCase()));
+     if(item) this.itemsFilter = this.items.filter(x => x[this.optValues] + ''.toLowerCase().includes((this.textbox + '').toLowerCase()));
       if (item && item.length > 0) {
         const value = '';
         if (!this.textbox && this.oldValue) {

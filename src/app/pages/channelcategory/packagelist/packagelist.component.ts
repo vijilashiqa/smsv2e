@@ -94,6 +94,21 @@ export class PackagelistComponent implements OnInit {
   }
 
 
+  ClearHeadend(){
+    this.pack_type= '';
+    this.package='';
+    this.bcid='';
+  }
+
+
+  ClearPacktype(){
+    this.package='';
+    this.bcid='';
+  }
+
+  ClearBroadcaster(){
+    this.bcid='';
+  }
   async Download() {
     this.listpackage = await this.packageser.listpackage({
       hdid: this.headend,

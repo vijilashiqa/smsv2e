@@ -194,6 +194,48 @@ export class CustListComponent implements OnInit {
   }
 
 
+  clearHeadend(){
+
+    this.op_type='';
+    this.profileid='';
+    this.pack_type='';
+    this.package=''
+    this.model_opt='';
+    this.stbopt='';
+    this.vc='';
+    this.from_date='';
+    this.to_date='';
+    this.status='';
+    this.castype=''
+  }
+
+
+  ClearOperator(){
+
+    this.profileid='';
+    this.pack_type='';
+    this.package=''
+    this.model_opt='';
+    this.stbopt='';
+    this.vc='';
+    this.from_date='';
+    this.to_date='';
+    this.status='';
+    this.castype=''
+  }
+
+ClearPacktype(){
+  this.package=''
+  this.model_opt='';
+  this.stbopt='';
+  this.vc='';
+  this.from_date='';
+  this.to_date='';
+  this.status='';
+  this.castype=''
+
+
+}
   async Download() {
     this.listsubscriberl = await this.subscriber.listsubscriber(
       {

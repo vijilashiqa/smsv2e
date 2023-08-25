@@ -59,19 +59,48 @@ export class listChannelsComponent implements OnInit {
       index: (this.page - 1) * this.limit,
       limit: this.limit,
       hdid: this.headend,
-      bcid: this.broadcaster,
       chanlcm: this.lcn_num,
       langid: this.language,
       genreid: this.genre,
       chantype: this.channel_type,
-      chanmode: this.channel_mode,
       chanid: this.channel_name,
+      bcid: this.broadcaster,
+      chanmode: this.channel_mode,
     });
     this.data = this.listchannel[0];
     this.count = this.listchannel[1].count;
     this.loading=false;
     this.setPage();
   }
+
+
+  
+  ClearHeadend(){
+
+    this.lcn_num='';
+    this.language ='';
+    this.genre='';
+    this.channel_type='';
+    this.channel_name='';
+    this.broadcaster='';
+    this.channel_mode='';
+  }
+
+Clearlang(){
+
+  this.genre='';
+    this.channel_type='';
+    this.channel_name='';
+    this.broadcaster='';
+    this.channel_mode='';
+}
+
+
+ClearChannel(){
+
+  this.broadcaster=''; 
+}
+
   getlist(page) {
     var total = Math.ceil(this.count / this.limit);
     let result = this.pageservice.pageValidator(this.page, page, total);

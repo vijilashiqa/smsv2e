@@ -9,12 +9,12 @@
         <div class="form-group row">
           <div class="col-sm-3" *ngIf="role.getroleid() >777">
             <label>Headend</label>
-            <auto-completen [(ngModel)]="headend" id="headend" (changed)="getModel();"
+            <auto-completen [(ngModel)]="headend" id="headend" (changed)="getModel();ClearHeadend()"
               addclass="form-control" optValues="hdname" name="headend" placeholder='Select Headend' optId="hdid"
               [item]="listhead">
             </auto-completen>
           </div>
-          <div class="col-sm-3" (change)="getoperator();">
+          <div class="col-sm-3" (change)="getoperator(); ClearOperator()">
             <label> Operator Type</label>
             <select class="form-control" name="op_type" [(ngModel)]="op_type">
               <option value="" selected>Select Operator Type</option>

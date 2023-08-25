@@ -23,11 +23,11 @@
         <div class="col-sm-3" *ngIf="role.getroleid() >777">
           <label>Headend</label>
           <auto-completen addclass="form-control" optValues="hdname" [(ngModel)]="headend" name="headend"
-            (changed)="getoperator(); boxparing(); getpackage()" placeholder="Select Headend" optId="hdid"
+            (changed)="getoperator(); boxparing(); getpackage() ;clearHeadend()" placeholder="Select Headend" optId="hdid"
             [item]="listhead">
           </auto-completen>
         </div>
-        <div class="col-sm-3" (change)="getoperator()">
+        <div class="col-sm-3" (change)="getoperator(); ClearOperator()">
           <label> Operator Type</label>
           <select class="form-control" name="op_type" [(ngModel)]="op_type">
             <option value="" selected>Select Operator Type</option>
@@ -44,7 +44,7 @@
             placeholder="Select Operator" Id="id" [item]="operatortypelist">
           </auto-completen>
         </div>
-        <div class="col-sm-3" (change)="getpackage()">
+        <div class="col-sm-3" (change)="getpackage();ClearPacktype()">
           <label>Pack Type</label>
           <select class="form-control" id="pack_type" [(ngModel)]="pack_type">
             <option value="" selected>Select Pack Type</option>

@@ -5,9 +5,8 @@
     <div class="form-group row">
       <div class="col-sm-2" *ngIf="role.getroleid() > 777">
         <label>Headend</label>
-        <auto-completen
-        [addclass]="(isSearch && !headend)?'error':'form-control'"
-        addclass="form-control" optValues="hdname" [(ngModel)]="headend" name="headend" required
+        <auto-completen [addclass]="(isSearch && !headend)?'error':'form-control'" addclass="form-control"
+          optValues="hdname" [(ngModel)]="headend" name="headend" required
           (changed)="Getbroadcasteredit();clearheadend()" placeholder="Select Headend" optId="hdid" [item]="listhead">
         </auto-completen>
         <small class="error-text" *ngIf="isSearch && !headend">Headend Required</small>
@@ -17,11 +16,8 @@
 
       <div class="col-sm-2">
         <label>Select Mode</label>
-        <select
-        [ngClass]="(isSearch && !mode)?'error':'form-control'"
-
-       
-         class="form-control" id="mode" [(ngModel)]="mode"  (change)="clearfun() ;clearMode()" >
+        <select [ngClass]="(isSearch && !mode)?'error':'form-control'" class="form-control" id="mode" [(ngModel)]="mode"
+          (change)="clearfun() ;clearMode()">
           <option value="" selected>Select Mode</option>
           <option value="0">Individual</option>
           <option value="1">Bulk Edit</option>
@@ -33,12 +29,8 @@
 
       <div class="col-sm-2" (change)="getpackage();clearfun() ; clearpackage();">
         <label>Pack Type</label>
-        <select 
-        [ngClass]="(isSearch && !pack_type)?'error':'form-control'"
-
-        class="form-control"
-        
-        id="pack_type" [(ngModel)]="pack_type" required>
+        <select [ngClass]="(isSearch && !pack_type)?'error':'form-control'" class="form-control" id="pack_type"
+          [(ngModel)]="pack_type" required>
           <option value="" selected>Select Pack Type</option>
           <option value="0">Base Package</option>
           <option value="1">A-La-Carte</option>
@@ -51,18 +43,17 @@
 
       <div class="col-sm-2">
         <label>Package</label>
-        <auto-completen   [addclass]="(isSearch && !package)?'error':'form-control'" optValues="packname" [(ngModel)]="package" name="package"
-          placeholder="Select Package" optId="packid" [item]="getpackagelist" (changed)="getbcshare();amount();clearfun() ">
+        <auto-completen [addclass]="(isSearch && !package)?'error':'form-control'" optValues="packname"
+          [(ngModel)]="package" name="package" placeholder="Select Package" optId="packid" [item]="getpackagelist"
+          (changed)="getbcshare();amount();clearfun() ">
         </auto-completen>
-   <small class="error-text" *ngIf="isSearch && !package">Package Required</small>
+        <small class="error-text" *ngIf="isSearch && !package">Package Required</small>
       </div>
 
       <div class="col-sm-2">
         <label>BC Share/Price</label>
-        <input [ngClass]="(isSearch && !bcshare)?'error':'form-control'" [disabled]="true" addclass="form-control"
-         [(ngModel)]="bcshare" id="bcshare" class="form-control"
-          name="bcshare">
-          <small class="error-text" *ngIf="isSearch && !bcshare">Share Required</small>
+        <input  [disabled]="true" addclass="form-control"
+          [(ngModel)]="bcshare" id="bcshare" class="form-control" name="bcshare">
 
       </div>
 
@@ -93,16 +84,18 @@
                             <label>Reseller Name <span style="color:red">*</span></label> <br>
                             <!-- <input type="text" name="profileid" formControlName="profileid" class="form-control"
                               class="form-control"> -->
-                              <label>{{user.value.profileid}}</label>
+                            <label style="
+                              font-weight: bolder;
+                          ">{{user.value.profileid}}</label>
                           </td>
 
-                        
+
 
                           <td *ngIf="mode =='0'">
                             <label>Select Operator<span style="color: red">*</span></label>
                             <auto-completen addclass="form-control" optValues="profileid" formControlName="userid"
-                              (keyUp)="getoperator()" (changed)="changedrop($event,idx)" placeholder="Select Operator" Id="id"
-                              [item]="getoperatorlist">
+                              (keyUp)="getoperator()" (changed)="changedrop($event,idx);" placeholder="Select Operator"
+                              Id="id" [item]="getoperatorlist">
                             </auto-completen>
                           </td>
                           <td>
@@ -132,17 +125,18 @@
 
                           </td>
                           <td>
-                            <div *ngIf="last || idx != 0 ">
+                            <div *ngIf="last  ">
                               <div class="btn-group" *ngIf="mode =='0'">
                                 <button type="button" style="margin-top: 31%"
                                   class="btn btn-md btn-success dropdown-toggle" data-bs-toggle="dropdown">
                                   Action
                                 </button>
                                 <div class="dropdown-menu">
-                                  <a (click)="deleteMatField(idx)" class="dropdown-item" *ngIf="idx != 0"><i
-                                      title="Edit Complaint" class="ion-android-delete"></i>&nbsp;Delete</a>
-                                  <a (click)="addreseller();" class="dropdown-item" *ngIf="last"><i
-                                      title="Edit Complaint" class="ion-ios-plus-outline"></i>&nbsp;ADD
+                                  <a (click)="deleteMatField(idx);addOrRemoveOperator(false,idx,true);"
+                                    class="dropdown-item" *ngIf="last && idx != 0">
+                                    <i title="Edit Complaint" class="ion-android-delete"></i>&nbsp;Delete</a>
+                                  <a (click)="addreseller();addOrRemoveOperator(true,idx);" class="dropdown-item"
+                                    *ngIf="last"><i title="Edit Complaint" class="ion-ios-plus-outline"></i>&nbsp;ADD
                                   </a>
                                 </div>
                               </div>

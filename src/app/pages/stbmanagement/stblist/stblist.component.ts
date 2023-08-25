@@ -55,25 +55,67 @@ export class StblistComponent implements OnInit {
     this.liststb = await this.stb.liststb({
       index: (this.page - 1) * this.limit,
       limit: this.limit,
+      hdid: this.headend,
+      usertype: this.op_type,
+      id: this.profileid,
+      status: this.status,
       bmid: this.modelname,
       boxid: this.stbopt,
       vcid: this.vc,
-      usertype: this.op_type,
-      status: this.status,
-      id: this.profileid,
+      pairflg: this.pair,
+      assign: this.assign,
       cdate: this.from_date,
       mdate: this.to_date,
-      hdid: this.headend,
-      pairflg: this.pair,
-      assign: this.assign
+     
     });
     console.log('list stb=====', this.liststb)
     this.data = this.liststb[0];
     this.count = this.liststb[1].count;
     this.loading = false;
     this.setPage();
-
   }
+
+
+ClearHeadend(){
+
+  this.op_type ='';
+  this.profileid='';
+  this.status='';
+  this.modelname='';
+  this.stbopt='';
+  this.vc='';
+  this.pair='';
+  this.assign=''
+  this.from_date='',
+  this.to_date=''
+
+}
+
+
+ClearOperator_type(){
+  this.profileid='';
+  this.status='';
+  this.modelname='';
+  this.stbopt='';
+  this.vc='';
+  this.pair='';
+  this.assign=''
+  this.from_date='',
+  this.to_date=''
+}
+
+ClearOperator(){
+
+  this.status='';
+  this.modelname='';
+  this.stbopt='';
+  this.vc='';
+  this.pair='';
+  this.assign=''
+  this.from_date='',
+  this.to_date=''
+}
+
 
 
   async getHeadend($event = '') {

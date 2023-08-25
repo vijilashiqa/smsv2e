@@ -13,7 +13,7 @@
             <div class="col-sm-3"  *ngIf="role.getroleid() >777" >
               <label>Headend</label>
               <auto-completen [(ngModel)]="headend"   id="headend"
-               (changed)="getoperator();getModel();boxparing()"
+               (changed)="getoperator();getModel();boxparing();ClearHeadend()"
               addclass="form-control" optValues="hdname"   name ="headend"
               placeholder='Select Headend'  optId="hdid"
               [item]="listhead">
@@ -21,7 +21,7 @@
             </div>
             <div class="col-sm-3" (change)="getoperator()">
               <label>Operator Type</label>
-              <select class="form-control" name="op_type" [(ngModel)]="op_type">
+              <select class="form-control" name="op_type" [(ngModel)]="op_type" (change)="ClearOperator_type()">
                 <option value="" selected>Select Operator Type</option>
                 <option value="444">LCO</option>
                 <option value="666">Distributor</option>
@@ -32,6 +32,7 @@
             <div class="col-sm-3">
               <label>Operator Name</label>
               <auto-completen
+              (changed)="ClearOperator()"
                 addclass="form-control"
                 optValues="fullname"
                 name="operator_name"

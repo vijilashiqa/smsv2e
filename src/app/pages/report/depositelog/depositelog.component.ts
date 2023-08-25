@@ -93,6 +93,23 @@ export class DepositelogComponent implements OnInit {
       this.listhead = await this.headends.getHeadend({})
       console.log(this.listhead)
     }
+
+
+    ClearHeadend(){
+
+
+       this.profileid ='',
+    this.dep_mode_name ='',
+    this.op_type =''
+
+    }
+
+
+    ClearOperator(){
+ this.profileid='',
+       this.dep_mode_name ='',
+      this.op_type =''
+    }
    
     async depositemode() {
       this.depositpaymode = await this.deposit.selectdpositemode({userid:this.profileid})
