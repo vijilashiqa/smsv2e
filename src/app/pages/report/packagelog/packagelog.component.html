@@ -10,10 +10,10 @@
             <div class="col-sm-3" *ngIf="role.getroleid() >777">
               <label>Headend</label>
               <auto-completen addclass="form-control" optValues="hdname" [(ngModel)]="headend" name="headend"
-                (changed)="Getbroadcasteredit()" placeholder="Select Headend" optId="hdid" [item]="listhead">
+                (changed)="Getbroadcasteredit();ClearHeadend()" placeholder="Select Headend" optId="hdid" [item]="listhead">
               </auto-completen>
             </div>
-            <div class="col-sm-3" (change)="getpackage()">
+            <div class="col-sm-3" (change)="getpackage();ClearOperator()">
               <label>Pack Type</label>
               <select class="form-control" id="pack_type" [(ngModel)]="pack_type">
                 <option value="" selected>Select Pack Type</option>
@@ -25,7 +25,7 @@
             </div>
             <div class="col-sm-3">
               <label>Package</label>
-              <auto-completen addclass="form-control" optValues="packname" [(ngModel)]="package" name="package"
+              <auto-completen addclass="form-control" optValues="packname" [(ngModel)]="package" name="package" (changed)="ClearOp()"
                 placeholder="Select Package" optId="packid" [item]="getpackagelist">
               </auto-completen>
             </div>

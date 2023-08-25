@@ -99,14 +99,34 @@ export class PackagelogComponent implements OnInit {
       this.pagedItems = this.data;
     }
 
-//     packages(item) {
-//       const modalRef = this.modal.open(PackageremarkComponent, { size: 'sm', container: 'nb-layout', backdrop: false });
-//       modalRef.componentInstance.modalHeader = 'Remarks';
-//       modalRef.componentInstance.item = item;
-//       modalRef.result.then((data) => {
-//         ;
-//  })
-//       }
+ClearHeadend(){
+
+  this.pack_type ='';
+  this.package='';
+  this.bcid=''
+
+
+}
+
+
+ClearOperator(){
+
+  this.package='';
+  this.bcid=''
+}
+
+ClearOp(){
+  this.bcid=''
+
+}
+    packages(item) {
+      const modalRef = this.modal.open(PackageremarkComponent, { size: 'sm', container: 'nb-layout', backdrop: false });
+      modalRef.componentInstance.modalHeader = 'Remarks';
+      modalRef.componentInstance.item = item;
+      modalRef.result.then((data) => {
+        ;
+ })
+      }
     async getHeadend() {
       this.listhead = await this.headends.getHeadend({})
       console.log(this.listhead)
@@ -122,24 +142,6 @@ export class PackagelogComponent implements OnInit {
     // async Getservicetype($event = '') {
     //   this.servtype = await this.packageser.listpackage({ hdid: this.headend, bcid: this.bcid });
     // }
-    // async Download() {
-    //   this.listpackage = await this.packageser.listpackage({
-    //     hdid: this.headend,
-    //    logmsg: this.log_msg,
-    //     packid: this.package,
-    //     bcid: this.bcid,
-    //     stype: this.servicetype,
-    //   });
-    //   this.data = this.listpackage[0]
-    //   if (this.data) {
-    //     let tempdata = [], temp: any = this.data;
-    //     for (var i = 0; i < temp.length; i++) {
-    //       let parm = {};
-         
-    //       parm['Package Type'] = temp[i]['logmsg'] == 1 ? 'Bundle ' : 'N/A';
-    //               tempdata[i] = parm;
-    //     }
-    //   }
-    // }  
+    
   }
   
