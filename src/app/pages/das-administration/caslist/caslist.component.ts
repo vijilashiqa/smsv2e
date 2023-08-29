@@ -24,7 +24,7 @@ export class CaslistComponent implements OnInit {
   }
   async initiallist() {
     this.loading=true;
-    this.listcas = await this.headend.listcas({index:(this.page - 1) * this.limit,limit:this.limit});
+    this.listcas = await this.headend.Caslist({index:(this.page - 1) * this.limit,limit:this.limit});
     console.log('listcas', this.listcas)
     this.data = this.listcas[0];
     this.count = this.listcas[1].count;

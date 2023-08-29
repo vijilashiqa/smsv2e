@@ -51,6 +51,7 @@ export class listChannelsComponent implements OnInit {
 
   async selectchanname() {
     this.selectchannel = await this.channelService.selectchanname({ hdid: this.headend })
+    console.log("channel name",this.selectchanname)
 
   }
   async initiallist() {

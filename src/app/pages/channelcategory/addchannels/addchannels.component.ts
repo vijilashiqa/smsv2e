@@ -110,6 +110,14 @@ export class AddchannelsComponent implements OnInit {
       }
     }
   }
+
+
+  ClearBoradcaster(){
+
+    this.channelForm.controls.langid.setValue('');
+    this.channelForm.controls.genreid.setValue('');
+
+  }
   get ctrl() {
     return this.channelForm.controls
   }

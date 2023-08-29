@@ -19,7 +19,7 @@
     </div>
     <div class="modal-body" autocomplete="off" [hidden]="!search">
       <div class="form-group row">
-        <div class="col-sm-3" (change)="getoperator()" *ngIf="role.getroleid() >777">
+        <div class="col-sm-3" (change)="getoperator();ClearHeadend()" *ngIf="role.getroleid() >777">
           <label>Headend</label>
           <select name="headend" class="form-control" [(ngModel)]="headend">
             <option value="">Select Headend</option>
@@ -28,7 +28,7 @@
             </option>
           </select>
         </div>
-        <div class="col-sm-3" (change)="getoperator()">
+        <div class="col-sm-3" (change)="getoperator();ClearOptype()">
           <label>Operator Type</label>
           <select class="form-control" name="op_type" [(ngModel)]="op_type">
             <option value="" selected>Select Operator Type</option>

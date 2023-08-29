@@ -45,7 +45,6 @@ export class PackagelogComponent implements OnInit {
 
   constructor(
     private packageser: PackageService,
-    // private deposit :PacklogService,
     private pageservice: PagerService,
     private modal: NgbModal,
     public role: RoleservicesService,

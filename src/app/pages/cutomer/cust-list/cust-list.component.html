@@ -7,7 +7,7 @@
     <a style="text-align: right; float: right" (click)="search = !search">Advanced Search</a>
   </nb-card-header>
   <nb-card-body>
-    <button  *ngIf="!role.getmenurole(402)"   status="success" nbButton [routerLink]="['/pages/customer/add-cust']">
+    <button   status="success" nbButton [routerLink]="['/pages/customer/add-cust']">
       Add
     </button>
     <div class="row">
@@ -107,7 +107,7 @@
         </div>
         <div class="col-sm-3">
           <label>CAS Name<span style="color: red">*</span></label>
-          <auto-completen optValues="casname" name="castype" [(ngModel)]="castype" (keyUp)="GetCas($event)"
+          <auto-completen optValues="cas_name" name="castype" [(ngModel)]="castype" (keyUp)="GetCas($event)"
             placeholder="Select CAS Name" optId="casid" [item]="getcas">
           </auto-completen>
         </div>

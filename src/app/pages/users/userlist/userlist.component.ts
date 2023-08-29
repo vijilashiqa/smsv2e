@@ -51,6 +51,24 @@ export class UserlistComponent implements OnInit {
 
   }
 
+
+  ClearHeadend(){
+
+    this.op_type='';
+    this.profileid='';
+    this.status=';'
+
+
+  }
+
+
+  ClearOptype()
+{
+
+  this.profileid='';
+
+  this.status='';
+}
   update(item) {
     const modalRef = this.modal.open(UserhdcasComponent, { container: 'nb-layout', backdrop: false });
     modalRef.componentInstance.title = 'ADD HDCAS';

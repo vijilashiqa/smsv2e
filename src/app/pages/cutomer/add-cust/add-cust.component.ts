@@ -94,6 +94,10 @@ export class AddCustComponent implements OnInit {
     }
   }
 
+  ClearOperatr(){
+
+    this.AddCustForm.controls.stb_no.setValue("");
+  }
 
   metavalue() {
     this.bulkmeta = [
@@ -301,7 +305,7 @@ export class AddCustComponent implements OnInit {
 
 
   Error(item ) {
-    const modalRef = this.modal.open(ErrormsgComponent, { size: 'sm', container: 'nb-layout', backdrop: false });
+    const modalRef = this.modal.open(ErrormsgComponent, { size: 'lg', container: 'nb-layout', backdrop: false });
     modalRef.componentInstance.title = 'Error List';
     modalRef.componentInstance.item = item;
     modalRef.result.then((data) => {
@@ -461,16 +465,16 @@ export class AddCustComponent implements OnInit {
     console.log(this.listhead)
   }
 
-  async getoperator(event ='') {
+  async getoperator($event ='') {
     if(this.AddCustForm.value ["hdid"]){
-      this.getoperatorlist = await this.subscribers.getoperator({ hdid: this.AddCustForm.value['hdid'] , like : event})
+      this.getoperatorlist = await this.subscribers.getoperator({ hdid: this.AddCustForm.value['hdid'] , like : $event})
       console.log("operator list ", this.getoperatorlist)
     }
 
 
   }
-  async getbox() {
-    this.getboxlist = await this.stbm.getbox({ hdid: this.AddCustForm.value['hdid'] , pairstatus : 0 , userid : this.AddCustForm.value['userid']})
+  async getbox($event ='') {
+    this.getboxlist = await this.stbm.getbox({ hdid: this.AddCustForm.value['hdid'] , pairstatus : 0 , userid : this.AddCustForm.value['userid'] , like : $event})
     console.log('getbox', this.getboxlist)
   }
   async getboxedit() {

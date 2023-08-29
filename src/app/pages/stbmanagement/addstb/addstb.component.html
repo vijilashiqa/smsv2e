@@ -38,7 +38,7 @@
             <label>Select STB Model<span style="color: red">*</span></label>
             <auto-completen [addclass]="{ error: submit && this.AddStbForm.controls.modelid.errors }"
               addclass="form-control" optValues="modelname" (changed)="getInvoicefun(); setModelType(); getstbtype()"
-              formControlName="modelid" (keyUp)="getModelcas()" placeholder="Select STB Model" optId="bmid"
+              formControlName="modelid" (keyUp)="getModelcas($event)" placeholder="Select STB Model" optId="bmid"
               [item]="getmodel">
             </auto-completen>
             <div *ngIf=" this.AddStbForm.controls.modelid.errors && this.AddStbForm.controls.modelid.errors.required && submit
@@ -114,7 +114,7 @@
       <div class="form-group row">
         <div class="col-sm-6">
           <div class="custom-control custom-checkbox">
-            <input (change)=" bulk = []" formControlName="status" name="status"
+            <input (change)=" bulk = [];changestatus($event.target.checked)" formControlName="status" name="status"
               class="custom-control-input" type="checkbox" id="status" />
             <label class="custom-control-label" for="status">Create Individuals</label>
           </div>

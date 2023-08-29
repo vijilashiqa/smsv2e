@@ -18,8 +18,7 @@ export class PackageremarkComponent implements OnInit {
   submit: boolean;
   constructor(
     public activeModal: NgbActiveModal,
-    private alert: ToasterService,
-    private pack: PackageService,
+    
     
   ) { }
 
@@ -32,6 +31,8 @@ export class PackageremarkComponent implements OnInit {
  async packagelog() {
    if(this.item.logmsg == null ){
     this.logmsg==  'No data Found';
+
+    console.log("messafsesdf")
    }
    else{
     this.logmsg = this.item.logmsg.split('.');

@@ -22,7 +22,7 @@
             <label>Select Operator<span style="color: red">*</span></label>
             <auto-completen
              [addclass]="{error: submit && this.AddCustForm.controls.userid.errors}"
-              addclass="form-control" optValues="profileid" formControlName="userid" (keyUp)="getoperator()" (changed)="getbox()"
+              addclass="form-control" optValues="profileid" formControlName="userid" (keyUp)="getoperator($event)" (changed)="getbox();ClearOperatr()"
               placeholder="Select Operator" Id="id" [item]="getoperatorlist">
             </auto-completen>
             <div
@@ -77,7 +77,7 @@
           </div>
           <div class="col-sm-6">
             <label>CAF Number<span style="color: red">*</span></label>
-            <input type="text" class="form-control" name="cafno" formControlName="cafno" placeholder="Enter CAF Number"
+            <input type="number" class="form-control" name="cafno" formControlName="cafno" placeholder="Enter CAF Number"
               [ngClass]="{'is-invalid': submit && AddCustForm.controls.cafno.errors}" />
             <small *ngIf="AddCustForm.controls.cafno.errors && AddCustForm.controls.cafno.errors.required && submit"
               class="invalid-feedback">CAF Number is required!
@@ -117,7 +117,7 @@
           <div class="col-sm-6" [hidden]='bulkopt'>
             <label>Select STB Number<span style="color: red">*</span></label>
             <auto-completen [addclass]="{error: submit && this.AddCustForm.controls.stb_no.errors}"
-              addclass="form-control" optValues="boxno" formControlName="stb_no" (keyUp)="getbox()"
+              addclass="form-control" optValues="boxno" formControlName="stb_no" (keyUp)="getbox($event)"
               placeholder="Select STB Number" optId="boxid" [item]="getboxlist">
             </auto-completen>
             <div
