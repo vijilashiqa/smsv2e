@@ -374,6 +374,7 @@ async  editRole() {
   
  this.editrolel = await this.operator.getprofilerole({id : this.edit['id'] })
  console.log("get edit role..........",this.editrolel)
+ if(this.editrolel[0]['menurole'] != null)
  this.selectnodes(this.editrolel[0]['menurole']) ;
   }
 
