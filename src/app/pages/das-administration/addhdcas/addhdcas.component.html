@@ -21,7 +21,7 @@
                      <label>Select CAS Name<span style="color:red">*</span></label>
                      <auto-completen [addclass]="{ 'error': submit && this.AddCASForm.controls.casid.errors }"
                         optValues="casname" name="casid" formControlName="casid" (keyUp)="GetCas()"
-                        placeholder='Select CAS Name' optId="casid" [item]="getcas">
+                        placeholder='Select CAS Name' optId="casid" [item]="data">
                      </auto-completen>
                      <div
                         *ngIf="this.AddCASForm.controls.casid.errors && (this.AddCASForm.controls.casid.errors.required) && submit"

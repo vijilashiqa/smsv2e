@@ -9,6 +9,7 @@ import { StockService } from "../../_services/stock.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ErrormsgComponent } from "../../channelcategory/errormsg/errormsg.component";
 import { SucessComponent } from "../sucess/sucess.component";
+import { eventListeners } from "@popperjs/core";
 const EXCEL_TYPE =
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
 const EXCEL_EXTENSION = ".xlsx";
@@ -107,21 +108,26 @@ export class AddstbComponent implements OnInit {
   }
 
   async addstb() {
-    this.submit = true;
-    const invalid = [];
-    const control = this.AddStbForm.controls;
-    for (const name in control) {
-      if (control[name].invalid) {
-        invalid.push(name);
-      }
-    }
-    if (this.AddStbForm.invalid) {
-      console.log("Invalid value -----", invalid);
-      // window.alert('Please fill the mandatory fields')
+    console.log("clik")
+  this.submit = true;
+    // const invalid = [];
+    // const control = this.AddStbForm.controls;
+    // for (const name in control) {
+    //   if (control[name].invalid) {
+    //     invalid.push(name);
+    //   }
+    // }
+    // if (this.AddStbForm.invalid) {
+    //   console.log("Invalid value -----", invalid);
+    //   window.alert('Please fill the mandatory fields')
+    //   return;
+    // }
+
+    if (!this.AddStbForm.valid) {
       return;
     }
-    if (this.val["status"]) {
-      this.AddStbForm.value["status"] = this.AddStbForm.value["status"] = true ? 0 : 1;
+    if (this.val["status"] == true) {
+    //  this.AddStbForm.value["status"] = this.AddStbForm.value["status"] = true ? 0 : 1;
       let result = await this.stb.addstb(this.val);
       console.log("add...", result);
       if (result && result[0].err_code == 0) {
@@ -131,7 +137,7 @@ export class AddstbComponent implements OnInit {
         this.toast.warning(result[0]["msg"]);
       }
     }
-    if (this.bulk.length && !this.val["status"]) {
+    if (this.bulk.length && this.val["status"] == false) {
       let result = this.metavalue();
       for (let i = 0; i < this.bulk.length; i++) {
         for (let meta of result) {
@@ -139,7 +145,7 @@ export class AddstbComponent implements OnInit {
         }
       }
       this.val["bulkstb"] = this.bulk;
-      this.AddStbForm.value["status"] = this.AddStbForm.value["status"] = true ? 0 : 1;
+      // this.AddStbForm.value["status"] = this.AddStbForm.value["status"] = true ? 0 : 1;
       console.log("form", this.val);
       let resp = await this.stb.addstbbulk(this.val);
       console.log("bulkResult????????????????? ", resp);
@@ -163,9 +169,9 @@ export class AddstbComponent implements OnInit {
    
   }
 
-  async getModelcas() {
+  async getModelcas($event ='') {
     if(this.AddStbForm.value['hdid']){
-    this.getmodel = await this.stock.getstockmodel({ hdid: this.AddStbForm.value["hdid"], hdcasid: this.AddStbForm.value["casid"] });
+    this.getmodel = await this.stock.getstockmodel({ hdid: this.AddStbForm.value["hdid"], hdcasid: this.AddStbForm.value["casid"] , like :$event });
   }
 }
   async getstbtype() {
@@ -191,6 +197,12 @@ export class AddstbComponent implements OnInit {
 
   }
 
+
+  changestatus($event){
+
+    console.log("event ",$event)
+
+  }
 
   async getbox() {
     this.box = this.AddStbForm.value['boxno'];

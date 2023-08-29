@@ -52,7 +52,7 @@
               <label>Select BroadCaster Name <span style="color: red">*</span></label>
               <auto-completen [addclass]="{
                   error: submit && this.channelForm.controls.bcid.errors
-                }" addclass="form-control" optValues="fullname" formControlName="bcid" (keyUp)="Getbroadcasteredit()"
+                }" addclass="form-control" optValues="fullname" formControlName="bcid" (keyUp)="Getbroadcasteredit()" (changed)=" ClearBoradcaster()"
                 placeholder="Select BroadCaster Name " id="id" [item]="result">
               </auto-completen>
               <div *ngIf="

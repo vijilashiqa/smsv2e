@@ -60,6 +60,9 @@ export class HeadendService {
     return this.http.post("/headend/listcas", params).toPromise();
   }
 
+  async Caslist(params) {
+    return this.http.post("/headend/Caslist", params).toPromise();
+  }
 
   
 }
