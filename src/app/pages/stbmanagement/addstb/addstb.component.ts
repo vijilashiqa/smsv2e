@@ -107,10 +107,27 @@ export class AddstbComponent implements OnInit {
   async addstb() {
     console.log("clik")
   this.submit = true;
+
+    // const invalid = [];
+    // const control = this.AddStbForm.controls;
+    // for (const name in control) {
+    //   if (control[name].invalid) {
+    //     invalid.push(name);
+    //   }
+    // }
+    // if (this.AddStbForm.invalid) {
+    //   console.log("Invalid value -----", invalid);
+    //   window.alert('Please fill the mandatory fields')
+    //   return;
+    // }
+
+
     if (!this.AddStbForm.valid) {
       return;
     }
     if (this.val["status"] == true) {
+
+    //  this.AddStbForm.value["status"] = this.AddStbForm.value["status"] = true ? 0 : 1;
       let result = await this.stb.addstb(this.val);
       console.log("add...", result);
       if (result && result[0].err_code == 0) {
@@ -128,6 +145,7 @@ export class AddstbComponent implements OnInit {
         }
       }
       this.val["bulkstb"] = this.bulk;
+      // this.AddStbForm.value["status"] = this.AddStbForm.value["status"] = true ? 0 : 1;
       console.log("form", this.val);
       let resp = await this.stb.addstbbulk(this.val);
       console.log("bulkResult????????????????? ", resp);

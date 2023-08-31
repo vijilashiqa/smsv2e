@@ -129,6 +129,7 @@
         <tr>
           <th *ngIf="role.getroleid() >777">Headend ID</th>
           <th>CAS Name</th>
+          <!-- <th>Box ID</th> -->
           <th>STB Model</th>
           <th>Invoice NO</th>
           <th>Pair Status</th>
@@ -141,6 +142,7 @@
           <tr *ngFor="let item of pagedItems">
             <td *ngIf="role.getroleid() >777">{{item.hdname}}</td>
             <td>{{item.cas_name}}</td>
+            <!-- <td>{{item.boxid}}</td> -->
             <td>{{item.modelname}}</td>
             <td>{{item.invoiceno}}</td>
             <td>{{item.pairflg == 1? 'paired':'unpair'}}</td>
