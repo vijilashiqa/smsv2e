@@ -189,24 +189,8 @@
                </nb-tab>
                <nb-tab tabTitle="Invoice Details">
                   <div class="modal-body">
-                     <div class="form-group row">
-                        <div class="col-sm-6">
-
-                           <!-- <div class="form-group row">
-                               <div class="col-sm-12">
-                                  <label>GST Type</label>
-                                  <select name="GST_Type" formControlName="GST_Type" class="form-control"
-                                  [ngClass]="{ 'is-invalid': submit && ctrl.GST_Type.errors }">
-                                     <option value="" selected>Select GST Type</option>
-                                     <option value="1">SGST & CGST</option>
-                                     <option value="2">IGST</option>
-                                  </select>
-                                  <small *ngIf="ctrl.hdname.errors &&(ctrl.GST_Type.errors.required)&& submit"
-                                  class="invalid-feedback">GST_Type is required! </small>
-                               </div>
-                            </div> -->
                            <div class="form-group row">
-                              <div class="col-sm-12">
+                              <div class="col-sm-6">
                                  <label>SGST<span style="color:red">*</span></label>
                                  <input type="number" name="sgst" formControlName="sgst" class="form-control"
                                     name="sgst" min="0" placeholder="Enter SGST"
@@ -214,9 +198,7 @@
                                  <small *ngIf="ctrl.hdname.errors &&(ctrl.sgst.errors.required) && submit"
                                     class="invalid-feedback">SGST is required! </small>
                               </div>
-                           </div>
-                           <div class="form-group row">
-                              <div class="col-sm-12">
+                              <div class="col-sm-6">
                                  <label>CGST<span style="color:red">*</span></label>
                                  <input type="number" name="cgst" formControlName="cgst" class="form-control" min="0"
                                     name="cgst" placeholder="Enter CGST"
@@ -225,17 +207,17 @@
                                     class="invalid-feedback">CGST No is required! </small>
                               </div>
                            </div>
+                          
                            <div class="form-group row">
-                              <div class="col-sm-12">
+                              <div class="col-sm-6">
                                  <label>GST NO<span style="color:red">*</span></label>
                                  <input type="text" name="gst" formControlName="gst" class="form-control"
                                     placeholder="Enter GST" [ngClass]="{ 'is-invalid': submit && ctrl.gst.errors }">
                                  <small *ngIf="ctrl.hdname.errors &&(ctrl.gst.errors.required)&& submit"
                                     class="invalid-feedback">GST No is required! </small>
                               </div>
-                           </div>
-                           <div class="form-group row">
-                              <div class="col-sm-12">
+
+                              <div class="col-sm-6">
                                  <label>IGST<span style="color:red">*</span></label>
                                  <input type="text" name="igst" formControlName="igst" class="form-control" min="0"
                                     placeholder="Enter IGST" [ngClass]="{ 'is-invalid': submit && ctrl.igst.errors }">
@@ -243,28 +225,21 @@
                                     class="invalid-feedback">IGST is required! </small>
                               </div>
                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                           <div class="form-group row">
-                              <div class="col-sm-12">
-                                 <label>Company Name To Show In Invoice<span style="color:red">*</span></label>
-                                 <input type="text" name="com_invid" formControlName="com_invid" class="form-control"
-                                    placeholder="Enter company Name"
-                                    [ngClass]="{ 'is-invalid': submit && ctrl.com_invid.errors }">
-                                 <small *ngIf="ctrl.hdname.errors &&(ctrl.com_invid.errors.required)&& submit"
-                                    class="invalid-feedback">Company is required! </small>
-                              </div>
+                     <div class="form-group row" > 
+                           <div class="col-sm-6">
+                             <label>Upload Invoice<span style="color: red">*</span></label>
+                             <input type="file" name="img" class="form-control"  accept="image/*" (change)="handleFile($event.target.files)"
+                               [ngClass]="{'is-invalid' : submit && this.AddheadendForm.controls.img.errors  }" formControlName="img">
+                             <div
+                               *ngIf="this.AddheadendForm.controls.img.errors && this.AddheadendForm.controls.img.errors.required && submit  "
+                               class="invalid-feedback">
+                               CAF required!
+                             </div>
                            </div>
-                           <div class="form-group row">
-                              <div class="col-sm-12">
-                                 <label class="control-label">ISP Invoice Logo<span style="color:red">*</span></label>
-                                 <input type="file" formControlName="Logo" class="form-control"
-                                    [ngClass]="{'form-control' : true,'form-control-danger':ctrl.Logo.invalid&&submit}" />
-                                 <!-- <small *ngIf="ctrl.hdname.errors &&(ctrl.Logo.errors.required) && submit"
-                                     class="invalid-feedback">Logo is required! </small> -->
-                              </div>
+                           <div class="col-sm-3" *ngIf='imageURL'>
+                             <label>Invoice<span style="color: red">*</span></label>
+                             <img [src]="imageURL" style="width: 100%;height: 250px">
                            </div>
-                        </div>
                      </div>
                   </div>
                </nb-tab>

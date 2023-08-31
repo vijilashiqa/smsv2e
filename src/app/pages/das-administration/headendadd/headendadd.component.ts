@@ -3,6 +3,7 @@ import { CountryService, HeadendService } from '../../_services/index';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'ngx-headendadd',
   templateUrl: './headendadd.component.html',
@@ -11,13 +12,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class HeadendaddComponent implements OnInit {
   submit: boolean; AddheadendForm; editflag = false;
   state: any = []; district: any = []; city: any = []; editable: boolean = false; editdata 
-  pincode: any = []; area: any = []; headend;
-  keyword = 'name'; value = "country_pk"; citylist; listarea; id; count; getstates; dist;
+  pincode: any = []; area: any = []; headend;imageURL?: string; imageURL1: any; FileSelected?: Blob; base64 : string ='baseee..';
+  keyword = 'name'; value = "country_pk"; citylist; listarea; id; count; getstates; dist;selectedfile: File = null
   initialValue; updateform;
   constructor(private country: CountryService,
     private headService: HeadendService,
     private toast: ToastrService,
     private route: Router,
+    private domSanitizer: DomSanitizer,
     private aRoute: ActivatedRoute,
     private fb: FormBuilder
   ) { }
@@ -38,6 +40,20 @@ export class HeadendaddComponent implements OnInit {
       await this.getarea();
     }
   }
+
+
+  convertFiletobase(){
+
+    let reader = new FileReader()
+    reader.readAsDataURL(this.FileSelected as Blob)
+    reader.onload = ( ) =>{
+   this.base64 =reader.result as string
+  
+  
+   console.log(" reader",this.base64)
+    }
+  }
+  
   async AddHeadend() {
     this.submit = true;
     console.log('add...', this.val);
@@ -50,10 +66,9 @@ export class HeadendaddComponent implements OnInit {
     }
     if (this.AddheadendForm.invalid) {
       console.log('Invalid value -----', invalid);
-      window.alert('Please fill mandatory fields');
       return;
     }
-    console.log('add...', this.val);
+   console.log(" reader@@@@@@@@@@@@@@@@@@",this.base64)
     let method = this.id ? 'editheadend' : 'addheadend'
     console.log('updatelist', method);
     if (this.id) this.AddheadendForm.value['id'] = this.id
@@ -66,6 +81,7 @@ export class HeadendaddComponent implements OnInit {
       this.toast.warning(result[0]['msg'])
       console.log('add...', this.val);
     }
+
   }
 
   async getCountry($event = '') {
@@ -116,6 +132,22 @@ export class HeadendaddComponent implements OnInit {
     }
   }
 
+
+  handleFile(files :FileList){
+
+    this.FileSelected = files[0];
+
+    this.imageURL = this.domSanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(this.FileSelected)) as string
+
+  this.base64='base64';
+
+  this.convertFiletobase();
+  }
+ 
+
+
+
+
   async edit() {
     console.log('edit herer')
     this.editdata = await this.headService.getheadendedit({ id: this.id });
@@ -123,7 +155,6 @@ export class HeadendaddComponent implements OnInit {
   }
   createForm() {
     this.AddheadendForm = this.fb.group({
-      // channame: new FormControl(this.addchan?.channame|| '', Validators.required),
       hdname: new FormControl(this.editdata?.hdname || '', Validators.required),
       headendid: new FormControl(this.editdata?.hdlid || '', Validators.required),
       mobileno: new FormControl(this.editdata?.mobileno || '', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
@@ -144,7 +175,7 @@ export class HeadendaddComponent implements OnInit {
       igst: new FormControl(this.editdata?.igst || '', Validators.required),
       gst: new FormControl(this.editdata?.gst || '', Validators.required),
       Logo: new FormControl(this.editdata?.Logo || ''),
-      com_invid: new FormControl(this.editdata?.com_invid || '', Validators.required),
+      img: new FormControl(this.editdata?.img || '', Validators.required),
       postpaidtime: new FormControl(this.editdata?.postpaidtime || '', Validators.required),
     });
 
@@ -155,11 +186,5 @@ export class HeadendaddComponent implements OnInit {
   get val() {
     return this.AddheadendForm.value
   }
-
-  // async getinitial(fname, data, id) {
-  //   let [result] = data.filter(x => x.id == id)
-  //   this.AddheadendForm.get(fname).patchValue(result)
-  // }
-
 
 }

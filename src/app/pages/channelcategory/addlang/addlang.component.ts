@@ -53,7 +53,7 @@ async editlang(){
     this.submit = true;
     if (this.addlanguageForm.invalid) {
       // window.alert('Please fill the mandatory fields')
-      this.toast.warning('tsting')
+      // this.toast.warning('tsting')
       return;
     }
     let method = this.item ? 'editlanguage' : 'addlanguage';

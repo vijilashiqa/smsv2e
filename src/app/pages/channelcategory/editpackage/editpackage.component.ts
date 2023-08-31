@@ -174,7 +174,8 @@ export class EditpackageComponent implements OnInit {
   selectnodes() {
     if (this.EditPackageForm.value['packtype'] != 3) {
       let chanids = '[' + this.editdata['channelid'] + ']'
-    // /  console.log('cannel idsin select node', chanids)
+    console.log('cannel idsin select node', this.editdata['channelid'])
+    if(this.editdata['channelid'] != null){
       let channel = JSON.parse(chanids);
       for (var i = 0; i < channel.length; ++i) {
         let leaf = this.tree.treeModel.getNodeById(JSON.parse(channel[i]))
@@ -183,6 +184,15 @@ export class EditpackageComponent implements OnInit {
       }
     }
   }
+}
+
+
+ClearHeadend(){
+
+  this.EditPackageForm.controls.bcid.setValue("");
+
+}
+
 
   selectednodes() {
     if (this.EditPackageForm.value['packtype'] != 3) {
@@ -260,6 +270,14 @@ export class EditpackageComponent implements OnInit {
       return;
     }
     this.EditPackageForm.value['status'] = this.EditPackageForm.value['status'] == true ? 1 : 0;
+     let ser = this.EditPackageForm.value.serviceid;
+     console.log("entered data",ser.length)
+     let res1 =this.listver
+    console.log("length value @@@",res1.length)
+    if ( ser.length == 0  && res1.length == 0  && this.EditPackageForm.value["packtype"] != 3) {
+      this.toast.warning("Please Fill Any One Product ID");
+      return;
+    }
     this.addpackagevalues = await this.packageser.editpackage(this.EditPackageForm.value)
     if (this.addpackagevalues && this.addpackagevalues[0].err_code == 0) {
       this.toast.success(this.addpackagevalues[0]['msg']);

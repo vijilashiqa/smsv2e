@@ -90,7 +90,7 @@ export class GeoAddareaComponent implements OnInit {
      
   }  
   typeclearlcountry(val = "1") {
-    this.changeclear("state_fk", "district_fk" , "city_fk");
+    this.changeclear("state_fk", "district_fk" , "city_fk" , "pincode_fk");
   }
   changeclear(...data) {
     for (let i of data) {
@@ -99,13 +99,13 @@ export class GeoAddareaComponent implements OnInit {
   }
 
   typeclearstate(val = "1") {
-    this.changeclear( "district_fk" , "city_fk");
+    this.changeclear( "district_fk" , "city_fk" , "pincode_fk");
   }
 
 
   typecleardis(val ='1'){
 
-    this.changeclear('city_fk')
+    this.changeclear('city_fk',  "pincode_fk")
   }
 
   async getpincode($event=''){

@@ -55,7 +55,7 @@ export class AddmsoComponent implements OnInit {
       this.getcity();
       this.getarea();
       this.getHeadend();
-      this.listlco();
+      // this.listlco();
     }
   }
 
@@ -126,11 +126,11 @@ export class AddmsoComponent implements OnInit {
   }
 
 
-  async listlco() {
+  // async listlco() {
 
-    this.getlistlco = await this.operator.getlcocode({ hdid: this.AddMsoForm.value['hdid'] });
-    this.getlistcount = this.getlistlco[0];
-  }
+  //   this.getlistlco = await this.operator.getlcocode({ hdid: this.AddMsoForm.value['hdid'] });
+  //   this.getlistcount = this.getlistlco[0];
+  // }
 
 
   changeclear(...data) {

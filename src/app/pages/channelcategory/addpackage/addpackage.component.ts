@@ -255,6 +255,7 @@ export class AddpackageComponent implements OnInit {
     this.AddPackageForm.value["status"] == true ? 1 : 0;
     let ser = this.AddPackageForm.value.serviceid;
     let res1 = ser.filter((x) => x.productid == "").map((x) => x.productid);
+    console.log("services the length",ser, "package len", res1)
     if (res1.length == 5 && this.AddPackageForm.value["packtype"] != 3) {
       this.toast.warning("Please Fill Any One Product ID");
       return;
@@ -293,6 +294,13 @@ export class AddpackageComponent implements OnInit {
       ]);
       this.AddPackageForm.get("broadcaster_share").updateValueAndValidity();
     }
+  }
+
+
+  ClearHeadend(){
+
+    this.AddPackageForm.controls.bcid.setValue("");
+
   }
 
   taxcontrol() {

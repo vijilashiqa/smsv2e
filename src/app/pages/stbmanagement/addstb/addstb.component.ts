@@ -51,7 +51,6 @@ export class AddstbComponent implements OnInit {
     private headend: HeadendService,
     private toast: ToastrService,
     private route: Router,
-    private aRoute: ActivatedRoute,
     private stock: StockService,
     public role: RoleservicesService,
     private stb: StbmanagementService,
@@ -80,9 +79,7 @@ export class AddstbComponent implements OnInit {
         msg: "Please fill VC Number",
         label: "VC Number*",
         assign_to: "vcid",
-        required: this.vc_status,
-        // required: true,
-      },
+        required: this.vc_status,      },
       {
         msg: "Please fill ServiceID",
         label: "Serial Number*",
@@ -110,24 +107,10 @@ export class AddstbComponent implements OnInit {
   async addstb() {
     console.log("clik")
   this.submit = true;
-    // const invalid = [];
-    // const control = this.AddStbForm.controls;
-    // for (const name in control) {
-    //   if (control[name].invalid) {
-    //     invalid.push(name);
-    //   }
-    // }
-    // if (this.AddStbForm.invalid) {
-    //   console.log("Invalid value -----", invalid);
-    //   window.alert('Please fill the mandatory fields')
-    //   return;
-    // }
-
     if (!this.AddStbForm.valid) {
       return;
     }
     if (this.val["status"] == true) {
-    //  this.AddStbForm.value["status"] = this.AddStbForm.value["status"] = true ? 0 : 1;
       let result = await this.stb.addstb(this.val);
       console.log("add...", result);
       if (result && result[0].err_code == 0) {
@@ -145,7 +128,6 @@ export class AddstbComponent implements OnInit {
         }
       }
       this.val["bulkstb"] = this.bulk;
-      // this.AddStbForm.value["status"] = this.AddStbForm.value["status"] = true ? 0 : 1;
       console.log("form", this.val);
       let resp = await this.stb.addstbbulk(this.val);
       console.log("bulkResult????????????????? ", resp);
@@ -317,7 +299,7 @@ export class AddstbComponent implements OnInit {
       casid: new FormControl("", Validators.required),
       modelid: new FormControl("", Validators.required),
       stockinwardid: new FormControl("", Validators.required),
-      stb_type: new FormControl(""),
+      stb_type: new FormControl("" ,Validators.required),
       hotelid: new FormControl("",),
       lcoid: new FormControl("", Validators.required),
       distributor: new FormControl(""),

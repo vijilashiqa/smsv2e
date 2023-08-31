@@ -43,7 +43,7 @@
                   <label>Select Headend Name<span style="color: red">*</span></label>
                   <auto-completen [addclass]="{ 'error': submit && this.AddPackageForm.controls.hdid.errors }"
                     addclass="form-control" optValues="hdname" formControlName="hdid" (keyUp)="getHeadend($event)"
-                    (changed)="getblundledata();getbroadcaster();" placeholder='Select Headend Name' optId="hdid"
+                    (changed)="getblundledata();getbroadcaster();ClearHeadend();" placeholder='Select Headend Name' optId="hdid"
                     [item]="listhead">
                   </auto-completen>
                   <div

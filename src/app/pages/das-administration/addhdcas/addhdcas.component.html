@@ -8,7 +8,7 @@
                   <div class="col-sm-6" *ngIf="role.getroleid() > 777">
                      <label>Select Headend Name<span style="color:red">*</span></label>
                      <auto-completen [addclass]="{ 'error': submit && this.AddCASForm.controls.hdid.errors }"
-                        optValues="hdname" formControlName="hdid" (keyUp)="getHeadend($event)" (changed)="GetCas($event)"
+                        optValues="hdname" formControlName="hdid" (keyUp)="getHeadend($event)" (changed)="GetCas($event); ClearHeadend()"
                         placeholder='Select Headend' optId="hdid" [item]="listhead">
                      </auto-completen>
                      <div

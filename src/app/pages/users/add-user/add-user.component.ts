@@ -38,6 +38,7 @@ export class AddUserComponent implements OnInit {
     this.createForm();
     if (this.role.getroleid() > 777 ) {
     this.getHeadend();
+    this.clearNone()
     } else {
       this.AddUserForm.get('hdid').setValue(this.role.getheadend());
     }
@@ -65,7 +66,7 @@ export class AddUserComponent implements OnInit {
       }
     }
     if (this.AddUserForm.invalid) {
-      window.alert('Please fill mandatory fields');
+      // window.alert('Please fill mandatory fields');
       return;
     }
     let method = this.id ? 'editoperator' : 'addoperator'
@@ -169,6 +170,57 @@ export class AddUserComponent implements OnInit {
 
 
   }
+
+
+
+  clearNone() {
+    let clear = this.AddUserForm.value["dist_or_sub_flg"] ;
+    console.log("clear None", clear);
+    if (clear == 1 ) {
+      this.AddUserForm.get("distid").clearValidators();
+      this.AddUserForm.get("distid").updateValueAndValidity();
+      this.AddUserForm.get("subdistid").clearValidators();
+      this.AddUserForm.get("subdistid").updateValueAndValidity();
+    } 
+
+    // if (clear === 2 ) {
+    //   this.AddUserForm.get("subdistid").clearValidators();
+    //   this.AddUserForm.get("subdistid").updateValueAndValidity();
+    //   this.AddUserForm.get("distid").setValidators([Validators.required]);
+    //   this.AddUserForm.get("distid").updateValueAndValidity();
+ 
+    // } 
+
+
+    
+    if(clear == 3) {
+      this.AddUserForm.get("distid").setValidators([Validators.required]);
+      this.AddUserForm.get("distid").updateValueAndValidity();
+      this.AddUserForm.get("subdistid").setValidators([Validators.required]);
+      this.AddUserForm.get("subdistid").updateValueAndValidity();
+    }
+
+
+  }
+  
+
+  Cleardistributor(){
+
+    let cleardist = this.AddUserForm.value["dist_or_sub_flg"] ;
+    console.log("clear None", cleardist);
+
+    if (cleardist === 2 ) {
+      this.AddUserForm.get("subdistid").clearValidators();
+      this.AddUserForm.get("subdistid").updateValueAndValidity();
+      this.AddUserForm.get("distid").setValidators([Validators.required]);
+      this.AddUserForm.get("distid").updateValueAndValidity();
+ 
+    } 
+
+
+  }
+
+
   
   async getCountry($event = '') {
     this.count = await this.country.listcountry({ like: $event });
@@ -188,6 +240,14 @@ export class AddUserComponent implements OnInit {
     this.listarea = await this.country.listarea({ city_id: this.AddUserForm.value['city'] });
   }
 
+
+  ClearHeadend(){
+
+    this.AddUserForm.controls.distid.setValue("");
+    this.AddUserForm.controls.subdistid.setValue("");
+    this.AddUserForm.controls.lcoid.setValue("");
+
+  }
 
   async listlco() {
 
@@ -237,11 +297,11 @@ export class AddUserComponent implements OnInit {
 
 
 
-  clearValidation() {
-    console.log('clear headend@@@@@@@@')
-    this.AddUserForm.get('hdid').clearValidators();
-    this.AddUserForm.get('hdid').updateValueAndValidity();
-  }
+  // clearValidation() {
+  //   console.log('clear headend@@@@@@@@')
+  //   this.AddUserForm.get('hdid').clearValidators();
+  //   this.AddUserForm.get('hdid').updateValueAndValidity();
+  // }
 
   async getHeadend($event = '') {
     this.listhead = await this.headService.getHeadend({ like: $event })

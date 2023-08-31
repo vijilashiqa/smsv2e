@@ -49,6 +49,12 @@ export class AddhdcasComponent implements OnInit {
     }
   }
 
+
+  ClearHeadend(){
+
+    this.AddCASForm.controls.casid.setValue("");  
+  }
+
   clearValidation() {
     this.AddCASForm.get("ip").clearValidators();
     this.AddCASForm.get("ip").updateValueAndValidity();
