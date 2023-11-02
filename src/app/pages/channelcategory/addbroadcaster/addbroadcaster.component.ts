@@ -92,19 +92,14 @@ export class AddbroadcasterComponent implements OnInit {
   }
 
   async getstate($event = '') {
-    console.log('get state  calling-----', this.AddBroadcasterForm.value['countryid']);
     this.getstates = await this.country.liststate({ country_fk: this.AddBroadcasterForm.value['countryid'], like: $event });
   }
   async getdistrict($event = '') {
-    console.log('dist', $event);
-    console.log('get distric  calling-----', this.AddBroadcasterForm.value['stateid']);
     this.dist = await this.country.listdistrict({ state_fk: this.AddBroadcasterForm.value['stateid'], like: $event });
     console.log('Get district data', this.dist);
 
   }
   async getcity($event = '') {
-    console.log('city...........', $event);
-    console.log('get distric  calling-----', this.AddBroadcasterForm.value['districtid']);
     this.citylist = await this.country.listcity({ district_id: this.AddBroadcasterForm.value['districtid'] });
   }
   async getarea($event = '') {
@@ -113,7 +108,6 @@ export class AddbroadcasterComponent implements OnInit {
 }
 
   async edit() {
-    // await this.getHeadend();
     console.log('edit herer', this.id)
     this.editdata = await this.broadcast.getbroadcasteredit({ id: this.id })
     console.log('editdata .....', this.editdata)
@@ -157,7 +151,6 @@ export class AddbroadcasterComponent implements OnInit {
       pincode : new FormControl(this.editdata?.pincode || '', Validators.required),
       installation_addr: new FormControl(this.editdata?.installation_addr || '', Validators.required),
       descr: new FormControl(this.editdata?.descs || ''),
-      // status: new FormControl(this.editdata?.descr || '')
     });
   }
 }

@@ -9,7 +9,8 @@ const EXCEL_EXTENSION = '.xlsx';
   styleUrls: ['./errormsg.component.scss']
 })
 export class ErrormsgComponent implements OnInit {
-  item ;bulkmeta;@Input() title: string; stbshow= false;showitem
+  item ;bulkmeta;
+  @Input() title: string; stbshow= false;showitem
   constructor(
     private activemodel: NgbActiveModal,
   ) { }

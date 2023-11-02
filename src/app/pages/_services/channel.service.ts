@@ -6,6 +6,9 @@ import { parseMessage } from "@angular/localize/src/utils";
   providedIn: "root",
 })
 export class ChannelService {
+  get(arg0: string): import("@angular/forms").FormArray {
+    throw new Error('Method not implemented.');
+  }
   constructor(private http: HttpClient) {}
 
   async addlanguage(params) {

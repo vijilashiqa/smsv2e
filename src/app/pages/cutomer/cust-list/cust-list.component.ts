@@ -132,6 +132,7 @@ export class CustListComponent implements OnInit {
 
   view(item) {
     localStorage.setItem('cust_data', JSON.stringify(item));
+    console.log("data gdf",JSON.stringify(item))
     this.router.navigate(["/pages/customer/view-cust"])
   }
 
@@ -139,7 +140,7 @@ export class CustListComponent implements OnInit {
 
   renew(item) {
     localStorage.setItem('cust_data', JSON.stringify(item));
-    console.log("daatahere", JSON.stringify(item))
+    // console.log("daatahere", JSON.stringify(item))
 
     this.router.navigate(['/pages/customer/renew_cust'])
   }

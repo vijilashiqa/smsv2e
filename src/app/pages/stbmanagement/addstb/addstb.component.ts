@@ -252,23 +252,24 @@ export class AddstbComponent implements OnInit {
 
   setModelType() {
     let model = this.AddStbForm.value["modelid"];
+    console.log("model id",model)
     let modeli = this.getmodel.find((x) => x.bmid == model);
     let stbtypep = modeli.stbtypeid;
     console.log('model is thth ', modeli)
     let boxty = this.getstbtypeg.find((x) => x.boxtypeid == stbtypep)
     let ctrl = this.AddStbForm.controls;
-    ctrl["vcid"].clearValidators();
+    ctrl["boxno"].clearValidators();
     if (model != "") {
       ctrl["stb_type"].setValue(boxty.boxtypeid);
-      if (modeli["chiptype"] == 1 && this.val["status"]) {
-        ctrl["vcid"].setValidators(Validators.required);
-      }
-      if (modeli["chiptype"] == 1 && !this.val["status"]) {
-        this.vc_status = true;
-      } else
-        this.vc_status = false;
+      // if (modeli["chiptype"] == 1 && this.val["status"]) {
+      //   ctrl["boxno"].setValidators(Validators.required);
+      // }
+      // if (modeli["chiptype"] == 1 && !this.val["status"]) {
+      //   this.vc_status = true;
+      // } else
+      //   this.vc_status = false;
     }
-    ctrl["vcid"].updateValueAndValidity();
+    // ctrl["boxno"].updateValueAndValidity();
   }
 
   changeListener(file) {

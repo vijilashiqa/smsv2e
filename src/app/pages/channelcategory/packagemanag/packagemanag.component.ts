@@ -106,7 +106,7 @@ export class PackagemanagComponent implements OnInit {
     private route: Router,
     private headends: HeadendService,
     private packservices: PackpriceshareService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     if (this.role.getroleid() > 777) {
@@ -193,7 +193,7 @@ export class PackagemanagComponent implements OnInit {
         .map((x) => x.bcamt)
         .join("")
     );
-   console.log("bc amount", this.amountv);
+    console.log("bc amount", this.amountv);
 
 
 
@@ -213,10 +213,10 @@ export class PackagemanagComponent implements OnInit {
         item.id,
         item.r_price,
         this.amountv
-        
+
       );
       // console.log("r price @@@@@@@@@",item.r_price , "reseller id", item.profileid ,"amount", this.amountv);
-      
+
     }
   }
 
@@ -258,8 +258,8 @@ export class PackagemanagComponent implements OnInit {
       this.getoperatorlist = this.data;
     }
     if (last && !isRemove) {
-      // console.log("add data id", this.getShareByIndex(index - 1).userid.value);
-      // console.log("package data", this.listpackagedata[0]);
+      console.log("add data id 1", this.getShareByIndex(index - 1).userid.value);
+      console.log("package data", this.listpackagedata[0]);
 
       const dataToAdd = this.listpackagedata[0].find(
         (x) => x.id == this.getShareByIndex(index - 1).userid.value
@@ -311,10 +311,10 @@ export class PackagemanagComponent implements OnInit {
     profileid = "",
     subdistid = 0,
     id = 0,
-    r_price =0,
+    r_price = 0,
     amountv = 0
 
-    
+
   ) {
     this.share_details.push(
       this.createReseller(
@@ -329,10 +329,10 @@ export class PackagemanagComponent implements OnInit {
         r_price,
         amountv
       )
-      
+
     );
-    
-// console.log(" %%%%%%%%%%%%%%%" , amountv);
+
+    // console.log(" %%%%%%%%%%%%%%%" , amountv);
 
   }
 
@@ -396,7 +396,6 @@ export class PackagemanagComponent implements OnInit {
     console.log("share value", this.vall);
   }
 
-  OnchangeRemove() {}
 
   createReseller(
     dist_share = 0,
@@ -407,13 +406,13 @@ export class PackagemanagComponent implements OnInit {
     profileid = "",
     subdistid = 0,
     id = 0,
-    r_price=0,
+    r_price = 0,
     amountv
-  ): FormGroup {
-    // console.log( "rprice" ,r_price );
-    // console.log(" data" , this.data);
-    
-    return this._fb.group({
+  ):
+  
+  FormGroup {
+   
+   return this._fb.group({
       checked: [],
       userid: [id],
       profileid: [profileid],
@@ -431,7 +430,7 @@ export class PackagemanagComponent implements OnInit {
         },
       ],
       reseller_share: [reseller_share],
-      r_price: [r_price == 0 ? amountv :r_price  ],
+      r_price: [r_price == 0 ? amountv : r_price],
     });
   }
 

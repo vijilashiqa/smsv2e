@@ -70,7 +70,6 @@ export class HeadendaddComponent implements OnInit {
     }
   //  console.log(" reader@@@@@@@@@@@@@@@@@@",this.base64)
    this.AddheadendForm.value['image'] = this.base64
-
     let method = this.id ? 'editheadend' : 'addheadend'
     console.log('updatelist', method);
     if (this.id) this.AddheadendForm.value['id'] = this.id

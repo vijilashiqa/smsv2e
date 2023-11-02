@@ -80,7 +80,7 @@
         <th>Status</th>
       </tr>
       <tr *ngFor="let item of pagedItems">
-        <td style="cursor: pointer" [routerLink]="['/pages/channelcategory/addchannels']"
+        <td style="cursor: pointer" [routerLink]="['/pages/channelcategory/editchannel']"
           [queryParams]="{ id: item.chanid }">
           <i class="nb-edit"></i>
         </td>

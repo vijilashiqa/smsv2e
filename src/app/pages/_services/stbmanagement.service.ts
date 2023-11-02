@@ -69,4 +69,33 @@ async searchgetboxpair(params)
   return await this.http.post("/stbm/getboxvcpair",params).toPromise();
 }
 
+
+async addstbtransfer(params)
+{
+  return await this.http.post("/stbm/addstbtransfer",params).toPromise();
+}
+
+
+
+async addbulkstbtransfer(params)
+{
+  return await this.http.post("/stbm/addbulkstbtransfer",params).toPromise();
+}
+
+
+
+async stbupgrade(params)
+{
+  return await this.http.post("/stbm/stbupgrade",params).toPromise();
+}
+
+
+
+
+
+async addsurrender(params)
+{
+  return await this.http.post("/stbm/addsurrender",params).toPromise();
+}
+
 }

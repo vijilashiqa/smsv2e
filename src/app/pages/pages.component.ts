@@ -104,6 +104,22 @@ export class PagesComponent {
 
           
 
+
+          {
+            title: 'CAS',
+            // hidden: !(this.role.find(x => x == 9021) || this.role.find(x => x == 9022) || this.role.find(x => x == 9023)),
+            children: [
+              
+              {
+                title: 'List CAS',
+                link: '/pages/das-administration/caslist',
+                // hidden: !this.role.find(x => x == 2041),
+
+
+              }, 
+            ]
+          },
+
           // {
           //   title: 'Operator Setting',
           //   // link: '/pages/das-administration/das-administration',
@@ -122,34 +138,9 @@ export class PagesComponent {
 
           //   ]
           // },
-          {
-            title: 'CAS Management',
-            hidden: !(this.role.find(x => x == 2041) || this.role.find(x => x == 2042) || this.role.find(x => x == 2043)),
-            // link: '/pages/das-administration/das-administration',
-            children: [
-              {
-                title: 'CAS',
-                link: '/pages/das-administration/caslist',
-                hidden: !this.role.find(x => x == 2041),
-
-
-              },
-              {
-                title: 'List HD CAS ',
-                link: '/pages/das-administration/hdcaslist',
-                hidden: !this.role.find(x => x == 2042),
-
-              },
-              {
-                title: 'Add HD CAS',
-                link: '/pages/das-administration/addhdcas',
-                hidden: !this.role.find(x => x == 2043),
-
-              }
-
-
-            ]
-          },
+          // {
+           
+          // },
           {
             title: 'Headend',
             hidden: !(this.role.find(x => x == 2051) || this.role.find(x => x == 2052) || this.role.find(x => x == 2053)),
@@ -294,15 +285,40 @@ export class PagesComponent {
           {
             title: 'Surrender',
             link: '/pages/customer/surrender',
-            hidden: !this.role.find(x => x == 406),
+            // hidden: !this.role.find(x => x == 406),
 
           },
-          // {
-          //   title: 'Surrenderd Subscribers',
-          //   link: '/pages/customer/surender-stb',
-          // },
+        
         ]
       },
+
+{
+  title: 'CAS Management',
+  icon: 'cast-outline',
+  hidden: !(this.role.find(x => x == 2041) || this.role.find(x => x == 2042) || this.role.find(x => x == 2043)),
+  // link: '/pages/das-administration/das-administration',
+  children: [
+    
+    {
+      title: 'List HD CAS ',
+      link: '/pages/das-administration/hdcaslist',
+      hidden: !this.role.find(x => x == 2042),
+
+    },
+    {
+      title: 'Add HD CAS',
+      link: '/pages/das-administration/addhdcas',
+      hidden: !this.role.find(x => x == 2043),
+
+    }
+
+
+  ]
+
+
+},
+
+     
       {
         title: 'Channel',
         hidden: !(this.role.find(x => x == 5031) || this.role.find(x => x == 5032) || this.role.find(x => x == 5034) || this.role.find(x => x == 50021) ||
@@ -507,6 +523,12 @@ export class PagesComponent {
             link: '/pages/stbmanagement/addstb',
             hidden: !this.role.find(x => x == 702),
           },
+
+
+          {
+            title: 'Transfer STB',
+            link: '/pages/customer/cust-transfer',
+          },
           // {
           //   title: 'List Card',
           //   link: '/pages/stbmanagement/cardlist',
@@ -592,7 +614,7 @@ export class PagesComponent {
         title: 'Reports',
         // hidden: !(this.role.find(x => x == 801) || this.role.find(x => x == 802) || this.role.find(x => x == 804) || this.role.find(x => x == 809)),
 
-        icon: 'file-text',
+        icon: 'printer-outline',
         children: [
           {
             title: 'STB Pair',

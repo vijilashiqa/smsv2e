@@ -261,6 +261,7 @@ export class AddpackageComponent implements OnInit {
       return;
     }
     const result = await this.packageser.addpackage(this.AddPackageForm.value);
+    console.log("result",result)
     if (result && result[0].err_code == 0) {
       this.toast.success(result[0]["msg"]);
       this.route.navigate(["/pages/channelcategory/packagelist"]);

@@ -15,6 +15,7 @@ import { PackagelistComponent } from './packagelist/packagelist.component';
 import { PackagesharelistComponent } from './packagesharelist/packagesharelist.component';
 import { EditpackageComponent } from './editpackage/editpackage.component';
 import { PackagemanagComponent } from './packagemanag/packagemanag.component';
+import { EditchannelComponent } from './editchannel/editchannel.component';
 
 const routes: Routes = [
   
@@ -39,10 +40,17 @@ const routes: Routes = [
     
   },
   {
+    path :'editchannel',
+    
+    component :EditchannelComponent
+    
+      },
+  {
     path: 'listchannelsrv',
     component: ListchannelsrvComponent,
     
   },
+  
   {
     path: 'addchannelsrv',
     component: AddchannelsrvComponent,

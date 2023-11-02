@@ -31,6 +31,7 @@ import { filterModule } from '../filter/filter-module';
 import { ErrormsgComponent } from './errormsg/errormsg.component';
 import { PackagemanagComponent } from './packagemanag/packagemanag.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { EditchannelComponent } from './editchannel/editchannel.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     PackagechannelComponent,
     EditpackageComponent,
     ErrormsgComponent,
-    PackagemanagComponent
+    PackagemanagComponent,
+    EditchannelComponent,
   ],
   imports: [
     CommonModule,

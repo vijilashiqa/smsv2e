@@ -76,9 +76,11 @@ export class AddchannelsrvComponent implements OnInit {
     }
   }
   async edit() {
+    console.log("edit ",this.editdata)
     this.editdata = await this.channelService.getchannelservices({ id: this.id });
-    this.createForm();
 
+    this.createForm();
+    // console.log("edit ",this.editdata)
   }
   metavalue() {
     this.bulkmeta = [

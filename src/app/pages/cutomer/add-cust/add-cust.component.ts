@@ -97,6 +97,7 @@ export class AddCustComponent implements OnInit {
   ClearOperatr(){
 
     this.AddCustForm.controls.stb_no.setValue("");
+    
   }
 
   metavalue() {
@@ -260,14 +261,18 @@ export class AddCustComponent implements OnInit {
          }
         let logoresult = await this.subscribers.uploadfile(file)
         console.log('image result', logoresult)
-        if (result && result[0].err_code == 0) {
-          this.toast.success(result[0]["msg"]);
-          this.router.navigate(["/pages/customer/cust-list"]);
-        } else {
-          this.toast.warning(result[0]["msg"]);
-        }
+       
       }
+      if (result && result[0].err_code == 0) {
+        this.toast.success(result[0]["msg"]);
+       this.router.navigate(["/pages/customer/cust-list"]);
+     }
+      if (result && result[0].err_code !== 0)  {
+       console.log("error")
+        this.toast.warning(result[0]["msg"]);
+     }
     }
+    
     if (this.bulk.length && this.val["bulkopt"]) {
       let result = this.metavalue();
       for (let i = 0; i < this.bulk.length; i++) {
@@ -309,7 +314,7 @@ export class AddCustComponent implements OnInit {
     modalRef.componentInstance.title = 'Error List';
     modalRef.componentInstance.item = item;
     modalRef.result.then((data) => {
-      ;
+      
 
     })
 

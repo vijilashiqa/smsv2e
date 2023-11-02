@@ -4,172 +4,217 @@
     <nb-card-header>Create Channel</nb-card-header>
     <nb-card-body>
       <form [formGroup]="channelForm" class="form-horizontal" (ngSubmit)="addchannel()">
-        <div class="modal-body">
-          <div class="form-group row">
-            <!-- <div class="col-md-3">
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="alacarte" formControlName="alacarte" />
-                <label class="custom-control-label" for="alacarte">A la carte</label>
-              </div>
-            </div> -->
-            <!-- <div class="col-md-3">
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="status" formControlName="status" />
-                <label class="custom-control-label" for="status">Active</label>
-              </div>
-            </div> -->
-            <div class="form-group row">
-              <div class="col-sm-12">`
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="status" formControlName="status" />
-                    <label class="custom-control-label" for="status">Active</label>
+        <nb-tabset>
+          <nb-tab tabTitle="Channel Details">
+            <div class="modal-body">
+              <div class="form-group row">
+                <div class="form-group row">
+                  <div class="col-sm-12">`
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="status" formControlName="status" />
+                      <label class="custom-control-label" for="status">Active</label>
+                    </div>
                   </div>
                 </div>
-                </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-sm-6" *ngIf="role.getroleid() > 777">
-              <label>Select Headend Name <span style="color: red">*</span></label>
-              <auto-completen [addclass]="{
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-6" *ngIf="role.getroleid() > 777">
+                  <label>Select Headend Name <span style="color: red">*</span></label>
+                  <auto-completen [addclass]="{
                   error: submit && this.channelForm.controls.hdid.errors
                 }" addclass="form-control" optValues="hdname" (changed)="
                   Getbroadcasteredit();
                   listgenre();
                   listlang();
-                  typeclearheadend('1')
+                  typeclearheadend('1');
+                  getcashead();
                 " formControlName="hdid" (keyUp)="getheadend($event)" placeholder="Select Headend Name " optId="hdid"
-                [item]="count">
-              </auto-completen>
-              <div *ngIf="
+                    [item]="count">
+                  </auto-completen>
+                  <div *ngIf="
                   this.channelForm.controls.hdid.errors &&
                   this.channelForm.controls.hdid.errors.required &&
                   submit
                 " class="error-text">
-                Headend Name is required!
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <label>Select BroadCaster Name <span style="color: red">*</span></label>
-              <auto-completen [addclass]="{
+                    Headend Name is required!
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label>Select BroadCaster Name <span style="color: red">*</span></label>
+                  <auto-completen [addclass]="{
                   error: submit && this.channelForm.controls.bcid.errors
-                }" addclass="form-control" optValues="fullname" formControlName="bcid" (keyUp)="Getbroadcasteredit()" (changed)=" ClearBoradcaster()"
-                placeholder="Select BroadCaster Name " id="id" [item]="result">
-              </auto-completen>
-              <div *ngIf="
+                }" addclass="form-control" optValues="fullname" formControlName="bcid" (keyUp)="Getbroadcasteredit()"
+                    (changed)=" ClearBoradcaster()" placeholder="Select BroadCaster Name " id="id" [item]="result">
+                  </auto-completen>
+                  <div *ngIf="
                   this.channelForm.controls.bcid.errors &&
                   this.channelForm.controls.bcid.errors.required &&
                   submit
                 " class="error-text">
-                BroadCaster Name is required!
+                    BroadCaster Name is required!
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-sm-6">
-              <label>Channel Name <span style="color: red">*</span></label>
-              <input type="text" class="form-control" name="channame" formControlName="channame"
-                placeholder="Enter Channel Name" [ngClass]="{
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <label>Channel Name <span style="color: red">*</span></label>
+                  <input type="text" class="form-control" name="channame" formControlName="channame"
+                    placeholder="Enter Channel Name" [ngClass]="{
                   'is-invalid': submit && channelForm.controls.channame.errors
                 }" />
-              <small *ngIf="
+                  <small *ngIf="
                   channelForm.controls.channame.errors &&
                   channelForm.controls.channame.errors.required &&
                   submit
                 " class="invalid-feedback">channame is required!
-              </small>
-            </div>
-            <div class="col-sm-6">
-              <label>LCN Number <span style="color: red">*</span></label>
+                  </small>
+                </div>
+                <div class="col-sm-6">
+                  <label>LCN Number <span style="color: red">*</span></label>
 
-              <input type="number" class="form-control" name="chanlcm" formControlName="chanlcm"
-                placeholder="Enter LCN Number" [ngClass]="{
+                  <input type="number" class="form-control" name="chanlcm" formControlName="chanlcm"
+                    placeholder="Enter LCN Number" [ngClass]="{
                   'is-invalid': submit && channelForm.controls.chanlcm.errors
                 }" />
-              <small *ngIf="
+                  <small *ngIf="
                   channelForm.controls.chanlcm.errors &&
                   channelForm.controls.chanlcm.errors.required &&
                   submit
                 " class="invalid-feedback">LCN number is required!
-              </small>
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-sm-6">
-              <label>Select Channel Mode <span style="color: red">*</span></label>
-              <select name="chanmode" formControlName="chanmode" class="form-control" [ngClass]="{
+                  </small>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <label>Select Channel Mode <span style="color: red">*</span></label>
+                  <select name="chanmode" formControlName="chanmode" class="form-control" [ngClass]="{
                   'is-invalid': submit && channelForm.controls.chanmode.errors }">
-                <option value="">Select Channel Mode</option>
-                <option value="1">HD</option>
-                <option value="2">SD</option>
-              </select>
-              <div *ngIf="
+                    <option value="">Select Channel Mode</option>
+                    <option value="1">HD</option>
+                    <option value="2">SD</option>
+                  </select>
+                  <div *ngIf="
                   this.channelForm.controls.chanmode.errors &&
                   this.channelForm.controls.chanmode.errors.required &&
                   submit
                 " class="error-text">
-                Channel Mode is required!
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <label>Select Language Name <span style="color: red">*</span></label>
-              <auto-completen [addclass]="{
+                    Channel Mode is required!
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label>Select Language Name <span style="color: red">*</span></label>
+                  <auto-completen [addclass]="{
                   error: submit && this.channelForm.controls.langid.errors
                 }" addclass="form-control" optValues="langname" (changed)="listgenre($event); typeclearlang()"
-                formControlName="langid" (keyUp)="listlang($event)" placeholder="Select language Name" optId="langid"
-                [item]="lang">
-              </auto-completen>
-              <div *ngIf="
+                    formControlName="langid" (keyUp)="listlang($event)" placeholder="Select language Name"
+                    optId="langid" [item]="lang">
+                  </auto-completen>
+                  <div *ngIf="
                   this.channelForm.controls.langid.errors &&
                   this.channelForm.controls.langid.errors.required &&
                   submit
                 " class="error-text">
-                Language Name is required!
+                    Language Name is required!
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-sm-6">
-              <label> Select Genre Name <span style="color: red">*</span></label>
-              <auto-completen [addclass]="{
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <label> Select Genre Name <span style="color: red">*</span></label>
+                  <auto-completen [addclass]="{
                   error: submit && this.channelForm.controls.genreid.errors
                 }" addclass="form-control" optValues="genrename" (changed)="listgenre()" formControlName="genreid"
-                (keyUp)="listgenre($event)" placeholder="Select Genre" optId="genreid" [item]="genres">
-              </auto-completen>
-              <div *ngIf="
+                    (keyUp)="listgenre($event)" placeholder="Select Genre" optId="genreid" [item]="genres">
+                  </auto-completen>
+                  <div *ngIf="
                   this.channelForm.controls.genreid.errors &&
                   this.channelForm.controls.genreid.errors.required &&
                   submit
                 " class="error-text">
-                Genre Name is required!
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <label>Select Channel Type <span style="color: red">*</span></label>
-              <select name="chantype" formControlName="chantype" class="form-control" [ngClass]="{
+                    Genre Name is required!
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label>Select Channel Type <span style="color: red">*</span></label>
+                  <select name="chantype" formControlName="chantype" class="form-control" [ngClass]="{
                   'is-invalid': submit && channelForm.controls.chantype.errors
                 }">
-                <option value="">Select Channel Type</option>
-                <option value="1">PAY</option>
-                <option value="2">FTA</option>
-                <option value="3">LOCAL</option>
-              </select>
-              <div *ngIf="
+                    <option value="">Select Channel Type</option>
+                    <option value="1">PAY</option>
+                    <option value="2">FTA</option>
+                    <option value="3">LOCAL</option>
+                  </select>
+                  <div *ngIf="
                   this.channelForm.controls.chantype.errors &&
                   this.channelForm.controls.chantype.errors.required &&
                   submit
                 " class="error-text">
-                Channel Type is required!
+                    Channel Type is required!
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <!-- <div class="col-sm-6"> -->
+                <div class="col-sm-6">
+                  <label>Price <span style="color: red">*</span></label>
+
+                  <input type="number" class="form-control" name="price" formControlName="price"
+                    placeholder="Enter Price here" [ngClass]="{
+                    'is-invalid': submit && channelForm.controls.price.errors
+                  }" />
+                  <small *ngIf="
+                    channelForm.controls.price.errors &&
+                    channelForm.controls.price.errors.required &&
+                    submit
+                  " class="invalid-feedback">Price is required!
+                  </small>
+                  <!-- </div> -->
+
+
+
+                </div>
               </div>
             </div>
-          </div>
+          </nb-tab>
+            <nb-tab tabTitle="CAS Product ID">
+              <div class="modal-body">
+                <div class="form-group row" formArrayName="casservices">
+                  <div class="col-sm-12">
+                    <div *ngFor="let user of casservices.controls; index as idx;let last = last;">
+                      <div class="row" [formGroupName]="idx">
+                        <div class="col-sm-4">
+                          <label>CAS Name</label> <br>
+                          <label style="
+                            font-weight: bolder;">{{user.value.cas_name}}</label>
+                        </div>
+<!-- 
+                        <div class="col-sm-4">
+                          <label>CAS Name</label> <br>
+                          <label style="
+                            font-weight: bolder;">{{user.value.hdcasid}}</label>
+                        </div> -->
 
-          <div class="modal-footer">
-            <button type="submit" status="success" nbButton>
-              {{ id ? "Update" : "Add" }}
-            </button>
-            <button type="button" class="btn btn-md btn-danger"
-              [routerLink]="['/pages/channelcategory/listchannel']">Back</button>
-          </div>
+
+                        <div class="col-sm-2">
+                          <label>Services ID</label>
+                          <input type="text" class="form-control" formControlName="servicesid" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </nb-tab>
+
+         
+        </nb-tabset>
+
+        <div class="modal-footer">
+          <button type="submit" status="success" nbButton>Add
+          </button>
+          <button type="button" class="btn btn-md btn-danger"
+            [routerLink]="['/pages/channelcategory/listchannel']">Back</button>
         </div>
       </form>
     </nb-card-body>

@@ -25,10 +25,10 @@ const routes: Routes = [
     component: CustTransferComponent,
   },
 
-  {
-    path: "surender-stb",
-    component: SurenderStbComponent,
-  },
+  // {
+  //   path: "surender-stb",
+  //   component: SurenderStbComponent,
+  // },
 
   {
     path :"edit-cust",
@@ -48,7 +48,7 @@ const routes: Routes = [
   {
 path : "surrender",
 
-component : SurrenderComponent
+component : SurenderStbComponent
 
   }
 

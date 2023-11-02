@@ -1,119 +1,159 @@
 <nb-card>
-    <!-- <toaster-container></toaster-container> -->
-    <nb-card-header>Transfer Subscriber</nb-card-header>
-    <nb-card-body>
-      <form [formGroup]="TransForm" class="form-horizontal" (ngSubmit)="custtransfer();">
-        <div class="modal-body">
-          <h5>From</h5>
-          <div class="form-group row" style="padding-left: 5px ">
-            <div  class="col-sm-3">
-              <label>Headend</label>
-              <select (change)='opt[0]=[];getoperator(0);' name="headend_from" formControlName="headend_from"
-              [ngClass]="{'form-control' : true,'form-control-danger':TransForm.controls.headend_from.invalid&&submit}">
-              
-                <option value="">Select Headend</option>
-                <!-- <option *ngFor="let item of head" [ngValue]=item.headend_pk>{{item.headend_name}}</option> -->
-             
-              <small *ngIf="TransForm.hasError('required','headend_from')&&submit" class="form-text error"> Select
-                required Headend! </small>
-              </select>
-            </div>
-            <div  class="col-sm-3">
-              
-              <small *ngIf="TransForm.hasError('required','operatorid_from')&&submit" class="form-text error">Select
-                required Operator Name! </small>
-            </div>
-            <div class="col-sm-3">
-              
-              <small *ngIf="TransForm.hasError('required','location_from')&&submit" class="form-text error"> Select
-                Required Location! </small>
-            </div>
-            <div class="col-sm-3">
-              
-              <small *ngIf="TransForm.hasError('required','branch_from')&&submit" class="form-text error"> Select Required
-                Branch! </small>
-            </div>
-          </div>
-          <h5>To</h5>
-          <div class="form-group row" style="padding-left: 5px">
-            <div class="col-sm-3">
-              <label>Headend</label>
-              <select (change)='opt[1]=[];getoperator(1);' name="headend_to" formControlName="headend_to"
-              [ngClass]="{'form-control' : true,'form-control-danger':TransForm.controls.headend_to.invalid&&submit}">
-              <option value="">Select Headend</option>
-              
-            </select>
-              
-                <option value="">Select Headend</option>
-                <!-- <option *ngFor="let item of head" [ngValue]=item.headend_pk>{{item.headend_name}}</option> -->
-              
-              <small *ngIf="TransForm.hasError('required','headend_to')&&submit" class="form-text error"> Select required
-                Headend! </small>
-            </div>
-            <div  class="col-sm-3">
-                <input name='location_to' id='TransForm.value.location_to'
-                (item_id)="TransForm.controls.location_to.setValue($event);branch[1]=[];get_Branch_for_opt(1);"
-                placeholder='Select Location Name' label='Location'
-                >
-              <small>Select required Operator Name! </small>
+  <!-- <toaster-container></toaster-container> -->
+  <nb-card-header>Transfer Subscriber</nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="TransForm" class="form-horizontal" (ngSubmit)="addTransfer();">
+      <div class="modal-body">
+        <div class="row">
 
-            </div>
-            <div class="col-sm-3">
-             
-              <small *ngIf="TransForm.hasError('required','location_to')&&submit" class="form-text error"> Select Required
-                Location! </small>
-            </div>
-            <div class="col-sm-3">
-              
-              <small *ngIf="TransForm.hasError('required','branch_to')&&submit" class="form-text error"> Select Required
-                Branch! </small>
+
+          <div class="col-sm-3">
+
+         
+          </div>
+
+          <div class="col-sm-3">
+
+            <h5> From </h5>
+
+          </div>
+
+
+          <div class="col-sm-6">
+
+            <h5> TO </h5>
+
+          </div>
+
+
+        </div>
+        <div class="form-group row">
+          <!-- <h5> From</h5> -->
+          <div class="col-sm-3">
+            <label>Select Headend Name<span style="color: red">*</span></label>
+            <auto-completen [addclass]="{error: submit && this.TransForm.controls.hdid.errors}"
+              (changed)="getoperator();getbox();clearHeaded();" addclass="form-control" optValues="hdname" formControlName="hdid"
+              (keyUp)="getHeadend($event)" placeholder="Select Headend" optId="hdid" [item]="listhead">
+            </auto-completen>
+            <div *ngIf="this.TransForm.controls.hdid.errors && this.TransForm.controls.hdid.errors.required && submit  "
+              class="error-text">
+              Headend Name is required!
             </div>
           </div>
-          <div class="form-group row" style="padding-left: 5px">
-            <div class="col-sm-3">
-              
+          <div class="col-sm-3">
+            <label>Select Operator<span style="color: red">*</span></label>
+            <auto-completen [addclass]="{error: submit && this.TransForm.controls.fuserid.errors}"
+              addclass="form-control" optValues="profileid" formControlName="fuserid" (keyUp)="getoperator($event)"
+              (changed)="removedrop();getbox();clearopt();" placeholder="Select Operator" Id="id"
+              [item]="getoperatorlist">
+            </auto-completen>
+            <div
+              *ngIf="this.TransForm.controls.fuserid.errors && this.TransForm.controls.fuserid.errors.required && submit  "
+              class="error-text">
+              Operator type is required!
             </div>
           </div>
-          <div class="form-group row">
-            <div class="demo-checkboxes col-sm-4">
-              <nb-checkbox formControlName="sameasold">Address same as Old Address</nb-checkbox>
+
+          <div class="col-sm-3">
+            <label>Select Operator<span style="color: red">*</span></label>
+            <auto-completen [addclass]="{error: submit && this.TransForm.controls.tuserid.errors}"
+              addclass="form-control" optValues="profileid" formControlName="tuserid" (keyUp)="getoperator($event)"
+              placeholder="Select Operator" Id="id" [item]="filter">
+            </auto-completen>
+            <div
+              *ngIf="this.TransForm.controls.tuserid.errors && this.TransForm.controls.tuserid.errors.required && submit  "
+              class="error-text">
+              Operator type is required!
             </div>
           </div>
-          <div class="form-group row">
-            <div class="col-sm-6">
-              <label>Installation Address</label>
-              <!-- <textarea
-                (keyup)="TransForm.value['checkaddr'] ? TransForm.controls['Billing'].setValue(TransForm.value['Installation']):''"
-                name="Installation" formControlName="Installation" placeholder="Installation Address "
-                [ngClass]="{'form-control' : true,'form-control-danger':TransForm.controls.Installation.invalid&&submit}"> </textarea> -->
-              <small  class="form-text error">Installation
-                Address is required! </small>
+
+
+          <div class="col-sm-3"  (change)="getbox();clearstb()" >
+            <label>Select Type <span style="color: red">*</span></label>
+            <select name="changetype" formControlName="changetype" class="form-control" [ngClass]="{
+            'is-invalid': submit && TransForm.controls.changetype.errors
+          }">  
+              <option value="">Select Type</option>
+              <option value="1">Box Only</option>
+              <option value="2">Box with VC</option>
+              <option value="3">VC Only</option>
+            </select>
+            <div *ngIf="
+            this.TransForm.controls.changetype.errors &&
+            this.TransForm.controls.changetype.errors.required &&
+            submit
+          " class="error-text">
+               Type is required!
             </div>
-            <div class="col-sm-6">
-              <label>Billing Address</label>
-              <textarea
-                (keyup)="TransForm.value['checkaddr'] ? TransForm.controls['Installation'].setValue(TransForm.value['Billing']):''"
-                name="Billing" formControlName="Billing" placeholder="Billing Address"
-                [ngClass]="{'form-control' : true,'form-control-danger':TransForm.controls.Billing.invalid&&submit}"></textarea>
-              <small *ngIf="TransForm.hasError('required','Billing')&&submit" class="form-text error"> Billing Address is
-                required! </small>
-            </div>
-          </div>
-          <div class="form-group row" [hidden]='TransForm.value["sameasold"]'>
-            <div class="demo-checkboxes col-sm-4">
-              <div class="custom-control custom-checkbox">
-                 <input
-                  
-                  type="checkbox" class="custom-control-input" id="checkaddr" formControlName="checkaddr"><label
-                  class="custom-control-label" for="checkaddr">Billing Address same as Installtion Address</label> -->
-              </div>
-            </div>
+
+            
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="submit" autofocus class="btn btn-md btn-success">Transfer</button>
-          <button type="button" class="btn btn-md btn-danger " [routerLink]="['/pages/customer/cust-list']">Cancel</button>
+
+        <div class="form-group row">
+          <div class="col-sm-3" [hidden]="bulkopt">
+            <label>Select {{TransForm.value.changetype==1?' Box ':TransForm.value.changetype==2? 'Box & VC':'VC Only'}}&nbsp;Number<span style="color: red">*</span></label>     
+            <auto-completen *ngIf="TransForm.value.changetype!=3" [addclass]="{error: submit && this.TransForm.controls.boxid.errors}"
+              addclass="form-control" optValues="boxno" formControlName="boxid" (keyUp)="getbox($event)"
+              placeholder="Select STB Number" optId="boxid" [item]="getboxlist">
+            </auto-completen>
+            <auto-completen *ngIf="TransForm.value.changetype==3" [addclass]="{error: submit && this.TransForm.controls.boxid.errors}"
+              addclass="form-control" optValues="vcno" formControlName="vcid" (keyUp)="getbox($event)"
+              placeholder="Select VC Number" optId="vcid" [item]="getboxlist">
+            </auto-completen>
+            <div
+              *ngIf="this.TransForm.controls.boxid.errors && this.TransForm.controls.boxid.errors.required && submit  "
+              class="error-text">
+              STB Number is required!
+            </div>
+          </div>
+
+
+
+          <!-- <div class="col-sm-3" >
+            <label>Select VC Number <span style="color: red">*</span></label>
+              <auto-completen [addclass]="{ 'error': submit && this.TransForm.controls.vcid.errors }"
+              addclass="form-control" optValues="vcno" 
+              formControlName="vcid" placeholder='Select VC Number' optId="vcid" [item]="getvclist">
+            </auto-completen>
+            <div *ngIf="this.TransForm.controls.vcid.errors && (this.TransForm.controls.vcid.errors.required) && submit"
+            class="error-text">
+            VC Number is required!
+          </div>
+          </div> -->
+
+          <div class="col-sm-3">
+            <div class="custom-control custom-checkbox">
+              <input formControlName="bulkopt" name="bulkopt" class="custom-control-input" type="checkbox"
+                id="bulkopt" [(ngModel)]="bulkopt" />
+              <label class="custom-control-label" for="bulkopt">Create Bulk</label>
+            </div>
+          </div>
+
+
+        
+          <div class="form-group row" [hidden]="!TransForm.controls['bulkopt'].value">
+            <div class="col-sm-6">
+              <label>Please Upload The excel File Format<span style="color: red">*</span></label>
+              <input #myFile type="file" (change)="changeListener($event.target.files[0])" class="form-control"
+                accept=".xlsx" />
+              <small *ngIf="bulk.length==0&&submit" class="error-text">File Is reqired! </small>
+              <!-- <small class="error-text">Proof Type : 0 - Ration Card, 1 - Aadar Card </small> -->
+            </div>
+            <div class="col-sm-6">
+              <br />
+              <a href=".././../../../assets/data/stbbulk.xlsx" target="_blank" download><b>Download Sample Here</b></a>
+            </div>
+          </div>
+
         </div>
-      </form>
-    </nb-card-body>
-  </nb-card>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="submit" autofocus class="btn btn-md btn-success">Transfer</button>
+        <button type="reset" value="Reset" class="btn btn-md btn-danger ">Cancel</button>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>

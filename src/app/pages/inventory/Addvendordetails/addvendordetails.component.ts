@@ -143,7 +143,7 @@ export class addvendordetailsComponent implements OnInit {
       i_gst: new FormControl(this.editdata?.i_gst || 0),
       c_gst: new FormControl(this.editdata?.c_gst || 0),
       s_gst: new FormControl(this.editdata?.s_gst || 0),
-      descr: new FormControl(this.editdata?.descr || '', Validators.required),
+      descr: new FormControl(this.editdata?.descr || ''),
       status: new FormControl(this.editdata ? this.editdata['status'] == 1 ? true : false: true),
 
     });

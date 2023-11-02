@@ -118,6 +118,7 @@ export class EditstockComponent implements OnInit {
   }
   async edit() {
     this.editdata = await this.stock.geteditstock({ stockinid: this.id });
+    console.log("edit data@@@", this.editdata)
     this.editfirstarray = this.editdata[0][0]
     console.log('editfirst', this.editfirstarray)
     this.materialArray = this.editdata[1]

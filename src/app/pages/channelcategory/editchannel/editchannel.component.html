@@ -1,0 +1,228 @@
+<!-- <p>addchannels works!</p> -->
+<div class="col-md-12">
+    <nb-card>
+      <nb-card-header>Edit Channel</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="editchannelForm" class="form-horizontal" (ngSubmit)="addchannel()">
+          <nb-tabset>
+            <nb-tab tabTitle="Channel Details">
+              <div class="modal-body">
+                <div class="form-group row">
+                  <div class="form-group row">
+                    <div class="col-sm-12">`
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="status" formControlName="status" />
+                        <label class="custom-control-label" for="status">Active</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6" *ngIf="role.getroleid() > 777">
+                    <label>Select Headend Name <span style="color: red">*</span></label>
+                    <auto-completen [addclass]="{
+                    error: submit && this.editchannelForm.controls.hdid.errors
+                  }" addclass="form-control" optValues="hdname" (changed)="
+                    Getbroadcasteredit();
+                    listgenre();
+                    listlang();
+                    typeclearheadend('1');
+                    getcashead();
+                    getchanneledit();
+                  " formControlName="hdid" (keyUp)="getheadend($event)" placeholder="Select Headend Name " optId="hdid"
+                      [item]="count">
+                    </auto-completen>
+                    <div *ngIf="
+                    this.editchannelForm.controls.hdid.errors &&
+                    this.editchannelForm.controls.hdid.errors.required &&
+                    submit
+                  " class="error-text">
+                      Headend Name is required!
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label>Select BroadCaster Name <span style="color: red">*</span></label>
+                    <auto-completen [addclass]="{
+                    error: submit && this.editchannelForm.controls.bcid.errors
+                  }" addclass="form-control" optValues="fullname" formControlName="bcid" (keyUp)="Getbroadcasteredit()"
+                      (changed)=" ClearBoradcaster()" placeholder="Select BroadCaster Name " id="id" [item]="result">
+                    </auto-completen>
+                    <div *ngIf="
+                    this.editchannelForm.controls.bcid.errors &&
+                    this.editchannelForm.controls.bcid.errors.required &&
+                    submit
+                  " class="error-text">
+                      BroadCaster Name is required!
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label>Channel Name <span style="color: red">*</span></label>
+                    <input type="text" class="form-control" name="channame" formControlName="channame"
+                      placeholder="Enter Channel Name" [ngClass]="{
+                    'is-invalid': submit && editchannelForm.controls.channame.errors
+                  }" />
+                    <small *ngIf="
+                    editchannelForm.controls.channame.errors &&
+                    editchannelForm.controls.channame.errors.required &&
+                    submit
+                  " class="invalid-feedback">channame is required!
+                    </small>
+                  </div>
+                  <div class="col-sm-6">
+                    <label>LCN Number <span style="color: red">*</span></label>
+  
+                    <input type="number" class="form-control" name="chanlcm" formControlName="chanlcm"
+                      placeholder="Enter LCN Number" [ngClass]="{
+                    'is-invalid': submit && editchannelForm.controls.chanlcm.errors
+                  }" />
+                    <small *ngIf="
+                    editchannelForm.controls.chanlcm.errors &&
+                    editchannelForm.controls.chanlcm.errors.required &&
+                    submit
+                  " class="invalid-feedback">LCN number is required!
+                    </small>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label>Select Channel Mode <span style="color: red">*</span></label>
+                    <select name="chanmode" formControlName="chanmode" class="form-control" [ngClass]="{
+                    'is-invalid': submit && editchannelForm.controls.chanmode.errors }">
+                      <option value="">Select Channel Mode</option>
+                      <option value="1">HD</option>
+                      <option value="2">SD</option>
+                    </select>
+                    <div *ngIf="
+                    this.editchannelForm.controls.chanmode.errors &&
+                    this.editchannelForm.controls.chanmode.errors.required &&
+                    submit
+                  " class="error-text">
+                      Channel Mode is required!
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label>Select Language Name <span style="color: red">*</span></label>
+                    <auto-completen [addclass]="{
+                    error: submit && this.editchannelForm.controls.langid.errors
+                  }" addclass="form-control" optValues="langname" (changed)="listgenre($event); typeclearlang()"
+                      formControlName="langid" (keyUp)="listlang($event)" placeholder="Select language Name"
+                      optId="langid" [item]="lang">
+                    </auto-completen>
+                    <div *ngIf="
+                    this.editchannelForm.controls.langid.errors &&
+                    this.editchannelForm.controls.langid.errors.required &&
+                    submit
+                  " class="error-text">
+                      Language Name is required!
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label> Select Genre Name <span style="color: red">*</span></label>
+                    <auto-completen [addclass]="{
+                    error: submit && this.editchannelForm.controls.genreid.errors
+                  }" addclass="form-control" optValues="genrename" (changed)="listgenre()" formControlName="genreid"
+                      (keyUp)="listgenre($event)" placeholder="Select Genre" optId="genreid" [item]="genres">
+                    </auto-completen>
+                    <div *ngIf="
+                    this.editchannelForm.controls.genreid.errors &&
+                    this.editchannelForm.controls.genreid.errors.required &&
+                    submit
+                  " class="error-text">
+                      Genre Name is required!
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label>Select Channel Type <span style="color: red">*</span></label>
+                    <select name="chantype" formControlName="chantype" class="form-control" [ngClass]="{
+                    'is-invalid': submit && editchannelForm.controls.chantype.errors
+                  }">
+                      <option value="">Select Channel Type</option>
+                      <option value="1">PAY</option>
+                      <option value="2">FTA</option>
+                      <option value="3">LOCAL</option>
+                    </select>
+                    <div *ngIf="
+                    this.editchannelForm.controls.chantype.errors &&
+                    this.editchannelForm.controls.chantype.errors.required &&
+                    submit
+                  " class="error-text">
+                      Channel Type is required!
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="form-group row">
+                  <!-- <div class="col-sm-6"> -->
+                  <div class="col-sm-6">
+                    <label>Price <span style="color: red">*</span></label>
+  
+                    <input type="number" class="form-control" name="price" formControlName="price"
+                      placeholder="Enter Price here" [ngClass]="{
+                      'is-invalid': submit && editchannelForm.controls.price.errors
+                    }" />
+                    <small *ngIf="
+                      editchannelForm.controls.price.errors &&
+                      editchannelForm.controls.price.errors.required &&
+                      submit
+                    " class="invalid-feedback">Price is required!
+                    </small>
+                    <!-- </div> -->
+  
+  
+  
+                  </div>
+                </div>
+              </div>
+            </nb-tab>
+              <nb-tab tabTitle="CAS Product ID">
+                <div class="modal-body">
+                  <div class="form-group row" formArrayName="casservices">
+                    <div class="col-sm-12">
+                      <div *ngFor="let user of casservices.controls; index as idx;let last = last;">
+                        <div class="row" [formGroupName]="idx">
+                          <div class="col-sm-4">
+                            <label>CAS Name</label> <br>
+                            <label style="
+                              font-weight: bolder;">{{user.value.cas_name}}</label>
+                          </div>
+<!--   
+                          <div class="col-sm-2">
+                            <label>CAS ID</label> <br>
+                            <label style="
+                              font-weight: bolder;">{{user.value.casid}}</label>
+                          </div>
+  
+
+                          <div class="col-sm-2">
+                            <label>PK Id</label> <br>
+                            <label style="
+                              font-weight: bolder;">{{user.value.id}}</label>
+                          </div> -->
+                          <div class="col-sm-2">
+                            <label>Services ID</label>
+                            <input type="text" class="form-control" formControlName="servicesid" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </nb-tab>
+  
+           
+          </nb-tabset>
+  
+          <div class="modal-footer">
+            <button type="submit" status="success" nbButton>Add
+            </button>
+            <button type="button" class="btn btn-md btn-danger"
+              [routerLink]="['/pages/channelcategory/listchannel']">Back</button>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>

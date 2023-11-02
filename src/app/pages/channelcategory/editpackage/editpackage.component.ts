@@ -231,6 +231,8 @@ ClearHeadend(){
   }
 
   createserviceid(id: number, name: string, product: string = ''): FormGroup {
+
+    console.log("create data",name , "product id",product )
     return this._fb.group({
       productid: [{ value: product || '', disabled: product ? true : false }, Validators.required],
       casid: [name, Validators.required],
