@@ -195,7 +195,7 @@
                                  <input type="number" name="sgst" formControlName="sgst" class="form-control"
                                     name="sgst" min="0" placeholder="Enter SGST"
                                     [ngClass]="{ 'is-invalid': submit && ctrl.sgst.errors }">
-                                 <small *ngIf="ctrl.hdname.errors &&(ctrl.sgst.errors.required) && submit"
+                                 <small *ngIf="ctrl.sgst.errors &&(ctrl.sgst.errors.required) && submit"
                                     class="invalid-feedback">SGST is required! </small>
                               </div>
                               <div class="col-sm-6">
@@ -203,7 +203,7 @@
                                  <input type="number" name="cgst" formControlName="cgst" class="form-control" min="0"
                                     name="cgst" placeholder="Enter CGST"
                                     [ngClass]="{ 'is-invalid': submit && ctrl.cgst.errors }">
-                                 <small *ngIf="ctrl.hdname.errors &&(ctrl.cgst.errors.required) && submit"
+                                 <small *ngIf="ctrl.cgst.errors &&(ctrl.cgst.errors.required) && submit"
                                     class="invalid-feedback">CGST No is required! </small>
                               </div>
                            </div>
@@ -213,7 +213,7 @@
                                  <label>GST NO<span style="color:red">*</span></label>
                                  <input type="text" name="gst" formControlName="gst" class="form-control"
                                     placeholder="Enter GST" [ngClass]="{ 'is-invalid': submit && ctrl.gst.errors }">
-                                 <small *ngIf="ctrl.hdname.errors &&(ctrl.gst.errors.required)&& submit"
+                                 <small *ngIf="ctrl.gst.errors &&(ctrl.gst.errors.required)&& submit"
                                     class="invalid-feedback">GST No is required! </small>
                               </div>
 
@@ -221,7 +221,7 @@
                                  <label>IGST<span style="color:red">*</span></label>
                                  <input type="text" name="igst" formControlName="igst" class="form-control" min="0"
                                     placeholder="Enter IGST" [ngClass]="{ 'is-invalid': submit && ctrl.igst.errors }">
-                                 <small *ngIf="ctrl.hdname.errors &&(ctrl.igst.errors.required)&& submit"
+                                 <small *ngIf="ctrl.igst.errors &&(ctrl.igst.errors.required)&& submit"
                                     class="invalid-feedback">IGST is required! </small>
                               </div>
                            </div>

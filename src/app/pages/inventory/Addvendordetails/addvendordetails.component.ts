@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import {NbToastrService,} from '@nebular/theme';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -18,7 +18,7 @@ export class addvendordetailsComponent implements OnInit {
     private vendorservices: VendorService,
     private route: Router,
     public role: RoleservicesService,
-    private toast: ToastrService,
+    private toast: NbToastrService,
     private aRoute: ActivatedRoute,
     private headend: HeadendService
   ) { }
