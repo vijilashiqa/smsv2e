@@ -5,7 +5,7 @@ import { UsersRoutingModule } from './users-routing.module';
 import { AddUserComponent } from './add-user/add-user.component';
 import { CancelshareComponent } from './cancelshare/cancelshare.component';
 import { UserlistComponent } from './userlist/userlist.component';
-import { ChangepaaswordComponent } from './changepaasword/changepaasword.component';
+
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { UpdateShareComponent } from './update-share/update-share.component';
 import { WalletComponent } from './wallet/wallet.component';
@@ -26,7 +26,6 @@ import { RoleeditUserComponent } from './roleedit-user/roleedit-user.component';
     AddUserComponent,
     CancelshareComponent,
     UserlistComponent,
-    ChangepaaswordComponent,
     EditUserComponent,
     UpdateShareComponent,
     WalletComponent,

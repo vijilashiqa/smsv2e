@@ -83,8 +83,12 @@ export class AdddepositComponent implements OnInit {
       const file = new FormData();
       let id = result[0]['id']
       let filename = id + '-' + 'deposit'
+
+    console.log("select file", this.selectedfile);
+    
       file.append('file', this.selectedfile, filename)
       file.append('id', id)
+      console.log("file @@@@@@",file)
       let logoresult = await this.deposits.uploadpic(file)
       if (logoresult && result[0].err_code == 0) {
         this.toast.success(result[0]['msg']);

@@ -2,7 +2,7 @@ import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import {NbAuthComponent} from '@nebular/auth';
 import { LoginComponent } from './loginc/loginc.component';
-import { ChangepaaswordComponent } from './pages/users/changepaasword/changepaasword.component';
+import { ChangepasswordComponent } from './@theme/components/changepassword/changepassword.component';
 export const routes: Routes = [
     {
     path: 'pages',
@@ -18,7 +18,7 @@ export const routes: Routes = [
       },
       {
         path: 'change password',
-        component: ChangepaaswordComponent,
+        component: ChangepasswordComponent,
 
       }, 
       {

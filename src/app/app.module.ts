@@ -34,7 +34,6 @@ import { ToasterModule } from 'angular2-toaster';
 import { TimePickerModule } from '@syncfusion/ej2-angular-calendars';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ChangepaaswordComponent } from './pages/users/changepaasword/changepaasword.component';
 // import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
@@ -66,7 +65,7 @@ import { ChangepaaswordComponent } from './pages/users/changepaasword/changepaas
     FormsModule
    ],
   bootstrap: [AppComponent],
-  providers: [LogserviceService, RoleservicesService,ChangepaaswordComponent,
+  providers: [LogserviceService, RoleservicesService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtrequestService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: APP_BASE_HREF, useValue: '/' },
