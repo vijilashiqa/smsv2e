@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { ChannelcategoryRoutingModule } from './channelcategory-routing.module';
 import { listgenreComponent } from './listgenre/listgenre.component';
 import { ListlanguageComponent } from './listlanguage/listlanguage.component';
